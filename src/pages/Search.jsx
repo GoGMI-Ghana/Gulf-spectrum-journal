@@ -9,7 +9,7 @@ export default function Search() {
   const query = params.get('q') ?? ''
   const results = searchArticles(query)
 
-  usePageMeta(query ? `Search: ${query}` : 'Search', `Search results for "${query}" across The Gulf Spectrum.`)
+  usePageMeta(query ? `Search: ${query}` : 'Search', `Search results for "${query}" across Gulf Spectrum Journal.`)
 
   return (
     <div>

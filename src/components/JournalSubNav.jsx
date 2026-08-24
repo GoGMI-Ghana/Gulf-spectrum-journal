@@ -4,7 +4,8 @@ import { Search as SearchIcon } from 'lucide-react'
 
 const tabs = [
   { to: '/', label: 'Latest Issue', end: true },
-  { to: '/issues', label: 'All Issues' },
+  { to: '/issues', label: 'Articles and Issues' },
+  { to: '/topics', label: 'Topics' },
   { to: '/about', label: 'About the Journal' },
   { to: '/authors', label: 'Authors' },
 ]

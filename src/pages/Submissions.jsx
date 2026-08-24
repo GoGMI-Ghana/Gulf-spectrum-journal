@@ -27,14 +27,14 @@ function SectionHeading({ children }) {
 }
 
 export default function Submissions() {
-  usePageMeta('Submission Guidelines', 'Guidance for prospective authors and co-authors submitting research to The Gulf Spectrum.')
+  usePageMeta('Submission Guidelines', 'Guidance for prospective authors and co-authors submitting research to Gulf Spectrum Journal.')
 
   return (
     <div>
       <PageBanner
         eyebrow="For Authors"
         title="Submission Guidelines"
-        description="The Gulf Spectrum welcomes original research from naval and coast guard officers, academics, legal practitioners, and other subject-matter experts working on Gulf of Guinea maritime affairs."
+        description="Gulf Spectrum Journal welcomes original research from naval and coast guard officers, academics, legal practitioners, and other subject-matter experts working on Gulf of Guinea maritime affairs."
       />
 
       <section className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-14 grid grid-cols-1 lg:grid-cols-3 gap-12">

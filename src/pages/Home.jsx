@@ -1,5 +1,5 @@
 import { Link } from 'react-router-dom'
-import { journal, issues, getArticlesForIssue } from '../data/content'
+import { journal, issues, topics, getArticlesForIssue, getArticlesForTopic } from '../data/content'
 import ArticleCard from '../components/ArticleCard'
 import IssueCover from '../components/IssueCover'
 import JournalSubNav from '../components/JournalSubNav'
@@ -9,7 +9,7 @@ import { usePageMeta } from '../hooks/usePageMeta'
 export default function Home() {
   usePageMeta(
     undefined,
-    'The Gulf Spectrum is the GoGMI Journal of Maritime Research, publishing locally produced, editorially reviewed research on maritime security and governance in the Gulf of Guinea.'
+    'Gulf Spectrum Journal is the research journal of the Gulf of Guinea Maritime Institute (GoGMI), publishing locally produced, editorially reviewed research across maritime security, blue economy, governance, and capacity building.'
   )
 
   const latestIssue = issues[0]
@@ -23,7 +23,7 @@ export default function Home() {
           <div className="max-w-2xl">
             <p className="kicker text-gold mb-5">Gulf of Guinea Maritime Institute</p>
             <h1 className="font-display text-white text-4xl sm:text-5xl leading-[1.1] mb-4">
-              The Gulf Spectrum
+              Gulf Spectrum Journal
             </h1>
             <p className="text-soft-gold text-lg sm:text-xl mb-6 font-display">{journal.subtitle}</p>
             <p className="text-white/75 text-base leading-relaxed mb-9">
@@ -78,7 +78,7 @@ export default function Home() {
             <div className="border-l-4 border-gold bg-royal-blue text-white p-6">
               <h3 className="kicker text-gold mb-3">About the Journal</h3>
               <p className="text-white/80 text-sm leading-relaxed mb-4">
-                The Gulf Spectrum gives stakeholders across the Gulf of Guinea and beyond
+                Gulf Spectrum Journal gives stakeholders across the Gulf of Guinea and beyond
                 access to locally produced, insider perspectives on maritime governance,
                 safety, and security in the region.
               </p>
@@ -90,7 +90,7 @@ export default function Home() {
             <div className="border-l-4 border-royal-blue p-6">
               <h3 className="kicker text-royal-blue mb-3">Submit Your Research</h3>
               <p className="text-slate-600 text-sm leading-relaxed mb-4">
-                The Gulf Spectrum welcomes submissions from researchers, officers, and
+                Gulf Spectrum Journal welcomes submissions from researchers, officers, and
                 practitioners working on Gulf of Guinea maritime affairs.
               </p>
               <Link to="/submissions" className="text-ocean-blue text-sm font-medium hover:underline">
@@ -99,11 +99,13 @@ export default function Home() {
             </div>
 
             <div className="border-l-4 border-royal-blue p-6">
-              <h3 className="kicker text-royal-blue mb-3">Scope</h3>
-              <ul className="space-y-2.5 text-sm text-slate-700">
-                {journal.scopeAreas.slice(0, 4).map((area) => (
-                  <li key={area} className="pb-2.5 border-b border-slate-200 last:border-0 last:pb-0">
-                    {area}
+              <h3 className="kicker text-royal-blue mb-3">Browse by Topic</h3>
+              <ul className="space-y-2.5 text-sm">
+                {topics.map((topic) => (
+                  <li key={topic.slug} className="pb-2.5 border-b border-slate-200 last:border-0 last:pb-0">
+                    <Link to={`/topics/${topic.slug}`} className="text-slate-700 hover:text-ocean-blue">
+                      {topic.label}
+                    </Link>
                   </li>
                 ))}
               </ul>
@@ -114,11 +116,35 @@ export default function Home() {
 
       <WaveDivider className="text-royal-blue/20" />
 
+      {/* Topics */}
+      <section className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-14">
+        <div className="flex items-end justify-between mb-6 border-b-2 border-royal-blue pb-3">
+          <h2 className="text-2xl font-bold text-royal-blue font-display">Browse by Topic</h2>
+          <Link to="/topics" className="text-ocean-blue text-sm font-medium hover:underline">
+            All topics →
+          </Link>
+        </div>
+        <div className="flex flex-wrap gap-2.5">
+          {topics.map((topic) => {
+            const count = getArticlesForTopic(topic.slug).length
+            return (
+              <Link
+                key={topic.slug}
+                to={`/topics/${topic.slug}`}
+                className="border border-slate-300 hover:border-royal-blue hover:bg-soft-gold/40 px-4 py-2 text-sm text-slate-700 hover:text-royal-blue transition-colors"
+              >
+                {topic.label} <span className="text-slate-400">({count})</span>
+              </Link>
+            )
+          })}
+        </div>
+      </section>
+
       {/* Past issues teaser */}
       <section className="bg-slate-50">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-14">
           <div className="flex items-end justify-between mb-6 border-b-2 border-royal-blue pb-3">
-            <h2 className="text-2xl font-bold text-royal-blue font-display">Browse All Issues</h2>
+            <h2 className="text-2xl font-bold text-royal-blue font-display">Browse Articles and Issues</h2>
             <Link to="/issues" className="text-ocean-blue text-sm font-medium hover:underline">
               View all →
             </Link>

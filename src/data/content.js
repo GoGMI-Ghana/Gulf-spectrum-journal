@@ -4,14 +4,14 @@
 // content. Swap in the real PDF content before launch.
 
 export const journal = {
-  name: 'The Gulf Spectrum',
-  subtitle: 'GoGMI Journal of Maritime Research',
+  name: 'Gulf Spectrum Journal',
+  subtitle: 'A Publication of the Gulf of Guinea Maritime Institute',
   publisher: 'Gulf of Guinea Maritime Institute (GoGMI)',
   domain: 'www.gulfspectrumjournal.com',
   founded: 2025,
   issn: 'ISSN pending',
   frequency: 'Published annually, in themed volumes',
-  aboutText: `The Gulf Spectrum is the research journal of the Gulf of Guinea Maritime
+  aboutText: `Gulf Spectrum Journal is the research journal of the Gulf of Guinea Maritime
 Institute (GoGMI), publishing locally produced, insider perspectives on maritime
 governance, safety, and security in the Gulf of Guinea. Its mission is to give
 stakeholders across the region and beyond a credible, consolidated platform for
@@ -127,6 +127,45 @@ export const authors = [
 
 const authorBySlug = Object.fromEntries(authors.map((a) => [a.slug, a]))
 
+// Topic catalogue — these mirror the journal's stated scope areas (see
+// journal.scopeAreas above) so the site visibly isn't limited to maritime
+// security alone, even though Issue No. 1's own theme is security-focused.
+// Later issues covering other scope areas will fill out the thinner topics.
+export const topics = [
+  {
+    slug: 'maritime-security',
+    label: 'Maritime Security',
+    description: 'Piracy, armed robbery at sea, naval and coast guard operations, and interventions across the Gulf of Guinea.',
+  },
+  {
+    slug: 'blue-economy',
+    label: 'Blue Economy',
+    description: 'Fisheries, shipping, offshore resources, and sustainable development of the maritime economy.',
+  },
+  {
+    slug: 'regional-governance',
+    label: 'Regional Governance & Law',
+    description: 'Regional cooperation frameworks, legal and regulatory questions, and maritime governance in the Gulf of Guinea.',
+  },
+  {
+    slug: 'capacity-building',
+    label: 'Capacity Building',
+    description: "Institutional and interagency capacity, including youth and women's participation in the blue economy, linked to the WYTEC Blue programme.",
+  },
+  {
+    slug: 'consultancy-case-studies',
+    label: 'Consultancy & Case Studies',
+    description: 'Applied case studies and consultancy insights suitable for public release.',
+  },
+  {
+    slug: 'west-african-affairs',
+    label: 'West African Affairs',
+    description: 'Broader Gulf of Guinea and West African maritime affairs beyond a single theme or issue.',
+  },
+]
+
+const topicBySlug = Object.fromEntries(topics.map((t) => [t.slug, t]))
+
 export const issues = [
   {
     slug: 'issue-1',
@@ -163,6 +202,7 @@ export const articles = [
   {
     slug: 'mapping-external-actors-gog',
     issueSlug: 'issue-1',
+    topicSlug: 'maritime-security',
     title: 'Maritime Security Interventions in the Gulf of Guinea: Mapping the Role of External Actors',
     authorSlugs: ['kwabena-owusu', 'ama-serwaa-boateng'],
     abstract: `This article maps the range of external naval and institutional interventions
@@ -213,6 +253,7 @@ capacity, not only by their immediate security effect.`,
   {
     slug: 'coast-guard-interagency-coordination',
     issueSlug: 'issue-1',
+    topicSlug: 'capacity-building',
     title: 'Coast Guard Capacity and Interagency Coordination in Gulf of Guinea Maritime Security',
     authorSlugs: ['yaw-antwi-danso', 'efua-mensah'],
     abstract: `Drawing on operational experience within Ghana's coast guard command
@@ -256,6 +297,7 @@ close this gap.`,
   {
     slug: 'legal-frameworks-prosecuting-piracy',
     issueSlug: 'issue-1',
+    topicSlug: 'regional-governance',
     title: 'Legal Frameworks for Prosecuting Piracy and Armed Robbery at Sea in the Gulf of Guinea',
     authorSlugs: ['nana-akosua-frimpong', 'kojo-adjei'],
     abstract: `This article reviews the domestic legal frameworks available to Gulf of
@@ -297,6 +339,7 @@ prosecute. Legal reform is as central to deterrence as naval capacity.`,
   {
     slug: 'external-naval-presence-regional-ownership',
     issueSlug: 'issue-1',
+    topicSlug: 'regional-governance',
     title: 'External Naval Presence and Regional Ownership: Balancing Partnership and Sovereignty in Gulf of Guinea Security',
     authorSlugs: ['comfort-adjei-mensah', 'effiong-bassey'],
     abstract: `This article examines the tension between welcoming external naval
@@ -337,6 +380,7 @@ assumed byproduct.`,
   {
     slug: 'information-sharing-yaounde-code',
     issueSlug: 'issue-1',
+    topicSlug: 'maritime-security',
     title: 'Information Sharing Architectures and the Yaoundé Code of Conduct: Progress and Gaps',
     authorSlugs: ['patricia-nyarko', 'ibrahim-diallo'],
     abstract: `This article assesses progress in maritime information-sharing across
@@ -411,4 +455,23 @@ export function searchArticles(query) {
 
 export function getIssueForArticle(article) {
   return issues.find((i) => i.slug === article.issueSlug)
+}
+
+export function getTopicBySlug(slug) {
+  return topicBySlug[slug]
+}
+
+export function getTopicForArticle(article) {
+  return topicBySlug[article.topicSlug]
+}
+
+export function getArticlesForTopic(topicSlug) {
+  return articles.filter((a) => a.topicSlug === topicSlug)
+}
+
+// Placeholder split — GoGMI has not set an official rate. Shown to donors
+// as an example; confirm the real figure before this goes live.
+export const donationSplit = {
+  authorPercent: 90,
+  platformPercent: 10,
 }

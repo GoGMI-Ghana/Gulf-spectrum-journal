@@ -5,6 +5,8 @@ import Home from './pages/Home'
 import About from './pages/About'
 import Issues from './pages/Issues'
 import IssueDetail from './pages/IssueDetail'
+import Topics from './pages/Topics'
+import TopicDetail from './pages/TopicDetail'
 import ArticleDetail from './pages/ArticleDetail'
 import Authors from './pages/Authors'
 import AuthorDetail from './pages/AuthorDetail'
@@ -23,6 +25,8 @@ export default function App() {
           <Route path="/about" element={<About />} />
           <Route path="/issues" element={<Issues />} />
           <Route path="/issues/:issueSlug" element={<IssueDetail />} />
+          <Route path="/topics" element={<Topics />} />
+          <Route path="/topics/:topicSlug" element={<TopicDetail />} />
           <Route path="/articles/:articleSlug" element={<ArticleDetail />} />
           <Route path="/authors" element={<Authors />} />
           <Route path="/authors/:authorSlug" element={<AuthorDetail />} />

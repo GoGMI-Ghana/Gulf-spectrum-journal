@@ -5,7 +5,7 @@ import PageBanner from '../components/PageBanner'
 import IssueCover from '../components/IssueCover'
 
 export default function Issues() {
-  usePageMeta('Issues', 'Browse all issues of The Gulf Spectrum, the GoGMI Journal of Maritime Research, by volume and theme.')
+  usePageMeta('Articles and Issues', 'Browse all articles and issues of Gulf Spectrum Journal by volume, theme, and topic.')
 
   const byYear = issues.reduce((acc, issue) => {
     acc[issue.year] = acc[issue.year] || []
@@ -16,7 +16,17 @@ export default function Issues() {
 
   return (
     <div>
-      <PageBanner eyebrow="Archive" title="All Issues" description="Browse The Gulf Spectrum by volume. Each issue is a themed, editorially reviewed collection of research articles." />
+      <PageBanner
+        eyebrow="Archive"
+        title="Articles and Issues"
+        description={
+          <>
+            Browse Gulf Spectrum Journal by volume. Each issue is a themed, editorially
+            reviewed collection of research articles. Prefer to browse by subject?{' '}
+            <Link to="/topics" className="text-gold hover:underline">See Topics →</Link>
+          </>
+        }
+      />
 
       <section className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-14">
         {years.map((year) => (

@@ -8,7 +8,7 @@ export default function Footer() {
         <div className="md:col-span-2">
           <div className="flex items-center gap-3 mb-4">
             <img src="/gogmi-logo.png" alt="GoGMI" className="h-9 w-9 object-contain" />
-            <span className="font-display text-white text-lg">The Gulf Spectrum</span>
+            <span className="font-display text-white text-lg">Gulf Spectrum Journal</span>
           </div>
           <p className="text-sm leading-relaxed max-w-md">
             {journal.subtitle}, published by the Gulf of Guinea Maritime Institute
@@ -29,7 +29,8 @@ export default function Footer() {
           <h3 className="kicker text-white mb-4">Journal</h3>
           <ul className="space-y-2.5 text-sm">
             <li><Link to="/about" className="hover:text-gold">About the Journal</Link></li>
-            <li><Link to="/issues" className="hover:text-gold">Browse Issues</Link></li>
+            <li><Link to="/issues" className="hover:text-gold">Articles and Issues</Link></li>
+            <li><Link to="/topics" className="hover:text-gold">Topics</Link></li>
             <li><Link to="/authors" className="hover:text-gold">Authors</Link></li>
             <li><Link to="/submissions" className="hover:text-gold">Submission Guidelines</Link></li>
           </ul>

@@ -5,7 +5,8 @@ import { journal } from '../data/content'
 
 const navLinks = [
   { to: '/', label: 'Home', end: true },
-  { to: '/issues', label: 'Issues' },
+  { to: '/issues', label: 'Articles and Issues' },
+  { to: '/topics', label: 'Topics' },
   { to: '/about', label: 'About the Journal' },
   { to: '/authors', label: 'Authors' },
   { to: '/submissions', label: 'Submission Guidelines' },
@@ -62,7 +63,7 @@ export default function Header() {
             />
             <span className="min-w-0 border-l border-white/20 pl-4">
               <span className="block font-display text-white text-xl sm:text-2xl leading-tight tracking-wide truncate">
-                The Gulf Spectrum
+                Gulf Spectrum Journal
               </span>
               <span className="block text-soft-gold text-[10px] sm:text-[11px] uppercase tracking-[0.18em]">
                 {journal.subtitle}
@@ -72,7 +73,7 @@ export default function Header() {
 
           <div className="hidden md:flex items-center gap-6">
             <Link to="/issues" className="text-white/80 hover:text-gold text-sm tracking-wide">
-              Browse Issues
+              Articles and Issues
             </Link>
             <Link
               to="/submissions"

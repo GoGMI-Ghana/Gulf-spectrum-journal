@@ -2,11 +2,11 @@ import { usePageMeta } from '../hooks/usePageMeta'
 import PageBanner from '../components/PageBanner'
 
 export default function Contact() {
-  usePageMeta('Contact', 'Contact the editorial office of The Gulf Spectrum, the GoGMI Journal of Maritime Research.')
+  usePageMeta('Contact', 'Contact the editorial office of Gulf Spectrum Journal, a publication of the Gulf of Guinea Maritime Institute.')
 
   return (
     <div>
-      <PageBanner eyebrow="Get in Touch" title="Contact" description="Questions about submissions, past issues, or partnership with The Gulf Spectrum." />
+      <PageBanner eyebrow="Get in Touch" title="Contact" description="Questions about submissions, past issues, or partnership with Gulf Spectrum Journal." />
 
       <section className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-14 grid grid-cols-1 lg:grid-cols-3 gap-10">
         <div className="lg:col-span-2">
@@ -96,7 +96,7 @@ export default function Contact() {
           <div className="border-l-4 border-gold bg-royal-blue text-white p-6">
             <h3 className="kicker text-gold mb-3">GoGMI</h3>
             <p className="text-white/75 text-sm leading-relaxed mb-4">
-              The Gulf Spectrum is published by the Gulf of Guinea Maritime
+              Gulf Spectrum Journal is published by the Gulf of Guinea Maritime
               Institute, a non-profit maritime think tank operating across the
               region.
             </p>

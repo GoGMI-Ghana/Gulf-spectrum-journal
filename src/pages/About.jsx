@@ -1,4 +1,5 @@
-import { journal } from '../data/content'
+import { Link } from 'react-router-dom'
+import { journal, topics } from '../data/content'
 import { usePageMeta } from '../hooks/usePageMeta'
 import PageBanner from '../components/PageBanner'
 import Initials from '../components/Initials'
@@ -27,7 +28,7 @@ const trustSignals = [
 ]
 
 export default function About() {
-  usePageMeta('About the Journal', "The Gulf Spectrum's ongoing mission: locally produced research on maritime security and governance in the Gulf of Guinea, reviewed by a dedicated editorial board.")
+  usePageMeta('About the Journal', "Gulf Spectrum Journal's ongoing mission: locally produced research on maritime security and governance in the Gulf of Guinea, reviewed by a dedicated editorial board.")
 
   return (
     <div>
@@ -58,9 +59,11 @@ export default function About() {
             Scope
           </h2>
           <ul className="grid sm:grid-cols-2">
-            {journal.scopeAreas.map((area) => (
-              <li key={area} className="text-sm text-slate-700 py-3 border-b border-slate-200">
-                {area}
+            {journal.scopeAreas.map((area, i) => (
+              <li key={area} className="text-sm py-3 border-b border-slate-200">
+                <Link to={`/topics/${topics[i].slug}`} className="text-slate-700 hover:text-ocean-blue">
+                  {area}
+                </Link>
               </li>
             ))}
           </ul>
