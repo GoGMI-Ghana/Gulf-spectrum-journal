@@ -41,6 +41,38 @@ html {
   font-family: var(--font-family-serif);
 }
 
+/* Editorial primitives — rules and small caps instead of icon badges,
+   so the site reads as a print journal rather than a generic app UI. */
+.kicker {
+  font-family: var(--font-family-inter);
+  font-size: 0.7rem;
+  font-weight: 600;
+  letter-spacing: 0.18em;
+  text-transform: uppercase;
+}
+
+.rule-thick {
+  height: 3px;
+  background: var(--color-gold);
+}
+
+.rule-thin {
+  height: 1px;
+  background: currentColor;
+  opacity: 0.25;
+}
+
+.double-rule {
+  border-top: 3px solid var(--color-gold);
+  border-bottom: 1px solid var(--color-gold);
+  padding-top: 3px;
+}
+
+.serif-numeral {
+  font-family: var(--font-family-serif);
+  font-variant-numeric: oldstyle-nums;
+}
+
 .line-clamp-2 {
   overflow: hidden;
   display: -webkit-box;

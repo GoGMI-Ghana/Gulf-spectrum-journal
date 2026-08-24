@@ -1,26 +1,25 @@
-import { Target, Users, ShieldCheck, RefreshCcw } from 'lucide-react'
 import { journal } from '../data/content'
 import { usePageMeta } from '../hooks/usePageMeta'
 import PageBanner from '../components/PageBanner'
 
 const trustSignals = [
   {
-    icon: ShieldCheck,
+    n: '01',
     title: 'Editorial Review',
     body: "Every volume is reviewed by a dedicated editorial board before publication. Reviewers set that volume's citation style and word-count guidance.",
   },
   {
-    icon: Users,
+    n: '02',
     title: 'Named Authorship',
     body: 'Every article displays each author’s name, photograph, and institutional affiliation, alongside a full formatted reference list.',
   },
   {
-    icon: RefreshCcw,
+    n: '03',
     title: 'Correction Policy',
     body: 'Corrections to published articles are marked and dated on the article itself. See our correction policy for details.',
   },
   {
-    icon: Target,
+    n: '04',
     title: 'Disclosure',
     body: 'Articles include a funding or conflict-of-interest disclosure line where applicable.',
   },
@@ -43,30 +42,36 @@ export default function About() {
             ))}
           </div>
 
-          <h2 className="text-xl font-bold text-royal-blue mt-10 mb-4">Scope</h2>
-          <ul className="grid sm:grid-cols-2 gap-3">
+          <h2 className="text-xl font-bold text-royal-blue font-serif-display mt-10 mb-4 pb-2 border-b-2 border-royal-blue">
+            Scope
+          </h2>
+          <ul className="grid sm:grid-cols-2">
             {journal.scopeAreas.map((area) => (
-              <li key={area} className="flex items-start gap-2 bg-slate-50 border border-slate-200 rounded-md p-3 text-sm text-slate-700">
-                <span className="text-gold mt-0.5">▸</span> {area}
+              <li key={area} className="text-sm text-slate-700 py-3 border-b border-slate-200">
+                {area}
               </li>
             ))}
           </ul>
 
-          <h2 className="text-xl font-bold text-royal-blue mt-10 mb-4">Content Standards & Trust Signals</h2>
-          <div className="grid sm:grid-cols-2 gap-5">
+          <h2 className="text-xl font-bold text-royal-blue font-serif-display mt-12 mb-6 pb-2 border-b-2 border-royal-blue">
+            Content Standards &amp; Trust Signals
+          </h2>
+          <div className="grid sm:grid-cols-2 gap-x-8 gap-y-8">
             {trustSignals.map((t) => (
-              <div key={t.title} className="border border-slate-200 rounded-lg p-5">
-                <t.icon className="text-ocean-blue mb-2" size={22} />
-                <h3 className="font-semibold text-royal-blue mb-1">{t.title}</h3>
-                <p className="text-sm text-slate-600 leading-relaxed">{t.body}</p>
+              <div key={t.title} className="flex gap-4">
+                <span className="serif-numeral text-gold text-3xl font-bold leading-none shrink-0">{t.n}</span>
+                <div>
+                  <h3 className="font-semibold text-royal-blue mb-1">{t.title}</h3>
+                  <p className="text-sm text-slate-600 leading-relaxed">{t.body}</p>
+                </div>
               </div>
             ))}
           </div>
         </div>
 
-        <aside className="space-y-6">
-          <div className="border border-slate-200 rounded-lg p-6">
-            <h3 className="font-semibold text-royal-blue text-sm uppercase tracking-wide mb-4">Journal Details</h3>
+        <aside className="space-y-8">
+          <div className="border-l-4 border-royal-blue p-6">
+            <h3 className="kicker text-royal-blue mb-4">Journal Details</h3>
             <dl className="space-y-3 text-sm">
               <div>
                 <dt className="text-slate-500">Publisher</dt>
@@ -87,14 +92,14 @@ export default function About() {
             </dl>
           </div>
 
-          <div className="bg-royal-blue text-white rounded-lg p-6">
-            <h3 className="font-semibold text-gold text-sm uppercase tracking-wide mb-3">Editorial Board</h3>
+          <div className="border-l-4 border-gold bg-royal-blue text-white p-6">
+            <h3 className="kicker text-gold mb-4">Editorial Board</h3>
             <ul className="space-y-4">
               {journal.editorialBoard.map((m) => (
-                <li key={m.name}>
+                <li key={m.name} className="pb-4 border-b border-white/10 last:border-0 last:pb-0">
                   <p className="font-medium text-white text-sm">{m.name}</p>
-                  <p className="text-white/70 text-xs">{m.role}</p>
-                  <p className="text-white/60 text-xs">{m.affiliation}</p>
+                  <p className="text-white/60 text-xs">{m.role}</p>
+                  <p className="text-white/50 text-xs">{m.affiliation}</p>
                 </li>
               ))}
             </ul>

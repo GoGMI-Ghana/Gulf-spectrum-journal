@@ -1,16 +1,14 @@
 import { Link } from 'react-router-dom'
-import { ExternalLink, Mail } from 'lucide-react'
-import CompassMark from './CompassMark'
 import { journal } from '../data/content'
 
 export default function Footer() {
   return (
-    <footer className="bg-ink text-white/70 mt-20">
-      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-12 grid grid-cols-1 md:grid-cols-4 gap-10">
+    <footer className="bg-ink text-white/70 mt-24 border-t-4 border-gold">
+      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-14 grid grid-cols-1 md:grid-cols-4 gap-10">
         <div className="md:col-span-2">
-          <div className="flex items-center gap-3 mb-3">
-            <CompassMark className="w-9 h-9" />
-            <span className="font-serif-display text-white text-lg">THE GULF SPECTRUM</span>
+          <div className="flex items-center gap-3 mb-4">
+            <img src="/gogmi-logo.png" alt="GoGMI" className="h-9 w-9 object-contain" />
+            <span className="font-serif-display text-white text-lg">The Gulf Spectrum</span>
           </div>
           <p className="text-sm leading-relaxed max-w-md">
             {journal.subtitle}, published by the Gulf of Guinea Maritime Institute
@@ -21,15 +19,15 @@ export default function Footer() {
             href="https://www.gogmi.org.gh"
             target="_blank"
             rel="noopener noreferrer"
-            className="inline-flex items-center gap-1.5 text-sm text-gold hover:text-soft-gold mt-4"
+            className="inline-block text-sm text-gold hover:text-soft-gold mt-4 border-b border-gold/50 hover:border-soft-gold"
           >
-            gogmi.org.gh <ExternalLink size={14} />
+            gogmi.org.gh
           </a>
         </div>
 
         <div>
-          <h3 className="text-white font-semibold text-sm uppercase tracking-wide mb-3">Journal</h3>
-          <ul className="space-y-2 text-sm">
+          <h3 className="kicker text-white mb-4">Journal</h3>
+          <ul className="space-y-2.5 text-sm">
             <li><Link to="/about" className="hover:text-gold">About the Journal</Link></li>
             <li><Link to="/issues" className="hover:text-gold">Browse Issues</Link></li>
             <li><Link to="/authors" className="hover:text-gold">Authors</Link></li>
@@ -38,14 +36,12 @@ export default function Footer() {
         </div>
 
         <div>
-          <h3 className="text-white font-semibold text-sm uppercase tracking-wide mb-3">Contact</h3>
-          <ul className="space-y-2 text-sm">
+          <h3 className="kicker text-white mb-4">Contact</h3>
+          <ul className="space-y-2.5 text-sm">
             <li>
               <Link to="/contact" className="hover:text-gold">Contact the editorial office</Link>
             </li>
-            <li className="flex items-center gap-1.5">
-              <Mail size={14} /> journal@gogmi.org.gh
-            </li>
+            <li>journal@gogmi.org.gh</li>
             <li>{journal.issn}</li>
           </ul>
         </div>

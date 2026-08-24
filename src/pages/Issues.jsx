@@ -1,5 +1,4 @@
 import { Link } from 'react-router-dom'
-import { BookOpen } from 'lucide-react'
 import { issues, getArticlesForIssue } from '../data/content'
 import { usePageMeta } from '../hooks/usePageMeta'
 import PageBanner from '../components/PageBanner'
@@ -21,24 +20,24 @@ export default function Issues() {
       <section className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-14">
         {years.map((year) => (
           <div key={year} className="mb-12">
-            <h2 className="text-lg font-bold text-royal-blue border-b border-slate-200 pb-2 mb-6">{year}</h2>
-            <div className="grid grid-cols-1 sm:grid-cols-2 gap-6">
+            <h2 className="text-lg font-bold text-royal-blue font-serif-display border-b-2 border-royal-blue pb-2 mb-6">{year}</h2>
+            <div className="grid grid-cols-1 sm:grid-cols-2 gap-px bg-slate-200">
               {byYear[year].map((issue) => {
                 const articleCount = getArticlesForIssue(issue.slug).length
                 return (
                   <Link
                     key={issue.slug}
                     to={`/issues/${issue.slug}`}
-                    className="flex gap-4 bg-white border border-slate-200 rounded-lg p-6 hover:border-gold hover:shadow-md transition-all"
+                    className="flex gap-5 bg-white p-6 hover:bg-soft-gold/40 transition-colors"
                   >
-                    <div className="w-14 h-14 rounded-md bg-soft-gold flex items-center justify-center shrink-0 border border-gold/40">
-                      <BookOpen className="text-royal-blue" size={24} />
-                    </div>
+                    <p className="serif-numeral text-gold text-4xl font-bold leading-none shrink-0">
+                      N°{issue.number}
+                    </p>
                     <div>
-                      <p className="text-xs font-semibold text-ocean-blue uppercase tracking-wide mb-1">
-                        Volume {issue.volume}, Issue {issue.number} · {issue.publishedDate}
+                      <p className="kicker text-ocean-blue mb-1.5">
+                        Vol. {issue.volume} · {issue.publishedDate}
                       </p>
-                      <h3 className="font-semibold text-royal-blue mb-1.5">{issue.theme}</h3>
+                      <h3 className="font-semibold text-royal-blue mb-1.5 font-serif-display">{issue.theme}</h3>
                       <p className="text-sm text-slate-500">{articleCount} articles</p>
                     </div>
                   </Link>

@@ -1,7 +1,6 @@
 import { useState } from 'react'
 import { Link, NavLink } from 'react-router-dom'
-import { Menu, X, ExternalLink, Search } from 'lucide-react'
-import CompassMark from './CompassMark'
+import { Menu, X } from 'lucide-react'
 import { journal } from '../data/content'
 
 const navLinks = [
@@ -36,45 +35,48 @@ export default function Header() {
   return (
     <header className="sticky top-0 z-50">
       {/* Utility bar */}
-      <div className="bg-ink text-white/70 text-xs">
+      <div className="bg-ink text-white/60 text-[11px]">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-1.5 flex items-center justify-between">
-          <span className="hidden sm:inline">A publication of the Gulf of Guinea Maritime Institute</span>
+          <span className="hidden sm:inline kicker font-normal tracking-[0.1em] text-white/50">
+            A publication of the Gulf of Guinea Maritime Institute
+          </span>
           <a
             href="https://www.gogmi.org.gh"
             target="_blank"
             rel="noopener noreferrer"
-            className="flex items-center gap-1 hover:text-gold transition-colors"
+            className="hover:text-gold transition-colors kicker font-normal tracking-[0.1em]"
           >
-            Visit gogmi.org.gh <ExternalLink size={12} />
+            gogmi.org.gh
           </a>
         </div>
       </div>
 
       {/* Masthead */}
-      <div className="bg-royal-blue border-b-2 border-gold">
-        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-4 flex items-center justify-between gap-4">
-          <Link to="/" className="flex items-center gap-3 min-w-0">
-            <CompassMark className="w-11 h-11 shrink-0" />
-            <span className="min-w-0">
+      <div className="bg-royal-blue">
+        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-5 flex items-center justify-between gap-4">
+          <Link to="/" className="flex items-center gap-4 min-w-0">
+            <img
+              src="/gogmi-logo.png"
+              alt="Gulf of Guinea Maritime Institute"
+              className="h-11 w-11 sm:h-12 sm:w-12 object-contain shrink-0"
+            />
+            <span className="min-w-0 border-l border-white/20 pl-4">
               <span className="block font-serif-display text-white text-xl sm:text-2xl leading-tight tracking-wide truncate">
-                THE GULF SPECTRUM
+                The Gulf Spectrum
               </span>
-              <span className="block text-soft-gold text-[11px] sm:text-xs uppercase tracking-[0.15em]">
+              <span className="block text-soft-gold text-[10px] sm:text-[11px] uppercase tracking-[0.18em]">
                 {journal.subtitle}
               </span>
             </span>
           </Link>
 
-          <div className="hidden md:flex items-center gap-3">
-            <Link
-              to="/issues"
-              className="hidden lg:inline-flex items-center gap-1.5 text-white/80 hover:text-gold text-sm"
-            >
-              <Search size={16} /> Browse issues
+          <div className="hidden md:flex items-center gap-6">
+            <Link to="/issues" className="text-white/80 hover:text-gold text-sm tracking-wide">
+              Browse Issues
             </Link>
             <Link
               to="/submissions"
-              className="bg-gold hover:bg-soft-gold hover:text-royal-blue text-ink font-semibold text-sm px-4 py-2 rounded transition-colors"
+              className="border border-gold text-gold hover:bg-gold hover:text-royal-blue font-medium text-sm px-5 py-2 transition-colors tracking-wide"
             >
               Submit an Article
             </Link>
@@ -91,8 +93,8 @@ export default function Header() {
       </div>
 
       {/* Nav */}
-      <nav className="hidden md:block bg-ocean-blue">
-        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 flex items-center gap-7 h-11">
+      <nav className="hidden md:block bg-ink border-t border-gold">
+        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 flex items-center gap-8 h-11">
           {navLinks.map((l) => (
             <NavItem key={l.to} {...l} />
           ))}
@@ -101,15 +103,15 @@ export default function Header() {
 
       {/* Mobile nav */}
       {open && (
-        <nav className="md:hidden bg-ocean-blue border-t border-white/10">
-          <div className="px-4 py-3 flex flex-col gap-3">
+        <nav className="md:hidden bg-ink border-t border-gold">
+          <div className="px-4 py-4 flex flex-col gap-4">
             {navLinks.map((l) => (
               <NavItem key={l.to} {...l} onClick={() => setOpen(false)} />
             ))}
             <Link
               to="/submissions"
               onClick={() => setOpen(false)}
-              className="bg-gold text-ink font-semibold text-sm px-4 py-2 rounded text-center mt-1"
+              className="border border-gold text-gold text-sm px-4 py-2 text-center mt-1"
             >
               Submit an Article
             </Link>
