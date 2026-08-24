@@ -2,6 +2,7 @@ import { Link } from 'react-router-dom'
 import { issues, getArticlesForIssue } from '../data/content'
 import { usePageMeta } from '../hooks/usePageMeta'
 import PageBanner from '../components/PageBanner'
+import IssueCover from '../components/IssueCover'
 
 export default function Issues() {
   usePageMeta('Issues', 'Browse all issues of The Gulf Spectrum, the GoGMI Journal of Maritime Research, by volume and theme.')
@@ -30,9 +31,7 @@ export default function Issues() {
                     to={`/issues/${issue.slug}`}
                     className="flex gap-5 bg-white p-6 hover:bg-soft-gold/40 transition-colors"
                   >
-                    <p className="serif-numeral text-gold text-4xl font-bold leading-none shrink-0">
-                      N°{issue.number}
-                    </p>
+                    <IssueCover issue={issue} className="w-16 shrink-0 shadow" />
                     <div>
                       <p className="kicker text-ocean-blue mb-1.5">
                         Vol. {issue.volume} · {issue.publishedDate}

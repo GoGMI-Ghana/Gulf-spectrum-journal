@@ -10,6 +10,7 @@ import Authors from './pages/Authors'
 import AuthorDetail from './pages/AuthorDetail'
 import Submissions from './pages/Submissions'
 import Contact from './pages/Contact'
+import Search from './pages/Search'
 import NotFound from './pages/NotFound'
 
 export default function App() {
@@ -27,6 +28,7 @@ export default function App() {
           <Route path="/authors/:authorSlug" element={<AuthorDetail />} />
           <Route path="/submissions" element={<Submissions />} />
           <Route path="/contact" element={<Contact />} />
+          <Route path="/search" element={<Search />} />
           <Route path="*" element={<NotFound />} />
         </Routes>
       </main>

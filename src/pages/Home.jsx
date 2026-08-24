@@ -1,14 +1,10 @@
 import { Link } from 'react-router-dom'
 import { journal, issues, getArticlesForIssue } from '../data/content'
 import ArticleCard from '../components/ArticleCard'
+import IssueCover from '../components/IssueCover'
+import JournalSubNav from '../components/JournalSubNav'
+import WaveDivider from '../components/WaveDivider'
 import { usePageMeta } from '../hooks/usePageMeta'
-
-const stats = [
-  { value: String(issues.length).padStart(2, '0'), label: 'Issues published' },
-  { value: '5', label: 'Articles in this issue' },
-  { value: '10+', label: 'Contributing authors' },
-  { value: '4', label: 'Core focus areas' },
-]
 
 export default function Home() {
   usePageMeta(
@@ -23,14 +19,14 @@ export default function Home() {
     <div>
       {/* Hero */}
       <section className="bg-royal-blue">
-        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-16 sm:py-24">
-          <div className="max-w-3xl">
+        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-14 sm:py-20 grid grid-cols-1 md:grid-cols-[1fr_auto] gap-10 md:gap-16 items-center">
+          <div className="max-w-2xl">
             <p className="kicker text-gold mb-5">Gulf of Guinea Maritime Institute</p>
-            <h1 className="font-serif-display text-white text-4xl sm:text-5xl lg:text-6xl leading-[1.1] mb-6">
+            <h1 className="font-serif-display text-white text-4xl sm:text-5xl leading-[1.1] mb-4">
               The Gulf Spectrum
             </h1>
             <p className="text-soft-gold text-lg sm:text-xl mb-6 font-serif-display italic">{journal.subtitle}</p>
-            <p className="text-white/75 text-base sm:text-lg leading-relaxed mb-9 max-w-2xl">
+            <p className="text-white/75 text-base leading-relaxed mb-9">
               Locally produced, editorially reviewed research on maritime governance,
               safety, and security in the Gulf of Guinea — written by the naval officers,
               researchers, and practitioners who work on these issues directly.
@@ -50,21 +46,15 @@ export default function Home() {
               </Link>
             </div>
           </div>
+
+          <Link to={`/issues/${latestIssue.slug}`} className="hidden md:block w-44 lg:w-52 shrink-0 group">
+            <IssueCover issue={latestIssue} className="w-full shadow-2xl shadow-black/40 group-hover:opacity-90 transition-opacity" />
+          </Link>
         </div>
         <div className="double-rule" />
       </section>
 
-      {/* Stats bar — set as a print-style fact strip, not icon cards */}
-      <section className="bg-soft-gold">
-        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-7 grid grid-cols-2 sm:grid-cols-4 gap-6">
-          {stats.map((s, i) => (
-            <div key={s.label} className={i > 0 ? 'sm:border-l sm:border-gold/40 sm:pl-6' : ''}>
-              <p className="serif-numeral text-royal-blue font-bold text-3xl leading-none mb-1">{s.value}</p>
-              <p className="text-slate-600 text-xs uppercase tracking-wide">{s.label}</p>
-            </div>
-          ))}
-        </div>
-      </section>
+      <JournalSubNav />
 
       {/* Latest issue */}
       <section className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-14">
@@ -123,8 +113,10 @@ export default function Home() {
         </div>
       </section>
 
+      <WaveDivider className="text-royal-blue/20" />
+
       {/* Past issues teaser */}
-      <section className="bg-slate-50 border-t border-slate-200">
+      <section className="bg-slate-50">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-14">
           <div className="flex items-end justify-between mb-6 border-b-2 border-royal-blue pb-3">
             <h2 className="text-2xl font-bold text-royal-blue font-serif-display">Browse All Issues</h2>
@@ -137,14 +129,16 @@ export default function Home() {
               <Link
                 key={issue.slug}
                 to={`/issues/${issue.slug}`}
-                className="block bg-white p-6 hover:bg-soft-gold/40 transition-colors"
+                className="flex gap-5 bg-white p-6 hover:bg-soft-gold/40 transition-colors"
               >
-                <p className="serif-numeral text-gold text-4xl font-bold leading-none mb-3">
-                  N°{issue.number}
-                </p>
-                <p className="kicker text-ocean-blue mb-2">{issue.publishedDate}</p>
-                <h3 className="font-semibold text-royal-blue mb-2 font-serif-display">{issue.theme}</h3>
-                <p className="text-sm text-slate-500 line-clamp-2">{issue.aboutThisVolume}</p>
+                <IssueCover issue={issue} className="w-16 shrink-0 shadow" />
+                <div>
+                  <p className="kicker text-ocean-blue mb-1.5">
+                    Vol. {issue.volume} · {issue.publishedDate}
+                  </p>
+                  <h3 className="font-semibold text-royal-blue mb-1.5 font-serif-display">{issue.theme}</h3>
+                  <p className="text-sm text-slate-500 line-clamp-3">{issue.aboutThisVolume}</p>
+                </div>
               </Link>
             ))}
           </div>

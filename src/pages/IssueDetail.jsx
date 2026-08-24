@@ -2,6 +2,7 @@ import { Link, useParams, Navigate } from 'react-router-dom'
 import { getIssueBySlug, getArticlesForIssue } from '../data/content'
 import { usePageMeta } from '../hooks/usePageMeta'
 import ArticleCard from '../components/ArticleCard'
+import IssueCover from '../components/IssueCover'
 
 export default function IssueDetail() {
   const { issueSlug } = useParams()
@@ -19,10 +20,8 @@ export default function IssueDetail() {
   return (
     <div>
       <section className="bg-royal-blue">
-        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-10 sm:py-14 flex items-start gap-6">
-          <p className="serif-numeral text-gold text-5xl sm:text-6xl font-bold leading-none shrink-0">
-            N°{issue.number}
-          </p>
+        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-10 sm:py-14 flex items-start gap-6 sm:gap-8">
+          <IssueCover issue={issue} className="w-20 sm:w-28 shrink-0 shadow-xl shadow-black/30" />
           <div>
             <p className="kicker text-gold mb-2">
               Volume {issue.volume} · {issue.publishedDate}

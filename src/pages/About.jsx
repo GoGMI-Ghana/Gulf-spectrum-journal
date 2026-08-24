@@ -1,6 +1,7 @@
 import { journal } from '../data/content'
 import { usePageMeta } from '../hooks/usePageMeta'
 import PageBanner from '../components/PageBanner'
+import Initials from '../components/Initials'
 
 const trustSignals = [
   {
@@ -96,10 +97,13 @@ export default function About() {
             <h3 className="kicker text-gold mb-4">Editorial Board</h3>
             <ul className="space-y-4">
               {journal.editorialBoard.map((m) => (
-                <li key={m.name} className="pb-4 border-b border-white/10 last:border-0 last:pb-0">
-                  <p className="font-medium text-white text-sm">{m.name}</p>
-                  <p className="text-white/60 text-xs">{m.role}</p>
-                  <p className="text-white/50 text-xs">{m.affiliation}</p>
+                <li key={m.name} className="flex gap-3 pb-4 border-b border-white/10 last:border-0 last:pb-0">
+                  <Initials name={m.name} size="sm" className="!bg-gold !text-royal-blue" />
+                  <div>
+                    <p className="font-medium text-white text-sm">{m.name}</p>
+                    <p className="text-white/60 text-xs">{m.role}</p>
+                    <p className="text-white/50 text-xs">{m.affiliation}</p>
+                  </div>
                 </li>
               ))}
             </ul>

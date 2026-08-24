@@ -397,6 +397,17 @@ export function getArticlesForAuthor(authorSlug) {
   return articles.filter((a) => a.authorSlugs.includes(authorSlug))
 }
 
+export function searchArticles(query) {
+  const q = query.trim().toLowerCase()
+  if (!q) return []
+
+  return articles.filter((a) => {
+    const authorNames = getAuthorsForArticle(a).map((au) => au.name).join(' ')
+    const haystack = [a.title, a.abstract, ...a.keywords, authorNames].join(' ').toLowerCase()
+    return haystack.includes(q)
+  })
+}
+
 export function getIssueForArticle(article) {
   return issues.find((i) => i.slug === article.issueSlug)
 }
