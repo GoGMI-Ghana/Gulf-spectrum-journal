@@ -68,9 +68,10 @@ html {
   padding-top: 3px;
 }
 
-.serif-numeral {
-  font-family: var(--font-family-serif);
-  font-variant-numeric: oldstyle-nums;
+.numeral {
+  font-family: var(--font-family-inter);
+  font-variant-numeric: tabular-nums;
+  letter-spacing: -0.02em;
 }
 
 .line-clamp-2 {

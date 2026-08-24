@@ -33,6 +33,17 @@ export default function About() {
     <div>
       <PageBanner eyebrow="About" title="About the Journal" />
 
+      <figure className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 mt-10">
+        <img
+          src="/hero-conference.jpg"
+          alt="Naval officers, researchers, and policymakers at GoGMI's Maritime Security Conference 2025 in Accra"
+          className="w-full h-56 sm:h-72 object-cover"
+        />
+        <figcaption className="text-xs text-slate-500 mt-2">
+          GoGMI's Maritime Security Conference 2025, Accra — the network of contributors this journal draws on.
+        </figcaption>
+      </figure>
+
       <section className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-14 grid grid-cols-1 lg:grid-cols-3 gap-12">
         <div className="lg:col-span-2">
           <div className="prose-block">
@@ -60,7 +71,7 @@ export default function About() {
           <div className="grid sm:grid-cols-2 gap-x-8 gap-y-8">
             {trustSignals.map((t) => (
               <div key={t.title} className="flex gap-4">
-                <span className="serif-numeral text-gold text-3xl font-bold leading-none shrink-0">{t.n}</span>
+                <span className="numeral text-gold text-3xl font-bold leading-none shrink-0">{t.n}</span>
                 <div>
                   <h3 className="font-semibold text-royal-blue mb-1">{t.title}</h3>
                   <p className="text-sm text-slate-600 leading-relaxed">{t.body}</p>

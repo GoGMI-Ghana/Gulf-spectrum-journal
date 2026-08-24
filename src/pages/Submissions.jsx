@@ -49,7 +49,7 @@ export default function Submissions() {
             <ul>
               {structuredFields.map((f, i) => (
                 <li key={f} className="text-sm text-slate-700 py-2.5 border-b border-slate-200 last:border-0 flex gap-3">
-                  <span className="serif-numeral text-gold font-semibold shrink-0">{String(i + 1).padStart(2, '0')}</span>
+                  <span className="numeral text-gold font-semibold shrink-0">{String(i + 1).padStart(2, '0')}</span>
                   {f}
                 </li>
               ))}
@@ -61,7 +61,7 @@ export default function Submissions() {
             <div className="grid sm:grid-cols-2 gap-x-8 gap-y-8">
               {workflow.map((w) => (
                 <div key={w.step} className="flex gap-4">
-                  <span className="serif-numeral text-gold text-3xl font-bold leading-none shrink-0">{w.step}</span>
+                  <span className="numeral text-gold text-3xl font-bold leading-none shrink-0">{w.step}</span>
                   <div>
                     <h3 className="font-semibold text-royal-blue mb-1">{w.title}</h3>
                     <p className="text-sm text-slate-600 leading-relaxed">{w.body}</p>

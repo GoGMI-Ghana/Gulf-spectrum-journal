@@ -133,6 +133,7 @@ export const issues = [
     number: 1,
     volume: 1,
     year: 2025,
+    coverImage: '/issue-1-cover.jpg',
     status: 'published',
     theme: 'Maritime Security Interventions in the Gulf of Guinea',
     publishedDate: 'November 2025',
