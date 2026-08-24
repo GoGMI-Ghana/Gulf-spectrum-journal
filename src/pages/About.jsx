@@ -54,7 +54,7 @@ export default function About() {
             ))}
           </div>
 
-          <h2 className="text-xl font-bold text-royal-blue font-serif-display mt-10 mb-4 pb-2 border-b-2 border-royal-blue">
+          <h2 className="text-xl font-bold text-royal-blue font-display mt-10 mb-4 pb-2 border-b-2 border-royal-blue">
             Scope
           </h2>
           <ul className="grid sm:grid-cols-2">
@@ -65,7 +65,7 @@ export default function About() {
             ))}
           </ul>
 
-          <h2 className="text-xl font-bold text-royal-blue font-serif-display mt-12 mb-6 pb-2 border-b-2 border-royal-blue">
+          <h2 className="text-xl font-bold text-royal-blue font-display mt-12 mb-6 pb-2 border-b-2 border-royal-blue">
             Content Standards &amp; Trust Signals
           </h2>
           <div className="grid sm:grid-cols-2 gap-x-8 gap-y-8">

@@ -11,7 +11,7 @@ export default function ArticleCard({ article, issue }) {
         Research Article
         {issue && <span className="text-slate-400 font-normal normal-case tracking-normal"> — Issue {issue.number}</span>}
       </p>
-      <h3 className="text-lg font-semibold text-royal-blue leading-snug mb-1.5 font-serif-display">
+      <h3 className="text-lg font-semibold text-royal-blue leading-snug mb-1.5 font-display">
         <Link to={`/articles/${article.slug}`} className="group-hover:text-ocean-blue">
           {article.title}
         </Link>

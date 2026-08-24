@@ -61,7 +61,7 @@ export default function Header() {
               className="h-11 w-11 sm:h-12 sm:w-12 object-contain shrink-0"
             />
             <span className="min-w-0 border-l border-white/20 pl-4">
-              <span className="block font-serif-display text-white text-xl sm:text-2xl leading-tight tracking-wide truncate">
+              <span className="block font-display text-white text-xl sm:text-2xl leading-tight tracking-wide truncate">
                 The Gulf Spectrum
               </span>
               <span className="block text-soft-gold text-[10px] sm:text-[11px] uppercase tracking-[0.18em]">

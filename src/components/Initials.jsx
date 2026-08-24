@@ -17,7 +17,7 @@ const sizes = {
 export default function Initials({ name, size = 'md', className = '' }) {
   return (
     <div
-      className={`${sizes[size]} bg-royal-blue text-gold font-serif-display flex items-center justify-center shrink-0 ${className}`}
+      className={`${sizes[size]} bg-royal-blue text-gold font-display flex items-center justify-center shrink-0 ${className}`}
       aria-hidden="true"
     >
       {getInitials(name)}

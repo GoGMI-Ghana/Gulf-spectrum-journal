@@ -22,10 +22,10 @@ export default function Home() {
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-14 sm:py-20 grid grid-cols-1 md:grid-cols-[1fr_auto] gap-10 md:gap-16 items-center">
           <div className="max-w-2xl">
             <p className="kicker text-gold mb-5">Gulf of Guinea Maritime Institute</p>
-            <h1 className="font-serif-display text-white text-4xl sm:text-5xl leading-[1.1] mb-4">
+            <h1 className="font-display text-white text-4xl sm:text-5xl leading-[1.1] mb-4">
               The Gulf Spectrum
             </h1>
-            <p className="text-soft-gold text-lg sm:text-xl mb-6 font-serif-display italic">{journal.subtitle}</p>
+            <p className="text-soft-gold text-lg sm:text-xl mb-6 font-display">{journal.subtitle}</p>
             <p className="text-white/75 text-base leading-relaxed mb-9">
               Locally produced, editorially reviewed research on maritime governance,
               safety, and security in the Gulf of Guinea — written by the naval officers,
@@ -61,7 +61,7 @@ export default function Home() {
         <div className="grid grid-cols-1 lg:grid-cols-3 gap-10">
           <div className="lg:col-span-2">
             <div className="flex items-end justify-between mb-6 border-b-2 border-royal-blue pb-3">
-              <h2 className="text-2xl font-bold text-royal-blue font-serif-display">
+              <h2 className="text-2xl font-bold text-royal-blue font-display">
                 Issue {latestIssue.number}: {latestIssue.theme}
               </h2>
               <Link to={`/issues/${latestIssue.slug}`} className="text-ocean-blue text-sm font-medium hover:underline whitespace-nowrap ml-4">
@@ -119,7 +119,7 @@ export default function Home() {
       <section className="bg-slate-50">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-14">
           <div className="flex items-end justify-between mb-6 border-b-2 border-royal-blue pb-3">
-            <h2 className="text-2xl font-bold text-royal-blue font-serif-display">Browse All Issues</h2>
+            <h2 className="text-2xl font-bold text-royal-blue font-display">Browse All Issues</h2>
             <Link to="/issues" className="text-ocean-blue text-sm font-medium hover:underline">
               View all →
             </Link>
@@ -136,7 +136,7 @@ export default function Home() {
                   <p className="kicker text-ocean-blue mb-1.5">
                     Vol. {issue.volume} · {issue.publishedDate}
                   </p>
-                  <h3 className="font-semibold text-royal-blue mb-1.5 font-serif-display">{issue.theme}</h3>
+                  <h3 className="font-semibold text-royal-blue mb-1.5 font-display">{issue.theme}</h3>
                   <p className="text-sm text-slate-500 line-clamp-3">{issue.aboutThisVolume}</p>
                 </div>
               </Link>

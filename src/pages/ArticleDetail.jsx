@@ -90,7 +90,7 @@ export default function ArticleDetail() {
       </nav>
 
       <p className="kicker text-ocean-blue mb-3">Research Article</p>
-      <h1 className="font-serif-display text-royal-blue text-2xl sm:text-3xl lg:text-4xl leading-tight mb-6">
+      <h1 className="font-display text-royal-blue text-2xl sm:text-3xl lg:text-4xl leading-tight mb-6">
         {article.title}
       </h1>
 
@@ -134,13 +134,13 @@ export default function ArticleDetail() {
       <div className="prose max-w-none">
         {article.sections.map((section) => (
           <div key={section.heading} className="mb-8">
-            <h2 className="text-xl font-bold text-royal-blue font-serif-display mb-3">{section.heading}</h2>
+            <h2 className="text-xl font-bold text-royal-blue font-display mb-3">{section.heading}</h2>
             <p className="text-slate-700 leading-relaxed whitespace-pre-line">{section.body}</p>
           </div>
         ))}
 
         <div className="mb-8">
-          <h2 className="text-xl font-bold text-royal-blue font-serif-display mb-3">Conclusion</h2>
+          <h2 className="text-xl font-bold text-royal-blue font-display mb-3">Conclusion</h2>
           <p className="text-slate-700 leading-relaxed whitespace-pre-line">{article.conclusion}</p>
         </div>
       </div>

@@ -1,6 +1,6 @@
 @import "tailwindcss";
 
-@import url('https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700;800&family=Inter:wght@300;400;500;600;700&family=Montserrat:wght@300;400;500;600;700&family=Playfair+Display:wght@500;600;700;800&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700;800&family=Inter:wght@300;400;500;600;700&family=Montserrat:wght@300;400;500;600;700&display=swap');
 
 /* Shared with the main GoGMI site palette, so the journal reads as
    connected to GoGMI while keeping its own masthead identity. */
@@ -14,7 +14,6 @@
   --font-family-poppins: 'Poppins', sans-serif;
   --font-family-inter: 'Inter', sans-serif;
   --font-family-montserrat: 'Montserrat', sans-serif;
-  --font-family-serif: 'Playfair Display', serif;
 }
 
 body {
@@ -37,8 +36,8 @@ html {
   color: #12202e;
 }
 
-.font-serif-display {
-  font-family: var(--font-family-serif);
+.font-display {
+  font-family: var(--font-family-poppins);
 }
 
 /* Editorial primitives — rules and small caps instead of icon badges,

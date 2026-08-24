@@ -26,7 +26,7 @@ export default function IssueDetail() {
             <p className="kicker text-gold mb-2">
               Volume {issue.volume} · {issue.publishedDate}
             </p>
-            <h1 className="font-serif-display text-white text-3xl sm:text-4xl mb-4">{issue.theme}</h1>
+            <h1 className="font-display text-white text-3xl sm:text-4xl mb-4">{issue.theme}</h1>
             <p className="text-white/75 max-w-3xl leading-relaxed">{issue.aboutThisVolume}</p>
           </div>
         </div>
@@ -35,7 +35,7 @@ export default function IssueDetail() {
 
       <section className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-14 grid grid-cols-1 lg:grid-cols-3 gap-10">
         <div className="lg:col-span-2">
-          <h2 className="text-xl font-bold text-royal-blue font-serif-display mb-4 pb-2 border-b-2 border-royal-blue">
+          <h2 className="text-xl font-bold text-royal-blue font-display mb-4 pb-2 border-b-2 border-royal-blue">
             In This Issue
           </h2>
           <div>

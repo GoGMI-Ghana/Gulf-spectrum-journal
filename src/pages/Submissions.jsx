@@ -20,7 +20,7 @@ const workflow = [
 
 function SectionHeading({ children }) {
   return (
-    <h2 className="text-xl font-bold text-royal-blue font-serif-display mb-4 pb-2 border-b-2 border-royal-blue">
+    <h2 className="text-xl font-bold text-royal-blue font-display mb-4 pb-2 border-b-2 border-royal-blue">
       {children}
     </h2>
   )

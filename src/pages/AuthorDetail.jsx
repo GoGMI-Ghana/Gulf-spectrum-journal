@@ -20,7 +20,7 @@ export default function AuthorDetail() {
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-10 sm:py-14 flex items-center gap-6">
           <Initials name={author.name} size="lg" />
           <div>
-            <h1 className="font-serif-display text-white text-2xl sm:text-3xl mb-1">{author.name}</h1>
+            <h1 className="font-display text-white text-2xl sm:text-3xl mb-1">{author.name}</h1>
             <p className="text-gold text-sm">{author.credentials}</p>
             <p className="text-white/70 text-sm">{author.affiliation}</p>
           </div>
@@ -30,7 +30,7 @@ export default function AuthorDetail() {
 
       <section className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-14 grid grid-cols-1 lg:grid-cols-3 gap-10">
         <div className="lg:col-span-2">
-          <h2 className="text-lg font-bold text-royal-blue font-serif-display mb-4 pb-2 border-b-2 border-royal-blue">
+          <h2 className="text-lg font-bold text-royal-blue font-display mb-4 pb-2 border-b-2 border-royal-blue">
             Articles
           </h2>
           <div>

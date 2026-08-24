@@ -21,7 +21,7 @@ export default function Issues() {
       <section className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-14">
         {years.map((year) => (
           <div key={year} className="mb-12">
-            <h2 className="text-lg font-bold text-royal-blue font-serif-display border-b-2 border-royal-blue pb-2 mb-6">{year}</h2>
+            <h2 className="text-lg font-bold text-royal-blue font-display border-b-2 border-royal-blue pb-2 mb-6">{year}</h2>
             <div className="grid grid-cols-1 sm:grid-cols-2 gap-px bg-slate-200">
               {byYear[year].map((issue) => {
                 const articleCount = getArticlesForIssue(issue.slug).length
@@ -36,7 +36,7 @@ export default function Issues() {
                       <p className="kicker text-ocean-blue mb-1.5">
                         Vol. {issue.volume} · {issue.publishedDate}
                       </p>
-                      <h3 className="font-semibold text-royal-blue mb-1.5 font-serif-display">{issue.theme}</h3>
+                      <h3 className="font-semibold text-royal-blue mb-1.5 font-display">{issue.theme}</h3>
                       <p className="text-sm text-slate-500">{articleCount} articles</p>
                     </div>
                   </Link>

@@ -8,7 +8,7 @@ export default function Footer() {
         <div className="md:col-span-2">
           <div className="flex items-center gap-3 mb-4">
             <img src="/gogmi-logo.png" alt="GoGMI" className="h-9 w-9 object-contain" />
-            <span className="font-serif-display text-white text-lg">The Gulf Spectrum</span>
+            <span className="font-display text-white text-lg">The Gulf Spectrum</span>
           </div>
           <p className="text-sm leading-relaxed max-w-md">
             {journal.subtitle}, published by the Gulf of Guinea Maritime Institute
