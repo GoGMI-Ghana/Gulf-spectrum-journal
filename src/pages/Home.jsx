@@ -51,7 +51,6 @@ export default function Home() {
             <IssueCover issue={latestIssue} className="w-full shadow-2xl shadow-black/40 group-hover:opacity-90 transition-opacity" />
           </Link>
         </div>
-        <div className="double-rule" />
       </section>
 
       <JournalSubNav />

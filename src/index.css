@@ -50,23 +50,6 @@ html {
   text-transform: uppercase;
 }
 
-.rule-thick {
-  height: 3px;
-  background: var(--color-gold);
-}
-
-.rule-thin {
-  height: 1px;
-  background: currentColor;
-  opacity: 0.25;
-}
-
-.double-rule {
-  border-top: 3px solid var(--color-gold);
-  border-bottom: 1px solid var(--color-gold);
-  padding-top: 3px;
-}
-
 .numeral {
   font-family: var(--font-family-inter);
   font-variant-numeric: tabular-nums;

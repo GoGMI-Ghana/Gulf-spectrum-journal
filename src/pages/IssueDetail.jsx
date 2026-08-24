@@ -30,7 +30,6 @@ export default function IssueDetail() {
             <p className="text-white/75 max-w-3xl leading-relaxed">{issue.aboutThisVolume}</p>
           </div>
         </div>
-        <div className="double-rule" />
       </section>
 
       <section className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-14 grid grid-cols-1 lg:grid-cols-3 gap-10">

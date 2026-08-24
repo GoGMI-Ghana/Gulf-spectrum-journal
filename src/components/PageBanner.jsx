@@ -6,7 +6,6 @@ export default function PageBanner({ eyebrow, title, description }) {
         <h1 className="font-display text-white text-3xl sm:text-4xl">{title}</h1>
         {description && <p className="text-white/70 mt-3 max-w-2xl leading-relaxed">{description}</p>}
       </div>
-      <div className="double-rule" />
     </section>
   )
 }
