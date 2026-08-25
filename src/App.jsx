@@ -13,6 +13,8 @@ import AuthorDetail from './pages/AuthorDetail'
 import Submissions from './pages/Submissions'
 import Contact from './pages/Contact'
 import Search from './pages/Search'
+import Membership from './pages/Membership'
+import Bookmarks from './pages/Bookmarks'
 import NotFound from './pages/NotFound'
 
 export default function App() {
@@ -33,6 +35,8 @@ export default function App() {
           <Route path="/submissions" element={<Submissions />} />
           <Route path="/contact" element={<Contact />} />
           <Route path="/search" element={<Search />} />
+          <Route path="/membership" element={<Membership />} />
+          <Route path="/bookmarks" element={<Bookmarks />} />
           <Route path="*" element={<NotFound />} />
         </Routes>
       </main>

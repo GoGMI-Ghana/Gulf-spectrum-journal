@@ -1,8 +1,56 @@
 import { useState } from 'react'
 import { Link, useParams, Navigate } from 'react-router-dom'
-import { getArticleBySlug, getAuthorsForArticle, getIssueForArticle, getTopicForArticle, donationSplit } from '../data/content'
+import { getArticleBySlug, getAuthorsForArticle, getIssueForArticle, getTopicForArticle, donationSplit, journal } from '../data/content'
 import { usePageMeta } from '../hooks/usePageMeta'
 import Initials from '../components/Initials'
+import BookmarkButton from '../components/BookmarkButton'
+import { Copy, Check } from 'lucide-react'
+
+const TITLE_PREFIX = /^(?:(?:Dr|Prof|Capt|Cdr|Lt|Sub-Lt)\.\s+|Rear Admiral \(Rtd\)\s+)+/
+
+function citationName(name) {
+  const cleaned = name.replace(TITLE_PREFIX, '')
+  const parts = cleaned.split(' ').filter(Boolean)
+  if (parts.length < 2) return cleaned
+  const surname = parts[parts.length - 1]
+  const initials = parts.slice(0, -1).map((p) => `${p[0].toUpperCase()}.`).join(' ')
+  return `${surname}, ${initials}`
+}
+
+function formatApaCitation(article, authors, issue) {
+  const names = authors.map((a) => citationName(a.name))
+  const authorStr =
+    names.length > 1 ? `${names.slice(0, -1).join(', ')}, & ${names[names.length - 1]}` : names[0] ?? ''
+  const year = issue?.year ?? ''
+  const vol = issue?.volume ?? ''
+  const num = issue?.number ?? ''
+  return `${authorStr} (${year}). ${article.title}. ${journal.name}, ${vol}(${num}).`
+}
+
+function CiteBox({ article, authors, issue }) {
+  const [copied, setCopied] = useState(false)
+  const citation = formatApaCitation(article, authors, issue)
+
+  function handleCopy() {
+    navigator.clipboard?.writeText(citation)
+    setCopied(true)
+    setTimeout(() => setCopied(false), 2000)
+  }
+
+  return (
+    <div className="border-l-4 border-royal-blue bg-slate-50 p-6 mb-8">
+      <h2 className="kicker text-royal-blue mb-3">Cite This Article</h2>
+      <p className="text-sm text-slate-700 leading-relaxed mb-3 font-mono">{citation}</p>
+      <button
+        onClick={handleCopy}
+        className="inline-flex items-center gap-1.5 text-sm font-medium text-ocean-blue hover:underline"
+      >
+        {copied ? <Check size={15} /> : <Copy size={15} />}
+        {copied ? 'Copied' : 'Copy citation'}
+      </button>
+    </div>
+  )
+}
 
 // Minimal generic glyphs for social share targets (lucide-react no longer ships brand icons).
 function XGlyph(props) {
@@ -165,16 +213,19 @@ export default function ArticleDetail() {
         <span className="text-slate-700">Article</span>
       </nav>
 
-      <div className="flex flex-wrap items-center gap-x-2 gap-y-1 mb-3">
-        <p className="kicker text-ocean-blue">Research Article</p>
-        {topic && (
-          <Link
-            to={`/topics/${topic.slug}`}
-            className="kicker text-royal-blue bg-soft-gold px-2 py-0.5 hover:bg-gold hover:text-ink transition-colors"
-          >
-            {topic.label}
-          </Link>
-        )}
+      <div className="flex flex-wrap items-center justify-between gap-3 mb-3">
+        <div className="flex flex-wrap items-center gap-x-2 gap-y-1">
+          <p className="kicker text-ocean-blue">Research Article</p>
+          {topic && (
+            <Link
+              to={`/topics/${topic.slug}`}
+              className="kicker text-royal-blue bg-soft-gold px-2 py-0.5 hover:bg-gold hover:text-ink transition-colors"
+            >
+              {topic.label}
+            </Link>
+          )}
+        </div>
+        <BookmarkButton slug={article.slug} showLabel />
       </div>
       <h1 className="font-display text-royal-blue text-2xl sm:text-3xl lg:text-4xl leading-tight mb-6">
         {article.title}
@@ -216,6 +267,7 @@ export default function ArticleDetail() {
         ))}
       </div>
 
+      <CiteBox article={article} authors={authors} issue={issue} />
       <SupportBox authors={authors} />
 
       {/* Body */}

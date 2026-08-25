@@ -37,8 +37,10 @@ export default function Footer() {
         </div>
 
         <div>
-          <h3 className="kicker text-white mb-4">Contact</h3>
+          <h3 className="kicker text-white mb-4">More</h3>
           <ul className="space-y-2.5 text-sm">
+            <li><Link to="/membership" className="hover:text-gold">GoGMI Membership</Link></li>
+            <li><Link to="/bookmarks" className="hover:text-gold">Bookmarks</Link></li>
             <li>
               <Link to="/contact" className="hover:text-gold">Contact the editorial office</Link>
             </li>

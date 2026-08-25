@@ -1,7 +1,9 @@
 import { useState } from 'react'
 import { Link, NavLink } from 'react-router-dom'
-import { Menu, X } from 'lucide-react'
+import { Menu, X, Bookmark, Upload } from 'lucide-react'
 import { journal } from '../data/content'
+import { useBookmarks } from '../context/BookmarksContext'
+import AccountMenu from './AccountMenu'
 
 const navLinks = [
   { to: '/', label: 'Home', end: true },
@@ -10,6 +12,7 @@ const navLinks = [
   { to: '/about', label: 'About the Journal' },
   { to: '/authors', label: 'Authors' },
   { to: '/submissions', label: 'Submission Guidelines' },
+  { to: '/membership', label: 'Membership' },
   { to: '/contact', label: 'Contact' },
 ]
 
@@ -32,6 +35,7 @@ function NavItem({ to, label, end, onClick }) {
 
 export default function Header() {
   const [open, setOpen] = useState(false)
+  const { bookmarks } = useBookmarks()
 
   return (
     <header className="sticky top-0 z-50">
@@ -71,15 +75,34 @@ export default function Header() {
             </span>
           </Link>
 
-          <div className="hidden md:flex items-center gap-6">
-            <Link to="/issues" className="text-white/80 hover:text-gold text-sm tracking-wide">
-              Articles and Issues
-            </Link>
+          <div className="hidden md:flex items-center gap-5">
             <Link
               to="/submissions"
-              className="border border-gold text-gold hover:bg-gold hover:text-royal-blue font-medium text-sm px-5 py-2 transition-colors tracking-wide"
+              className="flex items-center gap-1.5 text-white/85 hover:text-gold text-sm transition-colors"
+              aria-label="Upload an article"
+              title="Upload an article"
             >
-              Submit an Article
+              <Upload size={18} />
+            </Link>
+            <Link
+              to="/bookmarks"
+              className="relative flex items-center text-white/85 hover:text-gold text-sm transition-colors"
+              aria-label="Bookmarks"
+              title="Bookmarks"
+            >
+              <Bookmark size={18} />
+              {bookmarks.length > 0 && (
+                <span className="absolute -top-2 -right-2 bg-gold text-ink text-[10px] font-bold w-4 h-4 flex items-center justify-center">
+                  {bookmarks.length}
+                </span>
+              )}
+            </Link>
+            <AccountMenu />
+            <Link
+              to="/membership"
+              className="bg-gold hover:bg-soft-gold text-ink font-semibold text-sm px-5 py-2 transition-colors tracking-wide"
+            >
+              Membership
             </Link>
           </div>
 
@@ -109,6 +132,13 @@ export default function Header() {
             {navLinks.map((l) => (
               <NavItem key={l.to} {...l} onClick={() => setOpen(false)} />
             ))}
+            <Link
+              to="/bookmarks"
+              onClick={() => setOpen(false)}
+              className="text-white/85 text-sm"
+            >
+              Bookmarks {bookmarks.length > 0 && `(${bookmarks.length})`}
+            </Link>
             <Link
               to="/submissions"
               onClick={() => setOpen(false)}
