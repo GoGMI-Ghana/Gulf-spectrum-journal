@@ -1,8 +1,7 @@
 import { useState } from 'react'
 import { Link, NavLink } from 'react-router-dom'
-import { Menu, X, Bookmark, Upload } from 'lucide-react'
+import { Menu, X, Home, Quote, BarChart3, Upload, Grid3x3 } from 'lucide-react'
 import { journal } from '../data/content'
-import { useBookmarks } from '../context/BookmarksContext'
 import AccountMenu from './AccountMenu'
 
 const navLinks = [
@@ -12,8 +11,15 @@ const navLinks = [
   { to: '/about', label: 'About the Journal' },
   { to: '/authors', label: 'Authors' },
   { to: '/submissions', label: 'Submission Guidelines' },
-  { to: '/membership', label: 'Membership' },
   { to: '/contact', label: 'Contact' },
+]
+
+const iconNav = [
+  { to: '/', label: 'Home', icon: Home, end: true },
+  { to: '/citations', label: 'Citations', icon: Quote },
+  { to: '/analytics', label: 'Analytics', icon: BarChart3 },
+  { to: '/submissions', label: 'Upload', icon: Upload },
+  { to: '/tools', label: 'Tools', icon: Grid3x3 },
 ]
 
 function NavItem({ to, label, end, onClick }) {
@@ -33,9 +39,25 @@ function NavItem({ to, label, end, onClick }) {
   )
 }
 
+function IconNavItem({ to, label, icon: Icon, end }) {
+  return (
+    <NavLink
+      to={to}
+      end={end}
+      className={({ isActive }) =>
+        `flex flex-col items-center gap-0.5 px-2 py-1 transition-colors ${
+          isActive ? 'text-gold' : 'text-white/80 hover:text-gold'
+        }`
+      }
+    >
+      <Icon size={18} />
+      <span className="text-[10px] font-medium tracking-wide">{label}</span>
+    </NavLink>
+  )
+}
+
 export default function Header() {
   const [open, setOpen] = useState(false)
-  const { bookmarks } = useBookmarks()
 
   return (
     <header className="sticky top-0 z-50">
@@ -58,7 +80,7 @@ export default function Header() {
 
       {/* Masthead */}
       <div className="bg-royal-blue">
-        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-5 flex items-center justify-between gap-4">
+        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-4 flex items-center justify-between gap-4">
           <Link to="/" className="flex items-center gap-4 min-w-0">
             <img
               src="/gogmi-logo.png"
@@ -75,35 +97,20 @@ export default function Header() {
             </span>
           </Link>
 
-          <div className="hidden md:flex items-center gap-5">
-            <Link
-              to="/submissions"
-              className="flex items-center gap-1.5 text-white/85 hover:text-gold text-sm transition-colors"
-              aria-label="Upload an article"
-              title="Upload an article"
-            >
-              <Upload size={18} />
-            </Link>
-            <Link
-              to="/bookmarks"
-              className="relative flex items-center text-white/85 hover:text-gold text-sm transition-colors"
-              aria-label="Bookmarks"
-              title="Bookmarks"
-            >
-              <Bookmark size={18} />
-              {bookmarks.length > 0 && (
-                <span className="absolute -top-2 -right-2 bg-gold text-ink text-[10px] font-bold w-4 h-4 flex items-center justify-center">
-                  {bookmarks.length}
-                </span>
-              )}
-            </Link>
-            <AccountMenu />
+          <div className="hidden md:flex items-center gap-1">
+            {iconNav.map((item) => (
+              <IconNavItem key={item.to} {...item} />
+            ))}
+          </div>
+
+          <div className="hidden md:flex items-center gap-4 border-l border-white/20 pl-4">
             <Link
               to="/membership"
-              className="bg-gold hover:bg-soft-gold text-ink font-semibold text-sm px-5 py-2 transition-colors tracking-wide"
+              className="bg-gold hover:bg-soft-gold text-ink font-semibold text-sm px-5 py-2 transition-colors tracking-wide whitespace-nowrap"
             >
-              Membership
+              Try Premium
             </Link>
+            <AccountMenu />
           </div>
 
           <button
@@ -132,19 +139,17 @@ export default function Header() {
             {navLinks.map((l) => (
               <NavItem key={l.to} {...l} onClick={() => setOpen(false)} />
             ))}
+            {iconNav
+              .filter((i) => i.to !== '/')
+              .map((item) => (
+                <NavItem key={item.to} to={item.to} label={item.label} onClick={() => setOpen(false)} />
+              ))}
             <Link
-              to="/bookmarks"
-              onClick={() => setOpen(false)}
-              className="text-white/85 text-sm"
-            >
-              Bookmarks {bookmarks.length > 0 && `(${bookmarks.length})`}
-            </Link>
-            <Link
-              to="/submissions"
+              to="/membership"
               onClick={() => setOpen(false)}
               className="border border-gold text-gold text-sm px-4 py-2 text-center mt-1"
             >
-              Submit an Article
+              Try Premium
             </Link>
           </div>
         </nav>

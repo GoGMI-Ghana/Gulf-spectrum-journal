@@ -1,31 +1,11 @@
 import { useState } from 'react'
 import { Link, useParams, Navigate } from 'react-router-dom'
-import { getArticleBySlug, getAuthorsForArticle, getIssueForArticle, getTopicForArticle, donationSplit, journal } from '../data/content'
+import { getArticleBySlug, getAuthorsForArticle, getIssueForArticle, getTopicForArticle, donationSplit } from '../data/content'
 import { usePageMeta } from '../hooks/usePageMeta'
 import Initials from '../components/Initials'
 import BookmarkButton from '../components/BookmarkButton'
+import { formatApaCitation } from '../utils/citation'
 import { Copy, Check } from 'lucide-react'
-
-const TITLE_PREFIX = /^(?:(?:Dr|Prof|Capt|Cdr|Lt|Sub-Lt)\.\s+|Rear Admiral \(Rtd\)\s+)+/
-
-function citationName(name) {
-  const cleaned = name.replace(TITLE_PREFIX, '')
-  const parts = cleaned.split(' ').filter(Boolean)
-  if (parts.length < 2) return cleaned
-  const surname = parts[parts.length - 1]
-  const initials = parts.slice(0, -1).map((p) => `${p[0].toUpperCase()}.`).join(' ')
-  return `${surname}, ${initials}`
-}
-
-function formatApaCitation(article, authors, issue) {
-  const names = authors.map((a) => citationName(a.name))
-  const authorStr =
-    names.length > 1 ? `${names.slice(0, -1).join(', ')}, & ${names[names.length - 1]}` : names[0] ?? ''
-  const year = issue?.year ?? ''
-  const vol = issue?.volume ?? ''
-  const num = issue?.number ?? ''
-  return `${authorStr} (${year}). ${article.title}. ${journal.name}, ${vol}(${num}).`
-}
 
 function CiteBox({ article, authors, issue }) {
   const [copied, setCopied] = useState(false)

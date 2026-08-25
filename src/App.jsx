@@ -15,6 +15,10 @@ import Contact from './pages/Contact'
 import Search from './pages/Search'
 import Membership from './pages/Membership'
 import Bookmarks from './pages/Bookmarks'
+import Citations from './pages/Citations'
+import AnalyticsPage from './pages/Analytics'
+import Tools from './pages/Tools'
+import Dashboard from './pages/Dashboard'
 import NotFound from './pages/NotFound'
 
 export default function App() {
@@ -37,6 +41,10 @@ export default function App() {
           <Route path="/search" element={<Search />} />
           <Route path="/membership" element={<Membership />} />
           <Route path="/bookmarks" element={<Bookmarks />} />
+          <Route path="/citations" element={<Citations />} />
+          <Route path="/analytics" element={<AnalyticsPage />} />
+          <Route path="/tools" element={<Tools />} />
+          <Route path="/dashboard" element={<Dashboard />} />
           <Route path="*" element={<NotFound />} />
         </Routes>
       </main>

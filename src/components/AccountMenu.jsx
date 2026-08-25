@@ -1,4 +1,5 @@
 import { useState, useRef, useEffect } from 'react'
+import { Link } from 'react-router-dom'
 import { UserCircle } from 'lucide-react'
 
 export default function AccountMenu() {
@@ -38,6 +39,13 @@ export default function AccountMenu() {
             </p>
           ) : (
             <div className="py-2">
+              <Link
+                to="/dashboard"
+                onClick={() => setOpen(false)}
+                className="block px-4 py-2.5 text-sm hover:bg-soft-gold/50"
+              >
+                Dashboard
+              </Link>
               <button
                 onClick={() => setNotice(true)}
                 className="w-full text-left px-4 py-2.5 text-sm hover:bg-soft-gold/50"
