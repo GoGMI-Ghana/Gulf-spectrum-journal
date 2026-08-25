@@ -26,7 +26,8 @@ export const metadata: Metadata = {
   },
   description:
     'Gulf Spectrum Journal is the research journal of the Gulf of Guinea Maritime Institute (GoGMI), publishing locally produced, editorially reviewed research on maritime security and governance in the Gulf of Guinea.',
-  icons: { icon: '/favicon.svg' },
+  // Favicon comes from app/icon.png (Next.js file-convention icon) — the
+  // real GoGMI logo, no manual `icons` entry needed.
 }
 
 export default function RootLayout({ children }: { children: React.ReactNode }) {
