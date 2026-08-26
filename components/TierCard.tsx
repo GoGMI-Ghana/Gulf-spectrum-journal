@@ -1,10 +1,7 @@
-'use client'
-
-import { useState } from 'react'
+import Link from 'next/link'
 import type { MembershipTier } from '@/lib/types'
 
 export default function TierCard({ tier }: { tier: MembershipTier }) {
-  const [joined, setJoined] = useState(false)
   const invitationOnly = tier.price === 'By Invitation Only'
 
   return (
@@ -23,24 +20,16 @@ export default function TierCard({ tier }: { tier: MembershipTier }) {
         ))}
       </ul>
 
-      {joined ? (
-        <p className="text-sm text-royal-blue bg-soft-gold/60 border-l-4 border-gold p-3">
-          Thank you — this is a design prototype, so no application was submitted and no
-          payment was processed. Real enrollment and payment processing is a follow-up
-          integration for GoGMI to configure.
-        </p>
-      ) : (
-        <button
-          onClick={() => setJoined(true)}
-          className={`text-sm font-semibold px-4 py-2.5 transition-colors tracking-wide ${
-            invitationOnly
-              ? 'border border-royal-blue text-royal-blue hover:bg-royal-blue hover:text-white'
-              : 'bg-gold hover:bg-soft-gold hover:text-royal-blue text-ink'
-          }`}
-        >
-          {invitationOnly ? 'Request an Invitation' : 'Join This Tier'}
-        </button>
-      )}
+      <Link
+        href={`/membership/${tier.slug}`}
+        className={`text-center text-sm font-semibold px-4 py-2.5 transition-colors tracking-wide ${
+          invitationOnly
+            ? 'border border-royal-blue text-royal-blue hover:bg-royal-blue hover:text-white'
+            : 'bg-gold hover:bg-soft-gold hover:text-royal-blue text-ink'
+        }`}
+      >
+        {invitationOnly ? 'Request an Invitation' : 'Join This Tier'}
+      </Link>
     </div>
   )
 }
