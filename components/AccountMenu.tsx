@@ -6,6 +6,7 @@ import { useRouter } from 'next/navigation'
 import {
   UserCircle,
   User,
+  UserPlus,
   Mail,
   Bell,
   Settings,
@@ -184,7 +185,10 @@ export default function AccountMenu() {
             {user ? (
               <MenuButton icon={LogOut} label="Sign Out" onClick={handleSignOut} />
             ) : (
-              <MenuLink href="/sign-in" icon={LogIn} label="Sign In" onNavigate={close} />
+              <>
+                <MenuLink href="/sign-in" icon={LogIn} label="Sign In" onNavigate={close} />
+                <MenuLink href="/sign-up" icon={UserPlus} label="Sign Up" onNavigate={close} />
+              </>
             )}
           </div>
 

@@ -1,9 +1,11 @@
 'use client'
 
 import Link from 'next/link'
-import { Mail, Bell, Bookmark, UserCircle } from 'lucide-react'
+import { usePathname, useRouter } from 'next/navigation'
+import { Mail, Bell, Bookmark, UserCircle, LogOut } from 'lucide-react'
 import type { ComponentType } from 'react'
 import { useBookmarks } from '@/context/BookmarksContext'
+import { createClient } from '@/lib/supabase/client'
 import Initials from './Initials'
 
 function SidebarLink({
@@ -28,8 +30,16 @@ function SidebarLink({
 
 export default function DashboardSidebar() {
   const { user, bookmarks } = useBookmarks()
+  const router = useRouter()
+  const pathname = usePathname()
   const displayName = user?.fullName || user?.email || 'Guest Researcher'
   const subtitle = user ? (user.fullName ? user.email : 'Signed in') : 'Not signed in'
+
+  async function handleSignOut() {
+    const supabase = createClient()
+    await supabase.auth.signOut()
+    router.push('/')
+  }
 
   return (
     <aside className="space-y-1">
@@ -37,11 +47,29 @@ export default function DashboardSidebar() {
         <Initials name={displayName} size="lg" className="mx-auto mb-3" />
         <p className="font-semibold text-royal-blue">{displayName}</p>
         <p className="text-xs text-slate-500 mb-4">{subtitle}</p>
-        <div className="flex justify-center gap-4 text-xs text-slate-500 border-y border-slate-100 py-3">
+        <div className="flex justify-center gap-4 text-xs text-slate-500 border-y border-slate-100 py-3 mb-4">
           <span><strong className="text-royal-blue">0</strong> Followers</span>
           <span><strong className="text-royal-blue">0</strong> Following</span>
           <span><strong className="text-royal-blue">0</strong> Suggested</span>
         </div>
+        {user ? (
+          <button
+            onClick={handleSignOut}
+            className="inline-flex items-center gap-1.5 text-sm text-slate-500 hover:text-royal-blue transition-colors"
+          >
+            <LogOut size={14} /> Sign Out
+          </button>
+        ) : (
+          <div className="flex items-center justify-center gap-3 text-sm">
+            <Link href={`/sign-in?redirect=${encodeURIComponent(pathname)}`} className="text-ocean-blue hover:underline font-medium">
+              Sign In
+            </Link>
+            <span className="text-slate-300">·</span>
+            <Link href="/sign-up" className="text-ocean-blue hover:underline font-medium">
+              Sign Up
+            </Link>
+          </div>
+        )}
       </div>
 
       <SidebarLink href="/contact" icon={Mail} label="Messages" trailing={0} />
