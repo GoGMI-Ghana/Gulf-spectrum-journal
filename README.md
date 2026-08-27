@@ -2,7 +2,7 @@
 
 The research journal of the Gulf of Guinea Maritime Institute (GoGMI). Built with Next.js (App Router), TypeScript, and Tailwind CSS v4.
 
-Backend (Supabase schema, seed data, edge functions) lives in a companion repo: [gulf-spectrum-backend](https://github.com/GoGMI-Ghana/gulf-spectrum-backend).
+Backend (Supabase schema, seed data, edge functions, and the self-hosted deployment scripts) lives in a companion repo: [gulf-spectrum-backend](https://github.com/GoGMI-Ghana/gulf-spectrum-backend). This app queries a live instance of it, self-hosted on GoGMI's own VPS at `api.gulfspectrumjournal.com` — not Supabase Cloud.
 
 ## Stack and why
 
@@ -24,18 +24,34 @@ components/           Shared UI. Most are plain Server Components; anything
 context/              BookmarksContext — client-only, localStorage-backed
                        reading list. Real accounts (see below) would replace
                        this with a `bookmarks` table.
-lib/content.ts         All journal content (issues, articles, authors,
-                       topics, membership tiers) and the query functions
-                       that read it. Every query function is `async`, even
-                       though today it just reads the arrays in this file —
-                       that's deliberate, so swapping this file for real
-                       Supabase queries never requires touching a page.
+lib/content.ts         Query functions for database-backed content
+                       (issues, articles, authors, topics) — real Supabase
+                       queries against the self-hosted instance, not
+                       static arrays. Every function is `async`, which is
+                       why pages under app/ don't need to know or care
+                       that this changed from in-memory arrays.
+lib/staticContent.ts   journal, membershipTiers, donationSplit — content
+                       that isn't in the database (organizational/config,
+                       not editorial). Deliberately separate from
+                       lib/content.ts: that file imports server-only code
+                       (see below), which would break any 'use client'
+                       component that imports anything from it, even a
+                       plain static value.
 lib/types.ts            TypeScript interfaces for the content model.
-lib/supabase/          Browser/server Supabase clients. Inert until the env
-                       vars below are set — nothing calls them yet.
+lib/supabase/          Three Supabase clients, each for a different
+                       context: client.ts (browser, 'use client'
+                       components), server.ts (cookie-aware, for
+                       session/auth-dependent Server Component reads —
+                       not used yet, since nothing here is auth-gated),
+                       and staticClient.ts (plain, no cookies — what
+                       lib/content.ts actually uses, since its queries are
+                       the same for every visitor and some of them run at
+                       build time via generateStaticParams, where there's
+                       no request/cookie context to read at all).
 proxy.ts               Refreshes the Supabase auth session cookie on every
                        request (Next 16 renamed "middleware" to "proxy").
-                       No-ops until Supabase env vars are set.
+                       Ready for when real accounts are wired up; a no-op
+                       until then since nothing sets that cookie yet.
 ```
 
 The Postgres schema itself (migrations, seed data, RLS policies, the
@@ -55,16 +71,13 @@ npm run lint
 
 ## What's real vs. placeholder
 
-This is a content-and-design prototype — no backend is connected yet.
+- **Real:** every article, author, issue, and topic — queried live from Postgres (self-hosted Supabase on GoGMI's VPS, see `gulf-spectrum-backend`), not static arrays. Citations (generated from that real author/issue data), search, topic and issue browsing, bookmarks (persisted to `localStorage` in your browser — not yet a `bookmarks` table row, since there's no real auth session to key it to), the Analytics dashboard's stat totals and CSV export (the per-article view/download *numbers* themselves are placeholder — see below).
+- **Placeholder, clearly labeled in the UI:** Analytics view/download counts (deterministic per-article, not real tracking — the schema's `article_events` table and `article_stats` view exist for this, just not wired up to log real events yet), the donation flow on article pages (no payment provider connected — shows a "no payment was processed" message on submit), Membership "Join" forms (same pattern, and deliberately collect only name/email — see the note in `gulf-spectrum-backend`'s README on why no card-entry form was built), and the Sign In / Create Account menu (explicitly says accounts aren't wired up).
 
-- **Real:** every article's data, citations (generated from real author/issue data), search (matches title/abstract/keywords/authors), topic and issue browsing, bookmarks (persisted to `localStorage` in your browser), the Analytics dashboard's stat totals and CSV export (the per-article view/download *numbers* themselves are placeholder — see below).
-- **Placeholder, clearly labeled in the UI:** Analytics view/download counts (deterministic per-article, not real tracking), the donation flow on article pages (no payment provider connected — shows a "no payment was processed" message on submit), Membership "Join" forms (same pattern, and deliberately collect only name/email — see the note in `gulf-spectrum-backend`'s README on why no card-entry form was built), and the Sign In / Create Account menu (explicitly says accounts aren't wired up).
+## What's left to connect
 
-## Turning this into a real backend
+The read side (this section's "Real" list) is done. Still static/placeholder:
 
-1. Follow [gulf-spectrum-backend](https://github.com/GoGMI-Ghana/gulf-spectrum-backend)'s README to create a Supabase project and push the schema + seed data to it.
-2. Copy `.env.example` to `.env.local` and fill in `NEXT_PUBLIC_SUPABASE_URL` / `NEXT_PUBLIC_SUPABASE_ANON_KEY` from that project's API settings.
-3. Rewrite the query functions in `lib/content.ts` to call `createClient()` from `lib/supabase/server.ts` instead of reading the static arrays. Because every function is already `async` with the same signature, no page or component needs to change.
-4. Delete the static arrays in `lib/content.ts` once the database is the source of truth (the seed data in the backend repo mirrors them exactly, so nothing changes for site visitors mid-swap).
-5. For real payments (donations, membership dues), pick a provider — Paystack or Flutterwave are the common choices for Ghana. The backend repo's `paystack-webhook` edge function is ready for Paystack specifically; wire the checkout-initiation side into `components/SupportBox.tsx` and `components/JoinForm.tsx`, passing `metadata: { type, record_id }` so the webhook knows which row to mark paid.
-6. For real accounts, use Supabase Auth (`lib/supabase/client.ts` is already set up for it) and replace `context/BookmarksContext.tsx` with a `bookmarks` table query, keyed by `auth.uid()`.
+1. **Real payments** (donations, membership dues) — pick a provider (Paystack or Flutterwave are the common choices for Ghana). The backend repo's `paystack-webhook` edge function is ready for Paystack specifically; wire the checkout-initiation side into `components/SupportBox.tsx` and `components/JoinForm.tsx`, passing `metadata: { type, record_id }` so the webhook knows which row to mark paid.
+2. **Real accounts** — use Supabase Auth (`lib/supabase/client.ts` is already set up for it) and replace `context/BookmarksContext.tsx` with a `bookmarks` table query, keyed by `auth.uid()`, read through `lib/supabase/server.ts`'s cookie-aware client (not `staticClient.ts` — this is exactly the session-dependent case that one exists for).
+3. **Real analytics tracking** — log actual view/download events into `article_events` (an insert per page view, gated by RLS to insert-only for anon/authenticated) instead of the deterministic placeholder numbers in `lib/analyticsData.ts`.
