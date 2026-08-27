@@ -47,6 +47,7 @@ type IssueRow = {
 }
 
 type ArticleRow = {
+  id: string
   slug: string
   title: string
   abstract: string
@@ -121,6 +122,7 @@ function mapArticleRow(row: ArticleRow): Article {
     .filter((s): s is string => Boolean(s))
 
   return {
+    id: row.id,
     slug: row.slug,
     issueSlug: row.issue?.slug ?? '',
     topicSlug: row.topic?.slug ?? '',
@@ -142,6 +144,7 @@ function mapArticleRow(row: ArticleRow): Article {
 // roles this app uses, but the explicit filter below is kept for clarity
 // and as a second line of defense if that policy ever changes.
 const ARTICLE_SELECT = `
+  id,
   slug,
   title,
   abstract,

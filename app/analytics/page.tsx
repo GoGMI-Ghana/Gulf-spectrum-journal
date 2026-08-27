@@ -1,5 +1,6 @@
 import type { Metadata } from 'next'
 import { getArticles, getTopics, getAuthors, getTopicForArticle, getAuthorsForArticle } from '@/lib/content'
+import { getArticleStatsById, getArticleDailyStatsById, type ArticleStat } from '@/lib/analytics'
 import AnalyticsDashboard from '@/components/AnalyticsDashboard'
 
 export const metadata: Metadata = {
@@ -7,8 +8,20 @@ export const metadata: Metadata = {
   description: 'Readership analytics for Gulf Spectrum Journal.',
 }
 
+// Statically generated like the rest of the content pages, but re-checked
+// periodically rather than only at build time — unlike article/issue/topic
+// content, view counts are expected to actually change between deploys.
+export const revalidate = 300
+
 export default async function AnalyticsPage() {
-  const [articles, topics, authors] = await Promise.all([getArticles(), getTopics(), getAuthors()])
+  const [articles, topics, authors, statsById, dailyStatsById] = await Promise.all([
+    getArticles(),
+    getTopics(),
+    getAuthors(),
+    getArticleStatsById(),
+    getArticleDailyStatsById(),
+  ])
+
   const topicByArticleSlug: Record<string, string> = {}
   const authorNamesByArticleSlug: Record<string, string[]> = {}
 
@@ -17,6 +30,17 @@ export default async function AnalyticsPage() {
     if (topic) topicByArticleSlug[article.slug] = topic.slug
     const articleAuthors = await getAuthorsForArticle(article)
     authorNamesByArticleSlug[article.slug] = articleAuthors.map((a) => a.name)
+  }
+
+  // Both analytics views are keyed by article_id — remap to slug here,
+  // since that's what the rest of the app (and the dashboard component)
+  // already keys everything else by.
+  const EMPTY_STAT: ArticleStat = { views: 0, downloads: 0 }
+  const statsBySlug: Record<string, ArticleStat> = {}
+  const dailyStatsBySlug: Record<string, Record<string, ArticleStat>> = {}
+  for (const article of articles) {
+    statsBySlug[article.slug] = statsById[article.id] ?? EMPTY_STAT
+    dailyStatsBySlug[article.slug] = dailyStatsById[article.id] ?? {}
   }
 
   return (
@@ -28,6 +52,8 @@ export default async function AnalyticsPage() {
         authors={authors}
         topicByArticleSlug={topicByArticleSlug}
         authorNamesByArticleSlug={authorNamesByArticleSlug}
+        statsBySlug={statsBySlug}
+        dailyStatsBySlug={dailyStatsBySlug}
       />
     </div>
   )

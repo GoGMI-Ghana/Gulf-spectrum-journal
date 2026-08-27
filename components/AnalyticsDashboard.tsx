@@ -4,7 +4,8 @@ import { useMemo, useState } from 'react'
 import Link from 'next/link'
 import { Download } from 'lucide-react'
 import type { Article, Author, Topic } from '@/lib/types'
-import { lastNDates, buildDailySeries, periodStatsForArticle } from '@/lib/analyticsData'
+import type { ArticleStat } from '@/lib/analytics'
+import { lastNDates, dateKey, formatAxisLabel, type DailySeriesPoint } from '@/lib/analyticsData'
 import EngagementChart from './EngagementChart'
 
 const TABS = ['Overview', 'Papers', 'Topics', 'Authors'] as const
@@ -16,6 +17,31 @@ interface Props {
   authors: Author[]
   topicByArticleSlug: Record<string, string> // slug -> topic label
   authorNamesByArticleSlug: Record<string, string[]> // slug -> author names
+  statsBySlug: Record<string, ArticleStat> // all-time, per article
+  dailyStatsBySlug: Record<string, Record<string, ArticleStat>> // slug -> "YYYY-MM-DD" -> stat, last 60 days
+}
+
+interface PeriodStat extends ArticleStat {
+  article: Article
+}
+
+function periodStatForArticle(
+  article: Article,
+  days: Date[],
+  dailyStatsBySlug: Props['dailyStatsBySlug']
+): ArticleStat {
+  const byDay = dailyStatsBySlug[article.slug]
+  if (!byDay) return { views: 0, downloads: 0 }
+  let views = 0
+  let downloads = 0
+  for (const day of days) {
+    const stat = byDay[dateKey(day)]
+    if (stat) {
+      views += stat.views
+      downloads += stat.downloads
+    }
+  }
+  return { views, downloads }
 }
 
 function downloadCsv(filename: string, rows: (string | number)[][]) {
@@ -31,28 +57,53 @@ function downloadCsv(filename: string, rows: (string | number)[][]) {
   URL.revokeObjectURL(url)
 }
 
-export default function AnalyticsDashboard({ articles, topics, authors, topicByArticleSlug, authorNamesByArticleSlug }: Props) {
+export default function AnalyticsDashboard({
+  articles,
+  topics,
+  authors,
+  topicByArticleSlug,
+  authorNamesByArticleSlug,
+  statsBySlug,
+  dailyStatsBySlug,
+}: Props) {
   const [tab, setTab] = useState<Tab>('Overview')
   const [rangeDays, setRangeDays] = useState<30 | 60>(30)
 
   const days = useMemo(() => lastNDates(rangeDays), [rangeDays])
-  const series = useMemo(() => buildDailySeries(articles, days), [articles, days])
 
-  const perArticle = useMemo(
-    () => articles.map((article) => ({ article, stats: periodStatsForArticle(article, days) })),
-    [articles, days]
+  const series: DailySeriesPoint[] = useMemo(
+    () =>
+      days.map((day) => {
+        const key = dateKey(day)
+        let views = 0
+        let downloads = 0
+        for (const article of articles) {
+          const stat = dailyStatsBySlug[article.slug]?.[key]
+          if (stat) {
+            views += stat.views
+            downloads += stat.downloads
+          }
+        }
+        return { label: formatAxisLabel(day), views, downloads }
+      }),
+    [articles, days, dailyStatsBySlug]
   )
 
-  const periodViewsTotal = perArticle.reduce((s, a) => s + a.stats.views, 0)
-  const periodDownloadsTotal = perArticle.reduce((s, a) => s + a.stats.downloads, 0)
+  const perArticle: PeriodStat[] = useMemo(
+    () => articles.map((article) => ({ article, ...periodStatForArticle(article, days, dailyStatsBySlug) })),
+    [articles, days, dailyStatsBySlug]
+  )
+
+  const periodViewsTotal = perArticle.reduce((s, a) => s + a.views, 0)
+  const periodDownloadsTotal = perArticle.reduce((s, a) => s + a.downloads, 0)
 
   const topicRows = topics.map((topic) => {
     const inTopic = perArticle.filter((a) => topicByArticleSlug[a.article.slug] === topic.slug)
     return {
       topic,
       articleCount: inTopic.length,
-      views: inTopic.reduce((s, a) => s + a.stats.views, 0),
-      downloads: inTopic.reduce((s, a) => s + a.stats.downloads, 0),
+      views: inTopic.reduce((s, a) => s + a.views, 0),
+      downloads: inTopic.reduce((s, a) => s + a.downloads, 0),
     }
   })
 
@@ -62,8 +113,8 @@ export default function AnalyticsDashboard({ articles, topics, authors, topicByA
       return {
         author,
         articleCount: theirArticles.length,
-        views: theirArticles.reduce((s, a) => s + a.stats.views, 0),
-        downloads: theirArticles.reduce((s, a) => s + a.stats.downloads, 0),
+        views: theirArticles.reduce((s, a) => s + a.views, 0),
+        downloads: theirArticles.reduce((s, a) => s + a.downloads, 0),
       }
     })
     .filter((r) => r.articleCount > 0)
@@ -81,14 +132,13 @@ export default function AnalyticsDashboard({ articles, topics, authors, topicByA
       ])
     } else {
       downloadCsv(`articles-${rangeDays}d.csv`, [
-        ['Title', `${rangeDays}-day Views`, `${rangeDays}-day Uniques`, `${rangeDays}-day Downloads`, 'All-time Views', 'All-time Downloads'],
+        ['Title', `${rangeDays}-day Views`, `${rangeDays}-day Downloads`, 'All-time Views', 'All-time Downloads'],
         ...perArticle.map((a) => [
           a.article.title,
-          a.stats.views,
-          a.stats.uniques,
-          a.stats.downloads,
-          a.stats.allTimeViews,
-          a.stats.allTimeDownloads,
+          a.views,
+          a.downloads,
+          statsBySlug[a.article.slug]?.views ?? 0,
+          statsBySlug[a.article.slug]?.downloads ?? 0,
         ]),
       ])
     }
@@ -161,11 +211,11 @@ export default function AnalyticsDashboard({ articles, topics, authors, topicByA
               </div>
             </div>
           </div>
-          <ArticlesTable rows={perArticle} rangeDays={rangeDays} />
+          <ArticlesTable rows={perArticle} statsBySlug={statsBySlug} rangeDays={rangeDays} />
         </>
       )}
 
-      {tab === 'Papers' && <ArticlesTable rows={perArticle} rangeDays={rangeDays} />}
+      {tab === 'Papers' && <ArticlesTable rows={perArticle} statsBySlug={statsBySlug} rangeDays={rangeDays} />}
 
       {tab === 'Topics' && (
         <div className="overflow-x-auto border border-slate-200">
@@ -226,8 +276,9 @@ export default function AnalyticsDashboard({ articles, topics, authors, topicByA
       )}
 
       <p className="text-xs text-slate-400 mt-4">
-        Views and downloads are illustrative placeholder data until real tracking is connected — see{' '}
-        <code className="font-mono">article_events</code> in the database schema.
+        Views are logged from real visits to each article page, starting from when this tracking
+        shipped — figures will be low or zero for anything before that. Downloads stay at zero: there&apos;s
+        no per-article file download feature on the site yet for that count to reflect.
       </p>
     </div>
   )
@@ -235,9 +286,11 @@ export default function AnalyticsDashboard({ articles, topics, authors, topicByA
 
 function ArticlesTable({
   rows,
+  statsBySlug,
   rangeDays,
 }: {
-  rows: { article: Article; stats: ReturnType<typeof periodStatsForArticle> }[]
+  rows: PeriodStat[]
+  statsBySlug: Record<string, ArticleStat>
   rangeDays: number
 }) {
   return (
@@ -247,25 +300,23 @@ function ArticlesTable({
           <tr className="text-left text-slate-500 text-xs uppercase tracking-wide border-b border-slate-200 bg-slate-50">
             <th className="py-3 px-4 font-medium">Title</th>
             <th className="py-3 px-4 font-medium text-right">{rangeDays}-day Views</th>
-            <th className="py-3 px-4 font-medium text-right">{rangeDays}-day Uniques</th>
             <th className="py-3 px-4 font-medium text-right">{rangeDays}-day Downloads</th>
             <th className="py-3 px-4 font-medium text-right">All-time Views</th>
             <th className="py-3 px-4 font-medium text-right">All-time Downloads</th>
           </tr>
         </thead>
         <tbody>
-          {rows.map(({ article, stats }) => (
+          {rows.map(({ article, views, downloads }) => (
             <tr key={article.slug} className="border-b border-slate-100 hover:bg-slate-50">
               <td className="py-3 px-4">
                 <Link href={`/articles/${article.slug}`} className="text-royal-blue hover:text-ocean-blue font-medium">
                   {article.title}
                 </Link>
               </td>
-              <td className="py-3 px-4 text-right numeral">{stats.views}</td>
-              <td className="py-3 px-4 text-right numeral">{stats.uniques}</td>
-              <td className="py-3 px-4 text-right numeral">{stats.downloads}</td>
-              <td className="py-3 px-4 text-right numeral">{stats.allTimeViews.toLocaleString()}</td>
-              <td className="py-3 px-4 text-right numeral">{stats.allTimeDownloads.toLocaleString()}</td>
+              <td className="py-3 px-4 text-right numeral">{views}</td>
+              <td className="py-3 px-4 text-right numeral">{downloads}</td>
+              <td className="py-3 px-4 text-right numeral">{(statsBySlug[article.slug]?.views ?? 0).toLocaleString()}</td>
+              <td className="py-3 px-4 text-right numeral">{(statsBySlug[article.slug]?.downloads ?? 0).toLocaleString()}</td>
             </tr>
           ))}
         </tbody>

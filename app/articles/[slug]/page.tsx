@@ -8,6 +8,7 @@ import BookmarkButton from '@/components/BookmarkButton'
 import ShareBar from '@/components/ShareBar'
 import CiteBox from '@/components/CiteBox'
 import SupportBox from '@/components/SupportBox'
+import ArticleViewLogger from '@/components/ArticleViewLogger'
 
 export async function generateStaticParams() {
   const articles = await getArticles()
@@ -38,6 +39,7 @@ export default async function ArticleDetail({ params }: { params: Promise<{ slug
 
   return (
     <div className="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8 py-10 sm:py-14">
+      <ArticleViewLogger articleId={article.id} />
       <nav className="text-xs text-slate-500 mb-6 flex flex-wrap items-center gap-1.5">
         <Link href="/issues" className="hover:text-ocean-blue">Articles and Issues</Link>
         <span>/</span>

@@ -51,6 +51,7 @@ export interface ArticleSection {
 }
 
 export interface Article {
+  id: string
   slug: string
   issueSlug: string
   topicSlug: string
