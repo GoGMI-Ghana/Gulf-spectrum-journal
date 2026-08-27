@@ -1,6 +1,6 @@
 import Link from 'next/link'
 import Image from 'next/image'
-import { journal } from '@/lib/content'
+import { journal } from '@/lib/staticContent'
 
 export default function Footer() {
   return (

@@ -1,5 +1,5 @@
 import type { Metadata } from 'next'
-import { articles, getAuthorsForArticle, getTopicForArticle, getIssueForArticle } from '@/lib/content'
+import { getArticles, getAuthorsForArticle, getTopicForArticle, getIssueForArticle } from '@/lib/content'
 import PageBanner from '@/components/PageBanner'
 import BookmarksList, { type ResolvedArticle } from '@/components/BookmarksList'
 
@@ -9,6 +9,7 @@ export const metadata: Metadata = {
 }
 
 export default async function Bookmarks() {
+  const articles = await getArticles()
   const allArticles: ResolvedArticle[] = await Promise.all(
     articles.map(async (article) => ({
       article,

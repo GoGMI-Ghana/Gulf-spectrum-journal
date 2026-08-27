@@ -1,7 +1,7 @@
 'use client'
 
 import { useState } from 'react'
-import { donationSplit } from '@/lib/content'
+import { donationSplit } from '@/lib/staticContent'
 
 const DONATION_AMOUNTS = [10, 25, 50]
 

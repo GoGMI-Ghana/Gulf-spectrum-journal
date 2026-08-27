@@ -2,7 +2,7 @@
 
 import Link from 'next/link'
 import { useBookmarks } from '@/context/BookmarksContext'
-import { ArticleCardView } from './ArticleCard'
+import { ArticleCardView } from './ArticleCardView'
 import type { Article, Author, Issue, Topic } from '@/lib/types'
 
 export interface ResolvedArticle {

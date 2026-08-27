@@ -1,11 +1,12 @@
 import Link from 'next/link'
 import { notFound } from 'next/navigation'
 import type { Metadata } from 'next'
-import { issues, getIssueBySlug, getArticlesForIssue } from '@/lib/content'
+import { getIssues, getIssueBySlug, getArticlesForIssue } from '@/lib/content'
 import ArticleCard from '@/components/ArticleCard'
 import IssueCover from '@/components/IssueCover'
 
 export async function generateStaticParams() {
+  const issues = await getIssues()
   return issues.map((issue) => ({ slug: issue.slug }))
 }
 

@@ -1,6 +1,6 @@
 import Link from 'next/link'
 import type { Metadata } from 'next'
-import { topics, getArticlesForTopic } from '@/lib/content'
+import { getTopics, getArticlesForTopic } from '@/lib/content'
 import PageBanner from '@/components/PageBanner'
 
 export const metadata: Metadata = {
@@ -9,6 +9,7 @@ export const metadata: Metadata = {
 }
 
 export default async function Topics() {
+  const topics = await getTopics()
   const counts = await Promise.all(topics.map((t) => getArticlesForTopic(t.slug)))
 
   return (

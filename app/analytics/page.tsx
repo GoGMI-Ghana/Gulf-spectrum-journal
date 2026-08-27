@@ -1,5 +1,5 @@
 import type { Metadata } from 'next'
-import { articles, topics, authors, getTopicForArticle, getAuthorsForArticle } from '@/lib/content'
+import { getArticles, getTopics, getAuthors, getTopicForArticle, getAuthorsForArticle } from '@/lib/content'
 import AnalyticsDashboard from '@/components/AnalyticsDashboard'
 
 export const metadata: Metadata = {
@@ -8,6 +8,7 @@ export const metadata: Metadata = {
 }
 
 export default async function AnalyticsPage() {
+  const [articles, topics, authors] = await Promise.all([getArticles(), getTopics(), getAuthors()])
   const topicByArticleSlug: Record<string, string> = {}
   const authorNamesByArticleSlug: Record<string, string[]> = {}
 

@@ -1,5 +1,5 @@
 import type { Metadata } from 'next'
-import { authors } from '@/lib/content'
+import { getAuthors } from '@/lib/content'
 import PageBanner from '@/components/PageBanner'
 import AuthorCard from '@/components/AuthorCard'
 
@@ -8,7 +8,8 @@ export const metadata: Metadata = {
   description: 'Meet the naval officers, researchers, and legal practitioners contributing to Gulf Spectrum Journal.',
 }
 
-export default function Authors() {
+export default async function Authors() {
+  const authors = await getAuthors()
   return (
     <div>
       <PageBanner

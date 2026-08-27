@@ -1,6 +1,6 @@
 import Link from 'next/link'
 import type { Metadata } from 'next'
-import { articles, getIssueForArticle } from '@/lib/content'
+import { getArticles, getIssueForArticle } from '@/lib/content'
 import ArticleCard from '@/components/ArticleCard'
 import DashboardSidebar from '@/components/DashboardSidebar'
 
@@ -10,6 +10,7 @@ export const metadata: Metadata = {
 }
 
 export default async function Dashboard() {
+  const articles = await getArticles()
   const issuesForArticles = await Promise.all(articles.map((a) => getIssueForArticle(a)))
 
   return (

@@ -1,7 +1,7 @@
 import Link from 'next/link'
 import type { Metadata } from 'next'
 import { Quote, Library, Tags, FileCheck2, Sparkles, MousePointerClick } from 'lucide-react'
-import { articles, topics, getAuthorsForArticle, getIssueForArticle, getTopicForArticle, getArticlesForTopic } from '@/lib/content'
+import { getArticles, getTopics, getAuthorsForArticle, getIssueForArticle, getTopicForArticle, getArticlesForTopic } from '@/lib/content'
 import { formatApaCitation } from '@/lib/citation'
 import CitationRow from '@/components/CitationRow'
 import CitationHeroGrid from '@/components/CitationHeroGrid'
@@ -39,6 +39,8 @@ const bottomFeatures = [
 ]
 
 export default async function Citations() {
+  const articles = await getArticles()
+  const topics = await getTopics()
   const rows = await Promise.all(
     articles.map(async (article) => {
       const authors = await getAuthorsForArticle(article)

@@ -1,4 +1,4 @@
-import { journal } from './content'
+import { journal } from './staticContent'
 import type { Article, Author, Issue } from './types'
 
 const TITLE_PREFIX = /^(?:(?:Dr|Prof|Capt|Cdr|Lt|Sub-Lt)\.\s+|Rear Admiral \(Rtd\)\s+)+/

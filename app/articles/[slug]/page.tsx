@@ -1,7 +1,7 @@
 import Link from 'next/link'
 import { notFound } from 'next/navigation'
 import type { Metadata } from 'next'
-import { articles, getArticleBySlug, getAuthorsForArticle, getIssueForArticle, getTopicForArticle } from '@/lib/content'
+import { getArticles, getArticleBySlug, getAuthorsForArticle, getIssueForArticle, getTopicForArticle } from '@/lib/content'
 import { formatApaCitation } from '@/lib/citation'
 import Initials from '@/components/Initials'
 import BookmarkButton from '@/components/BookmarkButton'
@@ -10,6 +10,7 @@ import CiteBox from '@/components/CiteBox'
 import SupportBox from '@/components/SupportBox'
 
 export async function generateStaticParams() {
+  const articles = await getArticles()
   return articles.map((article) => ({ slug: article.slug }))
 }
 

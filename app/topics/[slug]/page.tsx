@@ -1,10 +1,11 @@
 import Link from 'next/link'
 import { notFound } from 'next/navigation'
 import type { Metadata } from 'next'
-import { topics, getTopicBySlug, getArticlesForTopic } from '@/lib/content'
+import { getTopics, getTopicBySlug, getArticlesForTopic } from '@/lib/content'
 import ArticleCard from '@/components/ArticleCard'
 
 export async function generateStaticParams() {
+  const topics = await getTopics()
   return topics.map((topic) => ({ slug: topic.slug }))
 }
 

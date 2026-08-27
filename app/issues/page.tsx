@@ -1,6 +1,6 @@
 import Link from 'next/link'
 import type { Metadata } from 'next'
-import { issues, getArticlesForIssue } from '@/lib/content'
+import { getIssues, getArticlesForIssue } from '@/lib/content'
 import type { Issue } from '@/lib/types'
 import PageBanner from '@/components/PageBanner'
 import IssueCover from '@/components/IssueCover'
@@ -11,6 +11,7 @@ export const metadata: Metadata = {
 }
 
 export default async function Issues() {
+  const issues = await getIssues()
   const byYear: Record<number, Issue[]> = {}
   for (const issue of issues) {
     byYear[issue.year] = byYear[issue.year] || []

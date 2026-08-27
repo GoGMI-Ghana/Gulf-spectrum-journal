@@ -2,7 +2,7 @@ import Link from 'next/link'
 import { notFound } from 'next/navigation'
 import type { Metadata } from 'next'
 import { Download, ShieldCheck, Globe2 } from 'lucide-react'
-import { membershipTiers } from '@/lib/content'
+import { membershipTiers } from '@/lib/staticContent'
 import JoinForm from '@/components/JoinForm'
 
 const benefitIcons = [Download, ShieldCheck, Globe2]

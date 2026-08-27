@@ -1,7 +1,8 @@
 import Link from 'next/link'
 import Image from 'next/image'
 import type { Metadata } from 'next'
-import { journal, topics } from '@/lib/content'
+import { journal } from '@/lib/staticContent'
+import { getTopics } from '@/lib/content'
 import PageBanner from '@/components/PageBanner'
 import Initials from '@/components/Initials'
 
@@ -34,7 +35,8 @@ const trustSignals = [
   },
 ]
 
-export default function About() {
+export default async function About() {
+  const topics = await getTopics()
   return (
     <div>
       <PageBanner eyebrow="About" title="About the Journal" />

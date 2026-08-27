@@ -43,7 +43,6 @@ export interface Issue {
   publishedDate: string
   aboutThisVolume: string
   editorialBoard: { name: string; role: string }[]
-  articleSlugs: string[]
 }
 
 export interface ArticleSection {

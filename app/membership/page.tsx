@@ -1,5 +1,5 @@
 import type { Metadata } from 'next'
-import { membershipTiers } from '@/lib/content'
+import { membershipTiers } from '@/lib/staticContent'
 import PageBanner from '@/components/PageBanner'
 import TierCard from '@/components/TierCard'
 

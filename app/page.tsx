@@ -1,6 +1,7 @@
 import Link from 'next/link'
 import type { Metadata } from 'next'
-import { journal, issues, topics, getArticlesForIssue, getArticlesForTopic } from '@/lib/content'
+import { journal } from '@/lib/staticContent'
+import { getIssues, getTopics, getArticlesForIssue, getArticlesForTopic } from '@/lib/content'
 import ArticleCard from '@/components/ArticleCard'
 import IssueCover from '@/components/IssueCover'
 import JournalSubNav from '@/components/JournalSubNav'
@@ -12,6 +13,8 @@ export const metadata: Metadata = {
 }
 
 export default async function Home() {
+  const issues = await getIssues()
+  const topics = await getTopics()
   const latestIssue = issues[0]
   const latestArticles = await getArticlesForIssue(latestIssue.slug)
   const topicCounts = await Promise.all(topics.map((t) => getArticlesForTopic(t.slug)))

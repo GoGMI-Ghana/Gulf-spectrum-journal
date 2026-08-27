@@ -1,11 +1,12 @@
 import Link from 'next/link'
 import { notFound } from 'next/navigation'
 import type { Metadata } from 'next'
-import { authors, getAuthorBySlug, getArticlesForAuthor } from '@/lib/content'
+import { getAuthors, getAuthorBySlug, getArticlesForAuthor } from '@/lib/content'
 import ArticleCard from '@/components/ArticleCard'
 import Initials from '@/components/Initials'
 
 export async function generateStaticParams() {
+  const authors = await getAuthors()
   return authors.map((author) => ({ slug: author.slug }))
 }
 

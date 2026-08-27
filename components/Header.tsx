@@ -5,7 +5,7 @@ import Link from 'next/link'
 import Image from 'next/image'
 import { usePathname } from 'next/navigation'
 import { Menu, X, Home, Quote, BarChart3, Upload, Grid3x3 } from 'lucide-react'
-import { journal } from '@/lib/content'
+import { journal } from '@/lib/staticContent'
 import AccountMenu from './AccountMenu'
 
 const navLinks = [
