@@ -30,6 +30,15 @@ export const metadata: Metadata = {
   // real GoGMI logo, no manual `icons` entry needed.
 }
 
+// Deliberately NOT async, and doesn't read the signed-in user here: this
+// layout wraps every route, and calling cookies() (which any server-side
+// auth check requires) anywhere in that tree would force the whole app
+// out of static generation — undoing the point of pre-rendering every
+// article/issue/topic/author page at build time. BookmarksProvider reads
+// the session client-side instead (same reasoning as the original
+// localStorage-only bookmarks it replaced), so account state is a
+// client-hydrated island rather than something the server has to compute
+// per request.
 export default function RootLayout({ children }: { children: React.ReactNode }) {
   return (
     <html lang="en" className={`${poppins.variable} ${inter.variable}`}>

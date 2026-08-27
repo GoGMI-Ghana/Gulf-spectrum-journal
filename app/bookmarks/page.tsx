@@ -24,7 +24,7 @@ export default async function Bookmarks() {
       <PageBanner
         eyebrow="Your Reading List"
         title="Bookmarks"
-        description="Saved to this browser only — bookmarks aren't tied to an account yet, so they won't follow you to another device."
+        description="Saved to your account — sign in to see them on any device."
       />
 
       <section className="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8 py-14">

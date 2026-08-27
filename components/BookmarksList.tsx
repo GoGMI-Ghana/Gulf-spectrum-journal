@@ -13,7 +13,23 @@ export interface ResolvedArticle {
 }
 
 export default function BookmarksList({ allArticles }: { allArticles: ResolvedArticle[] }) {
-  const { bookmarks } = useBookmarks()
+  const { user, authLoading, bookmarks, bookmarksLoading } = useBookmarks()
+
+  if (authLoading) return null
+
+  if (!user) {
+    return (
+      <p className="text-slate-600">
+        <Link href="/sign-in?redirect=/bookmarks" className="text-ocean-blue hover:underline">Sign in</Link>{' '}
+        to see your bookmarks — they&apos;re saved to your account now, not just this browser.
+      </p>
+    )
+  }
+
+  if (bookmarksLoading) {
+    return <p className="text-slate-500 text-sm">Loading your bookmarks…</p>
+  }
+
   const saved = allArticles.filter((a) => bookmarks.includes(a.article.slug))
 
   if (saved.length === 0) {

@@ -27,14 +27,16 @@ function SidebarLink({
 }
 
 export default function DashboardSidebar() {
-  const { bookmarks } = useBookmarks()
+  const { user, bookmarks } = useBookmarks()
+  const displayName = user?.fullName || user?.email || 'Guest Researcher'
+  const subtitle = user ? (user.fullName ? user.email : 'Signed in') : 'Not signed in'
 
   return (
     <aside className="space-y-1">
       <div className="border border-slate-200 p-5 text-center mb-4">
-        <Initials name="Guest Researcher" size="lg" className="mx-auto mb-3" />
-        <p className="font-semibold text-royal-blue">Guest Researcher</p>
-        <p className="text-xs text-slate-500 mb-4">Not signed in</p>
+        <Initials name={displayName} size="lg" className="mx-auto mb-3" />
+        <p className="font-semibold text-royal-blue">{displayName}</p>
+        <p className="text-xs text-slate-500 mb-4">{subtitle}</p>
         <div className="flex justify-center gap-4 text-xs text-slate-500 border-y border-slate-100 py-3">
           <span><strong className="text-royal-blue">0</strong> Followers</span>
           <span><strong className="text-royal-blue">0</strong> Following</span>

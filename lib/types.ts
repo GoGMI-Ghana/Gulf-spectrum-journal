@@ -77,3 +77,13 @@ export interface DonationSplit {
   authorPercent: number
   platformPercent: number
 }
+
+// The signed-in reader account (Supabase Auth), not an Author (a
+// journal contributor — a separate concept, though profiles.author_id
+// can link the two once a reader is a published author with a claimed
+// account). Deliberately minimal: just what the UI needs to display.
+export interface CurrentUser {
+  id: string
+  email: string
+  fullName: string | null
+}

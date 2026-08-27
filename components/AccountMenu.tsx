@@ -2,6 +2,7 @@
 
 import { useState, useRef, useEffect, type ComponentType } from 'react'
 import Link from 'next/link'
+import { useRouter } from 'next/navigation'
 import {
   UserCircle,
   User,
@@ -9,6 +10,7 @@ import {
   Bell,
   Settings,
   LogIn,
+  LogOut,
   Lock,
   LayoutDashboard,
   Bookmark,
@@ -23,6 +25,7 @@ import {
   Award,
 } from 'lucide-react'
 import { useBookmarks } from '@/context/BookmarksContext'
+import { createClient } from '@/lib/supabase/client'
 import Initials from './Initials'
 
 function SectionLabel({ children }: { children: string }) {
@@ -59,6 +62,26 @@ function MenuLink({
   )
 }
 
+function MenuButton({
+  icon: Icon,
+  label,
+  onClick,
+}: {
+  icon: ComponentType<{ size?: number; className?: string }>
+  label: string
+  onClick: () => void
+}) {
+  return (
+    <button
+      onClick={onClick}
+      className="w-full flex items-center gap-3 px-4 py-2 text-sm text-ink hover:bg-soft-gold/50 text-left"
+    >
+      <Icon size={16} className="text-ocean-blue shrink-0" />
+      <span className="flex-1">{label}</span>
+    </button>
+  )
+}
+
 function LockedItem({
   icon: Icon,
   label,
@@ -84,7 +107,8 @@ export default function AccountMenu() {
   const [open, setOpen] = useState(false)
   const [notice, setNotice] = useState(false)
   const ref = useRef<HTMLDivElement>(null)
-  const { bookmarks } = useBookmarks()
+  const router = useRouter()
+  const { user, bookmarks } = useBookmarks()
 
   useEffect(() => {
     function onClickOutside(e: MouseEvent) {
@@ -102,6 +126,15 @@ export default function AccountMenu() {
     setNotice(false)
   }
 
+  async function handleSignOut() {
+    const supabase = createClient()
+    await supabase.auth.signOut()
+    close()
+    router.push('/')
+  }
+
+  const displayName = user?.fullName || user?.email || 'Guest Researcher'
+
   return (
     <div className="relative" ref={ref}>
       <button
@@ -117,18 +150,18 @@ export default function AccountMenu() {
         <div className="absolute right-0 top-full mt-2 w-72 bg-white border border-slate-200 shadow-lg z-50 text-ink max-h-[80vh] overflow-y-auto">
           {notice && (
             <p className="p-4 text-xs text-slate-600 leading-relaxed bg-soft-gold/40 border-b border-slate-200">
-              This is a design prototype — author and editorial accounts aren&apos;t
-              connected yet. That requires the editorial CMS described in the site
-              brief, a separate build.
+              This part of the account isn&apos;t built yet — profile editing, messages, and
+              notifications require the editorial CMS described in the site brief, a separate
+              build. Signing in and bookmarking articles both work for real, though.
             </p>
           )}
 
           {/* Identity header */}
           <div className="flex items-center gap-3 p-4 border-b border-slate-200">
-            <Initials name="Guest Researcher" size="sm" />
+            <Initials name={displayName} size="sm" />
             <div>
-              <p className="text-sm font-semibold text-royal-blue">Guest Researcher</p>
-              <p className="text-xs text-slate-400">Not signed in</p>
+              <p className="text-sm font-semibold text-royal-blue">{displayName}</p>
+              <p className="text-xs text-slate-400">{user ? user.email : 'Not signed in'}</p>
             </div>
           </div>
 
@@ -148,7 +181,11 @@ export default function AccountMenu() {
             <LockedItem icon={Mail} label="Messages" onClick={() => setNotice(true)} />
             <LockedItem icon={Bell} label="Notifications" onClick={() => setNotice(true)} />
             <LockedItem icon={Settings} label="Account Settings" onClick={() => setNotice(true)} />
-            <LockedItem icon={LogIn} label="Sign In" onClick={() => setNotice(true)} />
+            {user ? (
+              <MenuButton icon={LogOut} label="Sign Out" onClick={handleSignOut} />
+            ) : (
+              <MenuLink href="/sign-in" icon={LogIn} label="Sign In" onNavigate={close} />
+            )}
           </div>
 
           <SectionLabel>My Research</SectionLabel>
