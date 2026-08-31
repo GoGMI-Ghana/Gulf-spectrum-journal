@@ -151,9 +151,9 @@ export default function AccountMenu() {
         <div className="absolute right-0 top-full mt-2 w-72 bg-white border border-slate-200 shadow-lg z-50 text-ink max-h-[80vh] overflow-y-auto">
           {notice && (
             <p className="p-4 text-xs text-slate-600 leading-relaxed bg-soft-gold/40 border-b border-slate-200">
-              This part of the account isn&apos;t built yet — profile editing, messages, and
-              notifications require the editorial CMS described in the site brief, a separate
-              build. Signing in and bookmarking articles both work for real, though.
+              Messages and notifications aren&apos;t built yet — they need the editorial CMS
+              described in the site brief, a separate build. Signing in, editing your profile,
+              and bookmarking articles all work for real, though.
             </p>
           )}
 
@@ -178,7 +178,7 @@ export default function AccountMenu() {
 
           <SectionLabel>Account</SectionLabel>
           <div className="pb-2">
-            <LockedItem icon={User} label="My Profile" onClick={() => setNotice(true)} />
+            <MenuLink href="/profile" icon={User} label="My Profile" onNavigate={close} />
             <LockedItem icon={Mail} label="Messages" onClick={() => setNotice(true)} />
             <LockedItem icon={Bell} label="Notifications" onClick={() => setNotice(true)} />
             <LockedItem icon={Settings} label="Account Settings" onClick={() => setNotice(true)} />
