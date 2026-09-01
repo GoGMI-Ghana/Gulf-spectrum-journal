@@ -1,7 +1,7 @@
 'use client'
 
 import Link from 'next/link'
-import { useBookmarks } from '@/context/BookmarksContext'
+import { useAccount } from '@/context/AccountContext'
 import { ArticleCardView } from './ArticleCardView'
 import type { Article, Author, Issue, Topic } from '@/lib/types'
 
@@ -13,7 +13,7 @@ export interface ResolvedArticle {
 }
 
 export default function BookmarksList({ allArticles }: { allArticles: ResolvedArticle[] }) {
-  const { user, authLoading, bookmarks, bookmarksLoading } = useBookmarks()
+  const { user, authLoading, bookmarks, bookmarksLoading } = useAccount()
 
   if (authLoading) return null
 

@@ -3,7 +3,7 @@ import { Poppins, Inter } from 'next/font/google'
 import './globals.css'
 import Header from '@/components/Header'
 import Footer from '@/components/Footer'
-import { BookmarksProvider } from '@/context/BookmarksContext'
+import { AccountProvider } from '@/context/AccountContext'
 
 const poppins = Poppins({
   subsets: ['latin'],
@@ -34,7 +34,7 @@ export const metadata: Metadata = {
 // layout wraps every route, and calling cookies() (which any server-side
 // auth check requires) anywhere in that tree would force the whole app
 // out of static generation — undoing the point of pre-rendering every
-// article/issue/topic/author page at build time. BookmarksProvider reads
+// article/issue/topic/author page at build time. AccountProvider reads
 // the session client-side instead (same reasoning as the original
 // localStorage-only bookmarks it replaced), so account state is a
 // client-hydrated island rather than something the server has to compute
@@ -43,11 +43,11 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
   return (
     <html lang="en" className={`${poppins.variable} ${inter.variable}`}>
       <body className="min-h-screen flex flex-col bg-white">
-        <BookmarksProvider>
+        <AccountProvider>
           <Header />
           <main className="flex-1">{children}</main>
           <Footer />
-        </BookmarksProvider>
+        </AccountProvider>
       </body>
     </html>
   )

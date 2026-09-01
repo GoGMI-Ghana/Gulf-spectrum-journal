@@ -3,7 +3,7 @@
 import { useEffect, useState, type FormEvent } from 'react'
 import Link from 'next/link'
 import { createClient } from '@/lib/supabase/client'
-import { useBookmarks } from '@/context/BookmarksContext'
+import { useAccount } from '@/context/AccountContext'
 
 interface ProfileRow {
   full_name: string | null
@@ -20,11 +20,11 @@ const ROLE_LABELS: Record<ProfileRow['role'], string> = {
 }
 
 export default function ProfileForm() {
-  const { user, authLoading } = useBookmarks()
+  const { user, authLoading } = useAccount()
   const [profile, setProfile] = useState<ProfileRow | null>(null)
   const [authorSlug, setAuthorSlug] = useState<string | null>(null)
   // Whose profile `profile` holds, compared against the current user below
-  // to derive a loading flag — same reasoning as BookmarksContext: every
+  // to derive a loading flag — same reasoning as AccountContext: every
   // setState here happens inside the fetch's callback, never synchronously
   // at the top of the effect body.
   const [profileForUserId, setProfileForUserId] = useState<string | null>(null)

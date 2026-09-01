@@ -3,7 +3,7 @@
 import Link from 'next/link'
 import { usePathname } from 'next/navigation'
 import { Bookmark } from 'lucide-react'
-import { useBookmarks } from '@/context/BookmarksContext'
+import { useAccount } from '@/context/AccountContext'
 
 export default function BookmarkButton({
   slug,
@@ -14,11 +14,11 @@ export default function BookmarkButton({
   className?: string
   showLabel?: boolean
 }) {
-  const { user, isBookmarked, toggleBookmark } = useBookmarks()
+  const { user, isBookmarked, toggleBookmark } = useAccount()
   const pathname = usePathname()
   const active = isBookmarked(slug)
 
-  // Bookmarks are tied to an account now (see BookmarksContext) — signed
+  // Bookmarks are tied to an account now (see AccountContext) — signed
   // out, there's nothing to toggle, so this becomes a link to sign in
   // (with a redirect back here) instead of a doomed write RLS would
   // reject anyway.

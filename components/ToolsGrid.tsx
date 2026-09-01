@@ -2,10 +2,10 @@
 
 import Link from 'next/link'
 import { Search, Bookmark, Quote, Upload, BarChart3 } from 'lucide-react'
-import { useBookmarks } from '@/context/BookmarksContext'
+import { useAccount } from '@/context/AccountContext'
 
 export default function ToolsGrid() {
-  const { bookmarks } = useBookmarks()
+  const { bookmarks } = useAccount()
 
   const tools = [
     { href: '/search', icon: Search, title: 'Search', body: 'Find articles by title, abstract, keyword, or author.' },

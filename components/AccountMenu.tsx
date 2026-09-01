@@ -25,7 +25,7 @@ import {
   MessageCircle,
   Award,
 } from 'lucide-react'
-import { useBookmarks } from '@/context/BookmarksContext'
+import { useAccount } from '@/context/AccountContext'
 import { createClient } from '@/lib/supabase/client'
 import Initials from './Initials'
 
@@ -109,7 +109,7 @@ export default function AccountMenu() {
   const [notice, setNotice] = useState(false)
   const ref = useRef<HTMLDivElement>(null)
   const router = useRouter()
-  const { user, bookmarks } = useBookmarks()
+  const { user, bookmarks, unreadNotifications } = useAccount()
 
   useEffect(() => {
     function onClickOutside(e: MouseEvent) {
@@ -151,9 +151,10 @@ export default function AccountMenu() {
         <div className="absolute right-0 top-full mt-2 w-72 bg-white border border-slate-200 shadow-lg z-50 text-ink max-h-[80vh] overflow-y-auto">
           {notice && (
             <p className="p-4 text-xs text-slate-600 leading-relaxed bg-soft-gold/40 border-b border-slate-200">
-              Messages and notifications aren&apos;t built yet — they need the editorial CMS
-              described in the site brief, a separate build. Signing in, editing your profile,
-              and bookmarking articles all work for real, though.
+              Messages and account settings aren&apos;t built yet — messages specifically need
+              an editorial CMS with someone on the other end to send them, a separate build.
+              Signing in, editing your profile, bookmarking articles, and notifications all
+              work for real, though.
             </p>
           )}
 
@@ -180,7 +181,13 @@ export default function AccountMenu() {
           <div className="pb-2">
             <MenuLink href="/profile" icon={User} label="My Profile" onNavigate={close} />
             <LockedItem icon={Mail} label="Messages" onClick={() => setNotice(true)} />
-            <LockedItem icon={Bell} label="Notifications" onClick={() => setNotice(true)} />
+            <MenuLink
+              href="/notifications"
+              icon={Bell}
+              label="Notifications"
+              badge={unreadNotifications}
+              onNavigate={close}
+            />
             <LockedItem icon={Settings} label="Account Settings" onClick={() => setNotice(true)} />
             {user ? (
               <MenuButton icon={LogOut} label="Sign Out" onClick={handleSignOut} />

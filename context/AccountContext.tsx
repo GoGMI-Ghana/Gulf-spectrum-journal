@@ -4,16 +4,18 @@ import { createContext, useContext, useEffect, useState, type ReactNode } from '
 import { createClient } from '@/lib/supabase/client'
 import type { CurrentUser } from '@/lib/types'
 
-interface BookmarksContextValue {
+interface AccountContextValue {
   user: CurrentUser | null
   authLoading: boolean
   bookmarks: string[]
   bookmarksLoading: boolean
   toggleBookmark: (slug: string) => void
   isBookmarked: (slug: string) => boolean
+  unreadNotifications: number
+  markNotificationsRead: (ids: number[]) => void
 }
 
-const BookmarksContext = createContext<BookmarksContextValue | null>(null)
+const AccountContext = createContext<AccountContextValue | null>(null)
 
 function toCurrentUser(user: { id: string; email?: string; user_metadata?: Record<string, unknown> } | null): CurrentUser | null {
   if (!user) return null
@@ -25,15 +27,17 @@ function toCurrentUser(user: { id: string; email?: string; user_metadata?: Recor
   }
 }
 
-// Bookmarks now live in the `bookmarks` table, scoped to the signed-in
-// user by RLS (see gulf-spectrum-backend's migration) — not localStorage.
-// That makes this provider entirely client-side rather than the
-// useSyncExternalStore-over-localStorage version it replaced: it has to
-// know who's signed in (via the browser Supabase client, which reads the
-// session from cookies/local storage itself) and fetch that user's rows
-// after mount. Deliberately not read server-side in the root layout — see
-// the comment there.
-export function BookmarksProvider({ children }: { children: ReactNode }) {
+// Everything about the signed-in visitor that more than one part of the UI
+// needs: who they are, their bookmarked slugs (for the bookmark buttons
+// everywhere and the header/sidebar badge), and their unread notification
+// count (same badge pattern). All of it client-only — the browser Supabase
+// client reads the session itself from cookies/local storage — rather than
+// read server-side in the root layout: cookies() anywhere in that tree
+// would force every route dynamic, undoing static generation for all the
+// content pages. Was called BookmarksContext until notifications made that
+// name inaccurate; this is really "the signed-in account", not one feature
+// of it.
+export function AccountProvider({ children }: { children: ReactNode }) {
   const [user, setUser] = useState<CurrentUser | null>(null)
   const [authLoading, setAuthLoading] = useState(true)
   const [bookmarks, setBookmarks] = useState<string[]>([])
@@ -44,6 +48,8 @@ export function BookmarksProvider({ children }: { children: ReactNode }) {
   // react-hooks/set-state-in-effect flags; every setState here happens
   // inside a callback instead — a promise resolution or an auth event).
   const [bookmarksForUserId, setBookmarksForUserId] = useState<string | null>(null)
+  const [unreadNotifications, setUnreadNotifications] = useState(0)
+  const [unreadForUserId, setUnreadForUserId] = useState<string | null>(null)
 
   // Auth state: initial check, then stay in sync with sign-in/out
   // (including from the sign-in/sign-up forms, which use the same
@@ -109,6 +115,32 @@ export function BookmarksProvider({ children }: { children: ReactNode }) {
     }
   }, [user])
 
+  // Unread notification count — same load-on-user-change pattern as
+  // bookmarks above. The notifications page fetches the full list itself
+  // (only needed in one place); this is just the badge count.
+  useEffect(() => {
+    if (!user) return
+    let cancelled = false
+    const supabase = createClient()
+    supabase
+      .from('notifications')
+      .select('id', { count: 'exact', head: true })
+      .is('read_at', null)
+      .then(({ count, error }) => {
+        if (cancelled) return
+        if (error) {
+          console.error('Failed to load unread notification count', error)
+          setUnreadNotifications(0)
+        } else {
+          setUnreadNotifications(count ?? 0)
+        }
+        setUnreadForUserId(user.id)
+      })
+    return () => {
+      cancelled = true
+    }
+  }, [user])
+
   async function toggleBookmark(slug: string) {
     if (!user) return
     const supabase = createClient()
@@ -139,30 +171,55 @@ export function BookmarksProvider({ children }: { children: ReactNode }) {
     }
   }
 
-  // Both derived rather than tracked with their own setState calls (see
-  // the effects above): visibleBookmarks resets to [] as soon as `user`
-  // is null, without needing an explicit reset in the sign-out case;
-  // bookmarksLoading is true exactly when `bookmarks` doesn't yet
-  // correspond to the signed-in user (covers both "still fetching" and
-  // "just switched accounts").
+  // Called by the notifications page after marking rows read there — kept
+  // here (rather than each page doing its own write) so the header/sidebar
+  // badge updates in the same action instead of waiting for a refetch.
+  async function markNotificationsRead(ids: number[]) {
+    if (!user || ids.length === 0) return
+    const supabase = createClient()
+    setUnreadNotifications((n) => Math.max(0, n - ids.length))
+    const { error } = await supabase
+      .from('notifications')
+      .update({ read_at: new Date().toISOString() })
+      .in('id', ids)
+      .is('read_at', null)
+    if (error) {
+      console.error('Failed to mark notifications read', error)
+      setUnreadNotifications((n) => n + ids.length)
+    }
+  }
+
+  // All three derived rather than reset via setState when signed out (see
+  // the effects above) — stale rows from a previous session just sit
+  // unused until the next successful fetch overwrites them.
   const visibleBookmarks = user ? bookmarks : []
   const bookmarksLoading = Boolean(user) && bookmarksForUserId !== user?.id
+  const visibleUnreadNotifications = user && unreadForUserId === user.id ? unreadNotifications : 0
 
   function isBookmarked(slug: string) {
     return visibleBookmarks.includes(slug)
   }
 
   return (
-    <BookmarksContext.Provider
-      value={{ user, authLoading, bookmarks: visibleBookmarks, bookmarksLoading, toggleBookmark, isBookmarked }}
+    <AccountContext.Provider
+      value={{
+        user,
+        authLoading,
+        bookmarks: visibleBookmarks,
+        bookmarksLoading,
+        toggleBookmark,
+        isBookmarked,
+        unreadNotifications: visibleUnreadNotifications,
+        markNotificationsRead,
+      }}
     >
       {children}
-    </BookmarksContext.Provider>
+    </AccountContext.Provider>
   )
 }
 
-export function useBookmarks() {
-  const ctx = useContext(BookmarksContext)
-  if (!ctx) throw new Error('useBookmarks must be used within a BookmarksProvider')
+export function useAccount() {
+  const ctx = useContext(AccountContext)
+  if (!ctx) throw new Error('useAccount must be used within an AccountProvider')
   return ctx
 }
