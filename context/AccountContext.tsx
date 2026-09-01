@@ -13,6 +13,8 @@ interface AccountContextValue {
   isBookmarked: (slug: string) => boolean
   unreadNotifications: number
   markNotificationsRead: (ids: number[]) => void
+  unreadMessages: number
+  refreshUnreadMessages: () => void
 }
 
 const AccountContext = createContext<AccountContextValue | null>(null)
@@ -50,6 +52,8 @@ export function AccountProvider({ children }: { children: ReactNode }) {
   const [bookmarksForUserId, setBookmarksForUserId] = useState<string | null>(null)
   const [unreadNotifications, setUnreadNotifications] = useState(0)
   const [unreadForUserId, setUnreadForUserId] = useState<string | null>(null)
+  const [unreadMessages, setUnreadMessages] = useState(0)
+  const [unreadMessagesForUserId, setUnreadMessagesForUserId] = useState<string | null>(null)
 
   // Auth state: initial check, then stay in sync with sign-in/out
   // (including from the sign-in/sign-up forms, which use the same
@@ -141,6 +145,49 @@ export function AccountProvider({ children }: { children: ReactNode }) {
     }
   }, [user])
 
+  // Unread DM count — unlike notifications, this needs to be re-fetchable
+  // on demand (refreshUnreadMessages below), not just loaded once per
+  // user: new messages can arrive while the message thread itself is
+  // open (handled there via realtime) and the badge needs to catch up
+  // without waiting for a full remount. The query is duplicated between
+  // the effect and refreshUnreadMessages rather than shared through a
+  // named helper: react-hooks/set-state-in-effect only recognizes a
+  // setState call as safe when it's directly inside a .then() callback
+  // written in the effect body, not one reached by calling a separately
+  // defined function (even though that function is just as safe) — same
+  // reasoning as the bookmarks/notifications effects above.
+  useEffect(() => {
+    if (!user) return
+    const supabase = createClient()
+    supabase
+      .from('messages')
+      .select('id', { count: 'exact', head: true })
+      .is('read_at', null)
+      .neq('sender_id', user.id)
+      .then(({ count, error }) => {
+        if (error) {
+          console.error('Failed to load unread message count', error)
+          setUnreadMessages(0)
+        } else {
+          setUnreadMessages(count ?? 0)
+        }
+        setUnreadMessagesForUserId(user.id)
+      })
+  }, [user])
+
+  function refreshUnreadMessages() {
+    if (!user) return
+    const supabase = createClient()
+    supabase
+      .from('messages')
+      .select('id', { count: 'exact', head: true })
+      .is('read_at', null)
+      .neq('sender_id', user.id)
+      .then(({ count, error }) => {
+        if (!error) setUnreadMessages(count ?? 0)
+      })
+  }
+
   async function toggleBookmark(slug: string) {
     if (!user) return
     const supabase = createClient()
@@ -195,6 +242,7 @@ export function AccountProvider({ children }: { children: ReactNode }) {
   const visibleBookmarks = user ? bookmarks : []
   const bookmarksLoading = Boolean(user) && bookmarksForUserId !== user?.id
   const visibleUnreadNotifications = user && unreadForUserId === user.id ? unreadNotifications : 0
+  const visibleUnreadMessages = user && unreadMessagesForUserId === user.id ? unreadMessages : 0
 
   function isBookmarked(slug: string) {
     return visibleBookmarks.includes(slug)
@@ -211,6 +259,8 @@ export function AccountProvider({ children }: { children: ReactNode }) {
         isBookmarked,
         unreadNotifications: visibleUnreadNotifications,
         markNotificationsRead,
+        unreadMessages: visibleUnreadMessages,
+        refreshUnreadMessages,
       }}
     >
       {children}

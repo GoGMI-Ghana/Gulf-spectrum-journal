@@ -29,7 +29,7 @@ function SidebarLink({
 }
 
 export default function DashboardSidebar() {
-  const { user, bookmarks, unreadNotifications } = useAccount()
+  const { user, bookmarks, unreadNotifications, unreadMessages } = useAccount()
   const router = useRouter()
   const pathname = usePathname()
   const displayName = user?.fullName || user?.email || 'Guest Researcher'
@@ -72,7 +72,7 @@ export default function DashboardSidebar() {
         )}
       </div>
 
-      <SidebarLink href="/contact" icon={Mail} label="Messages" trailing={0} />
+      <SidebarLink href="/messages" icon={Mail} label="Messages" trailing={unreadMessages} />
       <SidebarLink href="/notifications" icon={Bell} label="Notifications" trailing={unreadNotifications} />
       <SidebarLink href="/bookmarks" icon={Bookmark} label="Bookmarks" trailing={bookmarks.length} />
       <SidebarLink href="/authors" icon={UserCircle} label="Author Profiles" />

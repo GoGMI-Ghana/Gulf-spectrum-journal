@@ -109,7 +109,7 @@ export default function AccountMenu() {
   const [notice, setNotice] = useState(false)
   const ref = useRef<HTMLDivElement>(null)
   const router = useRouter()
-  const { user, bookmarks, unreadNotifications } = useAccount()
+  const { user, bookmarks, unreadNotifications, unreadMessages } = useAccount()
 
   useEffect(() => {
     function onClickOutside(e: MouseEvent) {
@@ -151,10 +151,8 @@ export default function AccountMenu() {
         <div className="absolute right-0 top-full mt-2 w-72 bg-white border border-slate-200 shadow-lg z-50 text-ink max-h-[80vh] overflow-y-auto">
           {notice && (
             <p className="p-4 text-xs text-slate-600 leading-relaxed bg-soft-gold/40 border-b border-slate-200">
-              Messages and account settings aren&apos;t built yet — messages specifically need
-              an editorial CMS with someone on the other end to send them, a separate build.
-              Signing in, editing your profile, bookmarking articles, and notifications all
-              work for real, though.
+              Account Settings isn&apos;t built yet. Everything else here — signing in, your
+              profile, bookmarks, messages, and notifications — works for real.
             </p>
           )}
 
@@ -180,7 +178,7 @@ export default function AccountMenu() {
           <SectionLabel>Account</SectionLabel>
           <div className="pb-2">
             <MenuLink href="/profile" icon={User} label="My Profile" onNavigate={close} />
-            <LockedItem icon={Mail} label="Messages" onClick={() => setNotice(true)} />
+            <MenuLink href="/messages" icon={Mail} label="Messages" badge={unreadMessages} onNavigate={close} />
             <MenuLink
               href="/notifications"
               icon={Bell}
