@@ -83,30 +83,8 @@ function MenuButton({
   )
 }
 
-function LockedItem({
-  icon: Icon,
-  label,
-  onClick,
-}: {
-  icon: ComponentType<{ size?: number; className?: string }>
-  label: string
-  onClick: () => void
-}) {
-  return (
-    <button
-      onClick={onClick}
-      className="w-full flex items-center gap-3 px-4 py-2 text-sm text-slate-500 hover:bg-soft-gold/50 text-left"
-    >
-      <Icon size={16} className="text-slate-400 shrink-0" />
-      <span className="flex-1">{label}</span>
-      <Lock size={13} className="text-slate-300 shrink-0" />
-    </button>
-  )
-}
-
 export default function AccountMenu() {
   const [open, setOpen] = useState(false)
-  const [notice, setNotice] = useState(false)
   const ref = useRef<HTMLDivElement>(null)
   const router = useRouter()
   const { user, bookmarks, unreadNotifications, unreadMessages } = useAccount()
@@ -115,7 +93,6 @@ export default function AccountMenu() {
     function onClickOutside(e: MouseEvent) {
       if (ref.current && !ref.current.contains(e.target as Node)) {
         setOpen(false)
-        setNotice(false)
       }
     }
     document.addEventListener('mousedown', onClickOutside)
@@ -124,7 +101,6 @@ export default function AccountMenu() {
 
   function close() {
     setOpen(false)
-    setNotice(false)
   }
 
   async function handleSignOut() {
@@ -149,13 +125,6 @@ export default function AccountMenu() {
 
       {open && (
         <div className="absolute right-0 top-full mt-2 w-72 bg-white border border-slate-200 shadow-lg z-50 text-ink max-h-[80vh] overflow-y-auto">
-          {notice && (
-            <p className="p-4 text-xs text-slate-600 leading-relaxed bg-soft-gold/40 border-b border-slate-200">
-              Account Settings isn&apos;t built yet. Everything else here — signing in, your
-              profile, bookmarks, messages, and notifications — works for real.
-            </p>
-          )}
-
           {/* Identity header */}
           <div className="flex items-center gap-3 p-4 border-b border-slate-200">
             <Initials name={displayName} size="sm" />
@@ -186,7 +155,7 @@ export default function AccountMenu() {
               badge={unreadNotifications}
               onNavigate={close}
             />
-            <LockedItem icon={Settings} label="Account Settings" onClick={() => setNotice(true)} />
+            <MenuLink href="/account-settings" icon={Settings} label="Account Settings" onNavigate={close} />
             {user ? (
               <MenuButton icon={LogOut} label="Sign Out" onClick={handleSignOut} />
             ) : (
