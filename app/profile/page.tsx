@@ -13,7 +13,7 @@ export default function Profile() {
       <PageBanner
         eyebrow="Account"
         title="My Profile"
-        description="Your name and account details. This is a free reader account — separate from GoGMI Membership."
+        description="Your name and account details."
       />
 
       <section className="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8 py-14">

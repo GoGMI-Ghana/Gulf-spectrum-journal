@@ -10,7 +10,7 @@ export default function ToolsGrid() {
   const tools = [
     { href: '/search', icon: Search, title: 'Search', body: 'Find articles by title, abstract, keyword, or author.' },
     { href: '/citations', icon: Quote, title: 'Citations', body: 'Copy a ready-made citation for any published article.' },
-    { href: '/bookmarks', icon: Bookmark, title: 'Bookmarks', body: `${bookmarks.length} saved article${bookmarks.length === 1 ? '' : 's'} in this browser.` },
+    { href: '/bookmarks', icon: Bookmark, title: 'Bookmarks', body: `${bookmarks.length} saved article${bookmarks.length === 1 ? '' : 's'} in your account.` },
     { href: '/submissions', icon: Upload, title: 'Upload / Submit', body: 'Start a submission for a future issue.' },
     { href: '/analytics', icon: BarChart3, title: 'Analytics', body: 'Readership and engagement across the journal.' },
   ]

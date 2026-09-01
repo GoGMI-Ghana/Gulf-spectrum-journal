@@ -64,16 +64,6 @@ export interface Article {
   references: string[]
 }
 
-export interface MembershipTier {
-  slug: string
-  name: string
-  subtitle?: string
-  price: string
-  audience: string
-  benefits: string[]
-  featured?: boolean
-}
-
 export interface DonationSplit {
   authorPercent: number
   platformPercent: number

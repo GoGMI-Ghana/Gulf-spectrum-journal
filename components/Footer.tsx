@@ -40,7 +40,6 @@ export default function Footer() {
         <div>
           <h3 className="kicker text-white mb-4">More</h3>
           <ul className="space-y-2.5 text-sm">
-            <li><Link href="/membership" className="hover:text-gold">GoGMI Membership</Link></li>
             <li><Link href="/bookmarks" className="hover:text-gold">Bookmarks</Link></li>
             <li>
               <Link href="/contact" className="hover:text-gold">Contact the editorial office</Link>

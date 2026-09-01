@@ -186,15 +186,15 @@ export default async function Citations() {
           <div>
             <h3 className="font-display text-2xl text-gold mb-2">Support the research behind these citations</h3>
             <p className="text-white/75 max-w-xl">
-              Become a GoGMI member to back the researchers publishing in Gulf Spectrum
-              Journal — or donate directly to an article&apos;s authors from its page.
+              Donate directly to an article&apos;s authors from its page — most of every
+              contribution goes straight to the researchers who wrote it.
             </p>
           </div>
           <Link
-            href="/membership"
+            href="/issues"
             className="shrink-0 bg-gold hover:bg-soft-gold text-ink font-semibold px-6 py-3 transition-colors tracking-wide whitespace-nowrap"
           >
-            Explore Membership →
+            Browse Articles →
           </Link>
         </div>
       </section>

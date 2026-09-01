@@ -4,7 +4,7 @@
 // is async, which is why call sites under app/ never needed to change
 // shape when this file moved off static arrays — only this file did.
 //
-// journal, membershipTiers, and donationSplit live in lib/staticContent.ts,
+// journal and donationSplit live in lib/staticContent.ts,
 // not here — this file imports lib/supabase/server.ts (server-only, via
 // next/headers), which makes it and everything it exports unusable from a
 // Client Component. Header and SupportBox are 'use client' and read

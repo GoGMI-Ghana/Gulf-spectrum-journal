@@ -13,7 +13,7 @@ export default function SignUp() {
       <PageBanner
         eyebrow="Account"
         title="Create Account"
-        description="Free — lets you bookmark articles and access your dashboard. This is separate from GoGMI Membership, which supports the journal directly."
+        description="Free — lets you bookmark articles, message other members, and access your dashboard."
       />
       <section className="max-w-md mx-auto px-4 sm:px-6 lg:px-8 py-14">
         <SignUpForm />

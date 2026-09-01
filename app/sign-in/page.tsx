@@ -26,7 +26,7 @@ export default async function SignIn({
       <PageBanner
         eyebrow="Account"
         title="Sign In"
-        description="Sign in to bookmark articles and access your dashboard. This is a free reader account, separate from GoGMI Membership."
+        description="Sign in to bookmark articles, message other members, and access your dashboard."
       />
       <section className="max-w-md mx-auto px-4 sm:px-6 lg:px-8 py-14">
         <SignInForm redirectTo={redirectTo} />

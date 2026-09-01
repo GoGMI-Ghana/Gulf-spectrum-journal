@@ -132,12 +132,6 @@ export default function Header() {
           </div>
 
           <div className="hidden md:flex items-center gap-4 border-l border-white/20 pl-4">
-            <Link
-              href="/membership"
-              className="bg-gold hover:bg-soft-gold text-ink font-semibold text-sm px-5 py-2 transition-colors tracking-wide whitespace-nowrap"
-            >
-              Try Premium
-            </Link>
             <AccountMenu />
           </div>
 
@@ -172,13 +166,6 @@ export default function Header() {
               .map((item) => (
                 <NavItem key={item.href} href={item.href} label={item.label} onClick={() => setOpen(false)} />
               ))}
-            <Link
-              href="/membership"
-              onClick={() => setOpen(false)}
-              className="border border-gold text-gold text-sm px-4 py-2 text-center mt-1"
-            >
-              Try Premium
-            </Link>
           </div>
         </nav>
       )}

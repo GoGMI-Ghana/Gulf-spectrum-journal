@@ -12,7 +12,6 @@ import {
   Settings,
   LogIn,
   LogOut,
-  Lock,
   LayoutDashboard,
   Bookmark,
   Quote,
@@ -23,7 +22,6 @@ import {
   Upload,
   Grid3x3,
   MessageCircle,
-  Award,
 } from 'lucide-react'
 import { useAccount } from '@/context/AccountContext'
 import { createClient } from '@/lib/supabase/client'
@@ -134,16 +132,6 @@ export default function AccountMenu() {
             </div>
           </div>
 
-          <div className="p-3 border-b border-slate-200">
-            <Link
-              href="/membership"
-              onClick={close}
-              className="flex items-center justify-center gap-2 bg-royal-blue hover:bg-ocean-blue text-white text-sm font-semibold px-4 py-2.5 transition-colors"
-            >
-              <Lock size={13} /> Become a Member
-            </Link>
-          </div>
-
           <SectionLabel>Account</SectionLabel>
           <div className="pb-2">
             <MenuLink href="/profile" icon={User} label="My Profile" onNavigate={close} />
@@ -186,7 +174,6 @@ export default function AccountMenu() {
           <div className="pb-3">
             <MenuLink href="/tools" icon={Grid3x3} label="Tools" onNavigate={close} />
             <MenuLink href="/contact" icon={MessageCircle} label="Contact" onNavigate={close} />
-            <MenuLink href="/membership" icon={Award} label="GoGMI Membership" onNavigate={close} />
           </div>
         </div>
       )}

@@ -8,6 +8,7 @@ import BookmarkButton from '@/components/BookmarkButton'
 import ShareBar from '@/components/ShareBar'
 import CiteBox from '@/components/CiteBox'
 import SupportBox from '@/components/SupportBox'
+import DonationThanksBanner from '@/components/DonationThanksBanner'
 import ArticleViewLogger from '@/components/ArticleViewLogger'
 
 export async function generateStaticParams() {
@@ -109,7 +110,8 @@ export default async function ArticleDetail({ params }: { params: Promise<{ slug
       </div>
 
       <CiteBox citation={citation} />
-      <SupportBox authorNames={authorNames} />
+      <DonationThanksBanner />
+      <SupportBox authorNames={authorNames} articleSlug={article.slug} />
 
       {/* Body */}
       <div className="prose max-w-none">
