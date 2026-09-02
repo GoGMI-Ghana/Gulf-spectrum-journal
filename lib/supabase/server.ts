@@ -1,9 +1,7 @@
 // Server-side Supabase client — for use inside Server Components, Route
 // Handlers, and Server Actions. Reads/writes the auth cookie so a signed-in
-// session persists across server-rendered requests.
-//
-// Not wired to a live project yet — see lib/supabase/client.ts for the
-// same caveat.
+// session persists across server-rendered requests. Live: points at the
+// same self-hosted instance as lib/supabase/client.ts.
 
 import { createServerClient } from '@supabase/ssr'
 import { cookies } from 'next/headers'

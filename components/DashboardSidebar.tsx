@@ -2,7 +2,7 @@
 
 import Link from 'next/link'
 import { usePathname, useRouter } from 'next/navigation'
-import { Mail, Bell, Bookmark, UserCircle, LogOut } from 'lucide-react'
+import { Mail, Bell, Bookmark, UserCircle, LogOut, ShieldCheck } from 'lucide-react'
 import type { ComponentType } from 'react'
 import { useAccount } from '@/context/AccountContext'
 import { createClient } from '@/lib/supabase/client'
@@ -29,7 +29,7 @@ function SidebarLink({
 }
 
 export default function DashboardSidebar() {
-  const { user, bookmarks, unreadNotifications, unreadMessages } = useAccount()
+  const { user, isEditor, bookmarks, unreadNotifications, unreadMessages } = useAccount()
   const router = useRouter()
   const pathname = usePathname()
   const displayName = user?.fullName || user?.email || 'Guest Researcher'
@@ -76,6 +76,7 @@ export default function DashboardSidebar() {
       <SidebarLink href="/notifications" icon={Bell} label="Notifications" trailing={unreadNotifications} />
       <SidebarLink href="/bookmarks" icon={Bookmark} label="Bookmarks" trailing={bookmarks.length} />
       <SidebarLink href="/authors" icon={UserCircle} label="Author Profiles" />
+      {isEditor && <SidebarLink href="/admin" icon={ShieldCheck} label="Editorial Admin" />}
 
       <Link
         href="/submissions"

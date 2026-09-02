@@ -22,6 +22,7 @@ import {
   Upload,
   Grid3x3,
   MessageCircle,
+  ShieldCheck,
 } from 'lucide-react'
 import { useAccount } from '@/context/AccountContext'
 import { createClient } from '@/lib/supabase/client'
@@ -85,7 +86,7 @@ export default function AccountMenu() {
   const [open, setOpen] = useState(false)
   const ref = useRef<HTMLDivElement>(null)
   const router = useRouter()
-  const { user, bookmarks, unreadNotifications, unreadMessages } = useAccount()
+  const { user, isEditor, bookmarks, unreadNotifications, unreadMessages } = useAccount()
 
   useEffect(() => {
     function onClickOutside(e: MouseEvent) {
@@ -153,6 +154,15 @@ export default function AccountMenu() {
               </>
             )}
           </div>
+
+          {isEditor && (
+            <>
+              <SectionLabel>Editorial</SectionLabel>
+              <div className="pb-2">
+                <MenuLink href="/admin" icon={ShieldCheck} label="Editorial Admin" onNavigate={close} />
+              </div>
+            </>
+          )}
 
           <SectionLabel>My Research</SectionLabel>
           <div className="pb-2">

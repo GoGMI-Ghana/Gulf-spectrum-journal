@@ -2,11 +2,13 @@
 
 import { createContext, useContext, useEffect, useState, type ReactNode } from 'react'
 import { createClient } from '@/lib/supabase/client'
-import type { CurrentUser } from '@/lib/types'
+import type { CurrentUser, UserRole } from '@/lib/types'
 
 interface AccountContextValue {
   user: CurrentUser | null
   authLoading: boolean
+  role: UserRole | null
+  isEditor: boolean
   bookmarks: string[]
   bookmarksLoading: boolean
   toggleBookmark: (slug: string) => void
@@ -54,6 +56,8 @@ export function AccountProvider({ children }: { children: ReactNode }) {
   const [unreadForUserId, setUnreadForUserId] = useState<string | null>(null)
   const [unreadMessages, setUnreadMessages] = useState(0)
   const [unreadMessagesForUserId, setUnreadMessagesForUserId] = useState<string | null>(null)
+  const [role, setRole] = useState<UserRole | null>(null)
+  const [roleForUserId, setRoleForUserId] = useState<string | null>(null)
 
   // Auth state: initial check, then stay in sync with sign-in/out
   // (including from the sign-in/sign-up forms, which use the same
@@ -175,6 +179,35 @@ export function AccountProvider({ children }: { children: ReactNode }) {
       })
   }, [user])
 
+  // Editorial role — same load-on-user-change pattern as bookmarks/
+  // notifications above. Read once per session rather than re-checked per
+  // /admin page, since a role change (granted by another admin) only
+  // takes effect on this user's next sign-in anyway — profiles.role isn't
+  // realtime-subscribed here.
+  useEffect(() => {
+    if (!user) return
+    let cancelled = false
+    const supabase = createClient()
+    supabase
+      .from('profiles')
+      .select('role')
+      .eq('id', user.id)
+      .single()
+      .then(({ data, error }) => {
+        if (cancelled) return
+        if (error) {
+          console.error('Failed to load account role', error)
+          setRole(null)
+        } else {
+          setRole((data?.role as UserRole | undefined) ?? null)
+        }
+        setRoleForUserId(user.id)
+      })
+    return () => {
+      cancelled = true
+    }
+  }, [user])
+
   function refreshUnreadMessages() {
     if (!user) return
     const supabase = createClient()
@@ -243,6 +276,8 @@ export function AccountProvider({ children }: { children: ReactNode }) {
   const bookmarksLoading = Boolean(user) && bookmarksForUserId !== user?.id
   const visibleUnreadNotifications = user && unreadForUserId === user.id ? unreadNotifications : 0
   const visibleUnreadMessages = user && unreadMessagesForUserId === user.id ? unreadMessages : 0
+  const visibleRole = user && roleForUserId === user.id ? role : null
+  const isEditor = visibleRole === 'editor' || visibleRole === 'admin'
 
   function isBookmarked(slug: string) {
     return visibleBookmarks.includes(slug)
@@ -253,6 +288,8 @@ export function AccountProvider({ children }: { children: ReactNode }) {
       value={{
         user,
         authLoading,
+        role: visibleRole,
+        isEditor,
         bookmarks: visibleBookmarks,
         bookmarksLoading,
         toggleBookmark,

@@ -78,3 +78,10 @@ export interface CurrentUser {
   email: string
   fullName: string | null
 }
+
+// Mirrors the user_role enum in the database. 'editor' and 'admin' can
+// reach /admin; only 'admin' can change another account's role (see
+// app/api/admin/users — profiles.role itself is revoked from
+// authenticated/anon so nothing short of the service-role admin client
+// can write it, even for a user's own row).
+export type UserRole = 'reader' | 'author' | 'editor' | 'admin'
