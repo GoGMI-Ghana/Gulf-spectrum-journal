@@ -112,6 +112,12 @@ export default function SignUpForm() {
             Sign in
           </Link>
         </p>
+        <p className="text-sm text-slate-500 text-center">
+          Prefer not to set a password?{' '}
+          <Link href="/sign-in" className="text-ocean-blue hover:underline">
+            Get an emailed code instead
+          </Link>
+        </p>
       </form>
     </div>
   )

@@ -1,0 +1,60 @@
+<!--
+  Custom GoTrue "Magic Link" email template — used for both
+  supabase.auth.signInWithOtp() (email code sign-in, see EmailOtpForm.tsx)
+  and classic magic-link flows. GoTrue fetches this by URL at send time
+  (GOTRUE_MAILER_TEMPLATES_MAGIC_LINK in the self-hosted docker/.env) and
+  substitutes the {{ . }} placeholders below.
+
+  The stock default template only shows a clickable link — no visible
+  code — which doesn't work for a "type in a 6-digit code" flow. This
+  shows {{ .Token }} prominently instead, with the link kept as a
+  fallback for anyone who'd rather click through.
+
+  Table-based layout and inline styles throughout: email clients (Outlook
+  especially) don't reliably support external/embedded <style> blocks or
+  modern CSS, so this deliberately doesn't use the app's own Tailwind
+  classes or globals.css.
+-->
+<!DOCTYPE html>
+<html>
+  <body style="margin:0; padding:0; background-color:#f1f5f9; font-family: Georgia, 'Times New Roman', serif;">
+    <table role="presentation" width="100%" cellpadding="0" cellspacing="0" style="background-color:#f1f5f9; padding:32px 16px;">
+      <tr>
+        <td align="center">
+          <table role="presentation" width="480" cellpadding="0" cellspacing="0" style="background-color:#ffffff; max-width:480px; width:100%;">
+            <tr>
+              <td style="background-color:#003366; padding:24px 32px;">
+                <img src="https://gulf-spectrum-journal.vercel.app/gogmi-logo.png" width="40" height="40" alt="GoGMI" style="display:block;" />
+                <div style="color:#ffffff; font-size:18px; font-weight:bold; margin-top:10px;">Gulf Spectrum Journal</div>
+              </td>
+            </tr>
+            <tr>
+              <td style="padding:32px;">
+                <p style="font-size:15px; color:#12202e; line-height:1.6; margin:0 0 24px;">
+                  Use this code to sign in to your Gulf Spectrum Journal account. It expires shortly, so enter it soon.
+                </p>
+                <div style="background-color:#f5e6d3; text-align:center; padding:20px; margin-bottom:24px;">
+                  <span style="font-size:32px; font-weight:bold; letter-spacing:0.3em; color:#003366; font-family: 'Courier New', monospace;">{{ .Token }}</span>
+                </div>
+                <p style="font-size:13px; color:#64748b; line-height:1.6; margin:0 0 8px;">
+                  Prefer not to type it in? You can also
+                  <a href="{{ .ConfirmationURL }}" style="color:#0066cc;">click here to sign in</a> directly.
+                </p>
+                <p style="font-size:13px; color:#94a3b8; line-height:1.6; margin:0;">
+                  Didn't request this? You can safely ignore this email — no account changes are made until this code is used.
+                </p>
+              </td>
+            </tr>
+            <tr>
+              <td style="padding:16px 32px; border-top:1px solid #e2e8f0;">
+                <p style="font-size:11px; color:#94a3b8; margin:0;">
+                  Gulf Spectrum Journal, a publication of the Gulf of Guinea Maritime Institute (GoGMI).
+                </p>
+              </td>
+            </tr>
+          </table>
+        </td>
+      </tr>
+    </table>
+  </body>
+</html>

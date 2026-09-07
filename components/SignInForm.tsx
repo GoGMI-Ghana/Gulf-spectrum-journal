@@ -5,9 +5,11 @@ import Link from 'next/link'
 import { useRouter } from 'next/navigation'
 import { createClient } from '@/lib/supabase/client'
 import GoogleSignInButton from './GoogleSignInButton'
+import EmailOtpForm from './EmailOtpForm'
 
 export default function SignInForm({ redirectTo }: { redirectTo: string }) {
   const router = useRouter()
+  const [mode, setMode] = useState<'password' | 'otp'>('password')
   const [email, setEmail] = useState('')
   const [password, setPassword] = useState('')
   const [error, setError] = useState<string | null>(null)
@@ -41,56 +43,81 @@ export default function SignInForm({ redirectTo }: { redirectTo: string }) {
         <div className="flex-1 h-px bg-slate-200" />
       </div>
 
-      <form onSubmit={handleSubmit} className="space-y-4">
-        {error && (
-          <p className="text-sm text-red-700 bg-red-50 border border-red-200 px-3 py-2">{error}</p>
-        )}
-
-        <div>
-          <label htmlFor="email" className="block text-sm font-medium text-slate-700 mb-1">
-            Email
-          </label>
-          <input
-            id="email"
-            type="email"
-            autoComplete="email"
-            required
-            value={email}
-            onChange={(e) => setEmail(e.target.value)}
-            className="w-full border border-slate-300 px-3 py-2 text-sm focus:outline-none focus:border-royal-blue"
-          />
-        </div>
-
-        <div>
-          <label htmlFor="password" className="block text-sm font-medium text-slate-700 mb-1">
-            Password
-          </label>
-          <input
-            id="password"
-            type="password"
-            autoComplete="current-password"
-            required
-            value={password}
-            onChange={(e) => setPassword(e.target.value)}
-            className="w-full border border-slate-300 px-3 py-2 text-sm focus:outline-none focus:border-royal-blue"
-          />
-        </div>
-
+      <div className="flex gap-1 border-b border-slate-200">
         <button
-          type="submit"
-          disabled={loading}
-          className="w-full bg-royal-blue hover:bg-ocean-blue text-white font-semibold px-4 py-2.5 transition-colors disabled:opacity-60"
+          type="button"
+          onClick={() => setMode('password')}
+          className={`px-3 py-2 text-sm font-medium border-b-2 -mb-px transition-colors ${
+            mode === 'password' ? 'border-royal-blue text-royal-blue' : 'border-transparent text-slate-500 hover:text-royal-blue'
+          }`}
         >
-          {loading ? 'Signing in…' : 'Sign In'}
+          Password
         </button>
+        <button
+          type="button"
+          onClick={() => setMode('otp')}
+          className={`px-3 py-2 text-sm font-medium border-b-2 -mb-px transition-colors ${
+            mode === 'otp' ? 'border-royal-blue text-royal-blue' : 'border-transparent text-slate-500 hover:text-royal-blue'
+          }`}
+        >
+          Email code
+        </button>
+      </div>
 
-        <p className="text-sm text-slate-500 text-center">
-          New here?{' '}
-          <Link href="/sign-up" className="text-ocean-blue hover:underline">
-            Create an account
-          </Link>
-        </p>
-      </form>
+      {mode === 'otp' ? (
+        <EmailOtpForm redirectTo={redirectTo} />
+      ) : (
+        <form onSubmit={handleSubmit} className="space-y-4">
+          {error && (
+            <p className="text-sm text-red-700 bg-red-50 border border-red-200 px-3 py-2">{error}</p>
+          )}
+
+          <div>
+            <label htmlFor="email" className="block text-sm font-medium text-slate-700 mb-1">
+              Email
+            </label>
+            <input
+              id="email"
+              type="email"
+              autoComplete="email"
+              required
+              value={email}
+              onChange={(e) => setEmail(e.target.value)}
+              className="w-full border border-slate-300 px-3 py-2 text-sm focus:outline-none focus:border-royal-blue"
+            />
+          </div>
+
+          <div>
+            <label htmlFor="password" className="block text-sm font-medium text-slate-700 mb-1">
+              Password
+            </label>
+            <input
+              id="password"
+              type="password"
+              autoComplete="current-password"
+              required
+              value={password}
+              onChange={(e) => setPassword(e.target.value)}
+              className="w-full border border-slate-300 px-3 py-2 text-sm focus:outline-none focus:border-royal-blue"
+            />
+          </div>
+
+          <button
+            type="submit"
+            disabled={loading}
+            className="w-full bg-royal-blue hover:bg-ocean-blue text-white font-semibold px-4 py-2.5 transition-colors disabled:opacity-60"
+          >
+            {loading ? 'Signing in…' : 'Sign In'}
+          </button>
+        </form>
+      )}
+
+      <p className="text-sm text-slate-500 text-center">
+        New here?{' '}
+        <Link href="/sign-up" className="text-ocean-blue hover:underline">
+          Create an account
+        </Link>
+      </p>
     </div>
   )
 }
