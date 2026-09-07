@@ -9,7 +9,7 @@
 import Link from 'next/link'
 import { usePathname } from 'next/navigation'
 import type { ComponentType, ReactNode } from 'react'
-import { LayoutDashboard, Newspaper, BookOpen, Tags, Users, UserCog, HeartHandshake } from 'lucide-react'
+import { LayoutDashboard, Newspaper, BookOpen, Tags, Users, UserCog, HeartHandshake, Award } from 'lucide-react'
 import { useAccount } from '@/context/AccountContext'
 
 const NAV: { href: string; label: string; icon: ComponentType<{ size?: number; className?: string }>; end?: boolean }[] = [
@@ -97,7 +97,12 @@ export default function AdminGate({ children }: { children: ReactNode }) {
         {NAV.map((item) => (
           <NavLink key={item.href} {...item} />
         ))}
-        {role === 'admin' && <NavLink href="/admin/users" label="Users & Roles" icon={UserCog} />}
+        {role === 'admin' && (
+          <>
+            <NavLink href="/admin/board" label="Editorial Board" icon={Award} />
+            <NavLink href="/admin/users" label="Users & Roles" icon={UserCog} />
+          </>
+        )}
       </aside>
       <div className="min-w-0">{children}</div>
     </div>

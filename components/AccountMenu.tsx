@@ -23,10 +23,12 @@ import {
   Grid3x3,
   MessageCircle,
   ShieldCheck,
+  Award,
 } from 'lucide-react'
 import { useAccount } from '@/context/AccountContext'
 import { createClient } from '@/lib/supabase/client'
 import Initials from './Initials'
+import BoardBadge from './BoardBadge'
 
 function SectionLabel({ children }: { children: string }) {
   return <p className="kicker text-slate-400 px-4 pt-4 pb-1.5">{children}</p>
@@ -86,7 +88,7 @@ export default function AccountMenu() {
   const [open, setOpen] = useState(false)
   const ref = useRef<HTMLDivElement>(null)
   const router = useRouter()
-  const { user, isEditor, bookmarks, unreadNotifications, unreadMessages } = useAccount()
+  const { user, isEditor, boardTitle, bookmarks, unreadNotifications, unreadMessages } = useAccount()
 
   useEffect(() => {
     function onClickOutside(e: MouseEvent) {
@@ -128,7 +130,10 @@ export default function AccountMenu() {
           <div className="flex items-center gap-3 p-4 border-b border-slate-200">
             <Initials name={displayName} size="sm" />
             <div>
-              <p className="text-sm font-semibold text-royal-blue">{displayName}</p>
+              <p className="text-sm font-semibold text-royal-blue flex items-center gap-1.5">
+                {displayName}
+                {boardTitle && <BoardBadge title={boardTitle} />}
+              </p>
               <p className="text-xs text-slate-400">{user ? user.email : 'Not signed in'}</p>
             </div>
           </div>
@@ -177,6 +182,7 @@ export default function AccountMenu() {
             <MenuLink href="/issues" icon={Newspaper} label="Articles and Issues" onNavigate={close} />
             <MenuLink href="/topics" icon={Tags} label="Topics" onNavigate={close} />
             <MenuLink href="/authors" icon={Users} label="Authors" onNavigate={close} />
+            <MenuLink href="/editorial-board" icon={Award} label="Editorial Board" onNavigate={close} />
             <MenuLink href="/submissions" icon={Upload} label="Submission Guidelines" onNavigate={close} />
           </div>
 

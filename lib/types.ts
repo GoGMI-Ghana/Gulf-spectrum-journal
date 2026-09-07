@@ -24,6 +24,12 @@ export interface Author {
   affiliation: string
   bio: string
   photo: string | null
+  // Set only when this author is linked (authors.user_id) to a profile
+  // that currently holds a board_title — i.e. this person is both a
+  // contributing author and, separately, on the editorial board today.
+  // Most authors have no linked account at all, so this is null far
+  // more often than not.
+  boardTitle: string | null
 }
 
 export interface Topic {
@@ -77,6 +83,19 @@ export interface CurrentUser {
   id: string
   email: string
   fullName: string | null
+}
+
+// A profile currently holding a board_title, for the public /editorial-board
+// directory. authorSlug is set only if that profile is also linked to an
+// Author record (profiles.author_id) — being a board member never requires
+// having authored anything, so this is often null.
+export interface BoardMember {
+  id: string
+  name: string
+  title: string
+  authorSlug: string | null
+  photo: string | null
+  bio: string | null
 }
 
 // Mirrors the user_role enum in the database. 'editor' and 'admin' can

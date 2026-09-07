@@ -9,6 +9,7 @@ interface AccountContextValue {
   authLoading: boolean
   role: UserRole | null
   isEditor: boolean
+  boardTitle: string | null
   bookmarks: string[]
   bookmarksLoading: boolean
   toggleBookmark: (slug: string) => void
@@ -57,6 +58,7 @@ export function AccountProvider({ children }: { children: ReactNode }) {
   const [unreadMessages, setUnreadMessages] = useState(0)
   const [unreadMessagesForUserId, setUnreadMessagesForUserId] = useState<string | null>(null)
   const [role, setRole] = useState<UserRole | null>(null)
+  const [boardTitle, setBoardTitle] = useState<string | null>(null)
   const [roleForUserId, setRoleForUserId] = useState<string | null>(null)
 
   // Auth state: initial check, then stay in sync with sign-in/out
@@ -190,7 +192,7 @@ export function AccountProvider({ children }: { children: ReactNode }) {
     const supabase = createClient()
     supabase
       .from('profiles')
-      .select('role')
+      .select('role, board_title')
       .eq('id', user.id)
       .single()
       .then(({ data, error }) => {
@@ -198,8 +200,10 @@ export function AccountProvider({ children }: { children: ReactNode }) {
         if (error) {
           console.error('Failed to load account role', error)
           setRole(null)
+          setBoardTitle(null)
         } else {
           setRole((data?.role as UserRole | undefined) ?? null)
+          setBoardTitle(data?.board_title ?? null)
         }
         setRoleForUserId(user.id)
       })
@@ -278,6 +282,7 @@ export function AccountProvider({ children }: { children: ReactNode }) {
   const visibleUnreadMessages = user && unreadMessagesForUserId === user.id ? unreadMessages : 0
   const visibleRole = user && roleForUserId === user.id ? role : null
   const isEditor = visibleRole === 'editor' || visibleRole === 'admin'
+  const visibleBoardTitle = user && roleForUserId === user.id ? boardTitle : null
 
   function isBookmarked(slug: string) {
     return visibleBookmarks.includes(slug)
@@ -290,6 +295,7 @@ export function AccountProvider({ children }: { children: ReactNode }) {
         authLoading,
         role: visibleRole,
         isEditor,
+        boardTitle: visibleBoardTitle,
         bookmarks: visibleBookmarks,
         bookmarksLoading,
         toggleBookmark,

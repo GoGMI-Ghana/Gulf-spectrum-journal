@@ -19,7 +19,7 @@
 
 import { cache } from 'react'
 import { createClient } from './supabase/staticClient'
-import type { Article, ArticleSection, Author, EditorialBoardMember, Issue, Topic } from './types'
+import type { Article, ArticleSection, Author, BoardMember, EditorialBoardMember, Issue, Topic } from './types'
 
 // --- Row shapes from Supabase --------------------------------------
 
@@ -32,6 +32,11 @@ type AuthorRow = {
   affiliation: string | null
   bio: string | null
   photo_url: string | null
+  // Many-to-one via authors.user_id -> profiles.id, so PostgREST can
+  // infer this as an object or an array depending on whether generated
+  // DB types are in play — same situation as every other embed in this
+  // file, handled the same way in mapAuthorRow.
+  profile: { board_title: string | null } | { board_title: string | null }[] | null
 }
 
 type IssueRow = {
@@ -88,6 +93,10 @@ function mapTopicRow(row: TopicRow): Topic {
   return { slug: row.slug, label: row.label, description: row.description }
 }
 
+function one<T>(value: T | T[] | null): T | null {
+  return Array.isArray(value) ? (value[0] ?? null) : value
+}
+
 function mapAuthorRow(row: AuthorRow): Author {
   return {
     slug: row.slug,
@@ -96,6 +105,7 @@ function mapAuthorRow(row: AuthorRow): Author {
     affiliation: row.affiliation ?? '',
     bio: row.bio ?? '',
     photo: row.photo_url,
+    boardTitle: one(row.profile)?.board_title ?? null,
   }
 }
 
@@ -210,25 +220,28 @@ export const getArticleBySlug = cache(async (slug: string): Promise<Article | un
   return data ? mapArticleRow(data as unknown as ArticleRow) : undefined
 })
 
+// profile:profiles(board_title) is a left-join embed via authors.user_id
+// — most authors have no linked account, so it comes back null for
+// them. RLS only exposes that row at all (to anon/authenticated alike)
+// when it's a current board member ("board members are publicly
+// visible"), so this never leaks anything about non-board profiles.
+// The explicit !authors_user_id_fkey is required: profiles.author_id
+// also references authors(id) in the other direction, so PostgREST
+// can't infer which relationship is meant without it.
+const AUTHOR_SELECT = 'slug, name, credentials, affiliation, bio, photo_url, profile:profiles!authors_user_id_fkey(board_title)'
+
 export const getAuthors = cache(async (): Promise<Author[]> => {
   const supabase = await createClient()
-  const { data, error } = await supabase
-    .from('authors')
-    .select('slug, name, credentials, affiliation, bio, photo_url')
-    .order('name')
+  const { data, error } = await supabase.from('authors').select(AUTHOR_SELECT).order('name')
   if (error) throw error
-  return (data as AuthorRow[]).map(mapAuthorRow)
+  return (data as unknown as AuthorRow[]).map(mapAuthorRow)
 })
 
 export const getAuthorBySlug = cache(async (slug: string): Promise<Author | undefined> => {
   const supabase = await createClient()
-  const { data, error } = await supabase
-    .from('authors')
-    .select('slug, name, credentials, affiliation, bio, photo_url')
-    .eq('slug', slug)
-    .maybeSingle()
+  const { data, error } = await supabase.from('authors').select(AUTHOR_SELECT).eq('slug', slug).maybeSingle()
   if (error) throw error
-  return data ? mapAuthorRow(data as AuthorRow) : undefined
+  return data ? mapAuthorRow(data as unknown as AuthorRow) : undefined
 })
 
 export async function getArticlesForIssue(issueSlug: string): Promise<Article[]> {
@@ -295,3 +308,42 @@ export async function getArticlesForTopic(topicSlug: string): Promise<Article[]>
   const articles = await getArticles()
   return articles.filter((a) => a.topicSlug === topicSlug)
 }
+
+type BoardProfileRow = {
+  id: string
+  full_name: string | null
+  board_title: string
+  author: { slug: string; photo_url: string | null; bio: string | null } | { slug: string; photo_url: string | null; bio: string | null }[] | null
+}
+
+// Public directory of everyone currently on the editorial board — a real
+// query, not the hand-typed list in staticContent.ts's journal.editorialBoard
+// (that one's the "About the Journal" description of the board as an
+// institution; this is "who specifically holds that status right now").
+// The `.not('board_title', 'is', null)` filter is redundant with RLS
+// ("board members are publicly visible" already restricts anon/authenticated
+// to exactly these rows) but kept for clarity, same reasoning as the
+// explicit status filters elsewhere in this file.
+export const getEditorialBoard = cache(async (): Promise<BoardMember[]> => {
+  const supabase = await createClient()
+  // !profiles_author_id_fkey for the same reason as AUTHOR_SELECT above,
+  // just from the other table: authors<->profiles has two FK paths, so
+  // PostgREST needs telling which one this embed means.
+  const { data, error } = await supabase
+    .from('profiles')
+    .select('id, full_name, board_title, author:authors!profiles_author_id_fkey(slug, photo_url, bio)')
+    .not('board_title', 'is', null)
+    .order('full_name')
+  if (error) throw error
+  return (data as unknown as BoardProfileRow[]).map((row) => {
+    const author = one(row.author)
+    return {
+      id: row.id,
+      name: row.full_name ?? 'Unnamed',
+      title: row.board_title,
+      authorSlug: author?.slug ?? null,
+      photo: author?.photo_url ?? null,
+      bio: author?.bio ?? null,
+    }
+  })
+})

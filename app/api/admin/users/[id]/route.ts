@@ -5,24 +5,16 @@
 // being an admin (checked via their own session, not anything the
 // request body claims).
 import { NextResponse } from 'next/server'
-import { createClient } from '@/lib/supabase/server'
 import { createAdminClient } from '@/lib/supabase/admin'
+import { requireAdmin } from '@/lib/adminAuth'
 import type { UserRole } from '@/lib/types'
 
 const VALID_ROLES: UserRole[] = ['reader', 'author', 'editor', 'admin']
 
 export async function PATCH(request: Request, { params }: { params: Promise<{ id: string }> }) {
   const { id } = await params
-  const supabase = await createClient()
-  const {
-    data: { user: caller },
-  } = await supabase.auth.getUser()
-  if (!caller) return NextResponse.json({ error: 'Not signed in' }, { status: 401 })
-
-  const { data: callerProfile } = await supabase.from('profiles').select('role').eq('id', caller.id).single()
-  if (callerProfile?.role !== 'admin') {
-    return NextResponse.json({ error: 'Admin access required' }, { status: 403 })
-  }
+  const check = await requireAdmin()
+  if (check.error) return check.error
 
   const body = await request.json().catch(() => null)
   const role = body?.role as UserRole | undefined

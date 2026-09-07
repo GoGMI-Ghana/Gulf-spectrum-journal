@@ -33,6 +33,7 @@ export default function Footer() {
             <li><Link href="/issues" className="hover:text-gold">Articles and Issues</Link></li>
             <li><Link href="/topics" className="hover:text-gold">Topics</Link></li>
             <li><Link href="/authors" className="hover:text-gold">Authors</Link></li>
+            <li><Link href="/editorial-board" className="hover:text-gold">Editorial Board</Link></li>
             <li><Link href="/submissions" className="hover:text-gold">Submission Guidelines</Link></li>
           </ul>
         </div>

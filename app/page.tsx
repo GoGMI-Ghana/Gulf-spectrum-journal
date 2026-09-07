@@ -103,6 +103,17 @@ export default async function Home() {
             </div>
 
             <div className="border-l-4 border-royal-blue p-6">
+              <h3 className="kicker text-royal-blue mb-3">Editorial Board</h3>
+              <p className="text-slate-600 text-sm leading-relaxed mb-4">
+                Meet the editors who review and publish Gulf Spectrum Journal&apos;s research — or apply
+                to join them.
+              </p>
+              <Link href="/editorial-board/apply" className="text-ocean-blue text-sm font-medium hover:underline">
+                Apply for the editorial board →
+              </Link>
+            </div>
+
+            <div className="border-l-4 border-royal-blue p-6">
               <h3 className="kicker text-royal-blue mb-3">Browse by Topic</h3>
               <ul className="space-y-2.5 text-sm">
                 {topics.map((topic) => (

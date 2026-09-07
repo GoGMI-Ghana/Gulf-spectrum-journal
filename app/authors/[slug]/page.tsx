@@ -4,6 +4,7 @@ import type { Metadata } from 'next'
 import { getAuthors, getAuthorBySlug, getArticlesForAuthor } from '@/lib/content'
 import ArticleCard from '@/components/ArticleCard'
 import Initials from '@/components/Initials'
+import BoardBadge from '@/components/BoardBadge'
 
 export async function generateStaticParams() {
   const authors = await getAuthors()
@@ -34,7 +35,10 @@ export default async function AuthorDetail({ params }: { params: Promise<{ slug:
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-10 sm:py-14 flex items-center gap-6">
           <Initials name={author.name} size="lg" />
           <div>
-            <h1 className="font-display text-white text-2xl sm:text-3xl mb-1">{author.name}</h1>
+            <h1 className="font-display text-white text-2xl sm:text-3xl mb-1 flex items-center gap-2.5">
+              {author.name}
+              {author.boardTitle && <BoardBadge title={author.boardTitle} className="!bg-gold !text-royal-blue" />}
+            </h1>
             <p className="text-gold text-sm">{author.credentials}</p>
             <p className="text-white/70 text-sm">{author.affiliation}</p>
           </div>

@@ -7,6 +7,7 @@ import type { ComponentType } from 'react'
 import { useAccount } from '@/context/AccountContext'
 import { createClient } from '@/lib/supabase/client'
 import Initials from './Initials'
+import BoardBadge from './BoardBadge'
 
 function SidebarLink({
   href,
@@ -29,7 +30,7 @@ function SidebarLink({
 }
 
 export default function DashboardSidebar() {
-  const { user, isEditor, bookmarks, unreadNotifications, unreadMessages } = useAccount()
+  const { user, isEditor, boardTitle, bookmarks, unreadNotifications, unreadMessages } = useAccount()
   const router = useRouter()
   const pathname = usePathname()
   const displayName = user?.fullName || user?.email || 'Guest Researcher'
@@ -46,6 +47,7 @@ export default function DashboardSidebar() {
       <div className="border border-slate-200 p-5 text-center mb-4">
         <Initials name={displayName} size="lg" className="mx-auto mb-3" />
         <p className="font-semibold text-royal-blue">{displayName}</p>
+        {boardTitle && <BoardBadge title={boardTitle} className="mt-1.5 mb-1" />}
         <p className="text-xs text-slate-500 mb-4">{subtitle}</p>
         <div className="flex justify-center gap-4 text-xs text-slate-500 border-y border-slate-100 py-3 mb-4">
           <span><strong className="text-royal-blue">0</strong> Followers</span>
