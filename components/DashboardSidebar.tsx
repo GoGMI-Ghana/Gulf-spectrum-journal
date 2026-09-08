@@ -49,11 +49,6 @@ export default function DashboardSidebar() {
         <p className="font-semibold text-royal-blue">{displayName}</p>
         {boardTitle && <BoardBadge title={boardTitle} className="mt-1.5 mb-1" />}
         <p className="text-xs text-slate-500 mb-4">{subtitle}</p>
-        <div className="flex justify-center gap-4 text-xs text-slate-500 border-y border-slate-100 py-3 mb-4">
-          <span><strong className="text-royal-blue">0</strong> Followers</span>
-          <span><strong className="text-royal-blue">0</strong> Following</span>
-          <span><strong className="text-royal-blue">0</strong> Suggested</span>
-        </div>
         {user ? (
           <button
             onClick={handleSignOut}

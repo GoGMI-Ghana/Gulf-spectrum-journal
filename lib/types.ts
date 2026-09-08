@@ -14,7 +14,6 @@ export interface Journal {
   frequency: string
   aboutText: string
   scopeAreas: string[]
-  editorialBoard: EditorialBoardMember[]
 }
 
 export interface Author {

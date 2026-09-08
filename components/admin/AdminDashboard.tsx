@@ -2,7 +2,7 @@
 
 import { useEffect, useState } from 'react'
 import Link from 'next/link'
-import { FileEdit, CheckCircle2, BookOpen, Users, Tags, HeartHandshake } from 'lucide-react'
+import { FileEdit, CheckCircle2, BookOpen, Users, Tags, HeartHandshake, MessageCircle, Inbox } from 'lucide-react'
 import { createClient } from '@/lib/supabase/client'
 import { AdminHeading } from './AdminUI'
 
@@ -15,6 +15,8 @@ interface Stats {
   authors: number
   topics: number
   pendingDonations: number
+  newSubmissions: number
+  unreadMessages: number
 }
 
 // head:true count queries — one round trip per number, no rows actually
@@ -35,10 +37,22 @@ export default function AdminDashboard() {
       supabase.from('authors').select('id', { count: 'exact', head: true }),
       supabase.from('topics').select('id', { count: 'exact', head: true }),
       supabase.from('donations').select('id', { count: 'exact', head: true }).eq('status', 'pending'),
+      supabase.from('submissions').select('id', { count: 'exact', head: true }).eq('status', 'new'),
+      supabase.from('contact_messages').select('id', { count: 'exact', head: true }).is('read_at', null),
     ]).then((results) => {
       if (cancelled) return
-      const [draftArticles, inReviewArticles, publishedArticles, draftIssues, publishedIssues, authors, topics, pendingDonations] =
-        results.map((r) => r.count ?? 0)
+      const [
+        draftArticles,
+        inReviewArticles,
+        publishedArticles,
+        draftIssues,
+        publishedIssues,
+        authors,
+        topics,
+        pendingDonations,
+        newSubmissions,
+        unreadMessages,
+      ] = results.map((r) => r.count ?? 0)
       setStats({
         draftArticles,
         inReviewArticles,
@@ -48,6 +62,8 @@ export default function AdminDashboard() {
         authors,
         topics,
         pendingDonations,
+        newSubmissions,
+        unreadMessages,
       })
     })
 
@@ -80,6 +96,19 @@ export default function AdminDashboard() {
         },
         { label: 'Authors', value: stats.authors, icon: Users, href: '/admin/authors' },
         { label: 'Topics', value: stats.topics, icon: Tags, href: '/admin/topics' },
+        {
+          label: 'New submissions',
+          value: stats.newSubmissions,
+          icon: Inbox,
+          href: '/admin/submissions',
+          note: 'article proposals awaiting triage',
+        },
+        {
+          label: 'Unread messages',
+          value: stats.unreadMessages,
+          icon: MessageCircle,
+          href: '/admin/messages',
+        },
         {
           label: 'Pending donations',
           value: stats.pendingDonations,

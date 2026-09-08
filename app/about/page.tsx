@@ -2,7 +2,7 @@ import Link from 'next/link'
 import Image from 'next/image'
 import type { Metadata } from 'next'
 import { journal } from '@/lib/staticContent'
-import { getTopics } from '@/lib/content'
+import { getTopics, getEditorialBoard } from '@/lib/content'
 import PageBanner from '@/components/PageBanner'
 import Initials from '@/components/Initials'
 
@@ -37,6 +37,7 @@ const trustSignals = [
 
 export default async function About() {
   const topics = await getTopics()
+  const board = await getEditorialBoard()
   return (
     <div>
       <PageBanner eyebrow="About" title="About the Journal" />
@@ -120,18 +121,24 @@ export default async function About() {
 
           <div className="border-l-4 border-gold bg-royal-blue text-white p-6">
             <h3 className="kicker text-gold mb-4">Editorial Board</h3>
-            <ul className="space-y-4">
-              {journal.editorialBoard.map((m) => (
-                <li key={m.name} className="flex gap-3 pb-4 border-b border-white/10 last:border-0 last:pb-0">
-                  <Initials name={m.name} size="sm" className="!bg-gold !text-royal-blue" />
-                  <div>
-                    <p className="font-medium text-white text-sm">{m.name}</p>
-                    <p className="text-white/60 text-xs">{m.role}</p>
-                    <p className="text-white/50 text-xs">{m.affiliation}</p>
-                  </div>
-                </li>
-              ))}
-            </ul>
+            {board.length === 0 ? (
+              <p className="text-white/60 text-sm">No editorial board members are listed yet.</p>
+            ) : (
+              <ul className="space-y-4">
+                {board.slice(0, 4).map((m) => (
+                  <li key={m.id} className="flex gap-3 pb-4 border-b border-white/10 last:border-0 last:pb-0">
+                    <Initials name={m.name} size="sm" className="!bg-gold !text-royal-blue" />
+                    <div>
+                      <p className="font-medium text-white text-sm">{m.name}</p>
+                      <p className="text-white/60 text-xs">{m.title}</p>
+                    </div>
+                  </li>
+                ))}
+              </ul>
+            )}
+            <Link href="/editorial-board" className="block mt-5 text-gold text-sm font-medium hover:underline">
+              View the full editorial board →
+            </Link>
           </div>
         </aside>
       </section>

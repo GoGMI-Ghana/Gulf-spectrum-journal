@@ -9,7 +9,7 @@
 import Link from 'next/link'
 import { usePathname } from 'next/navigation'
 import type { ComponentType, ReactNode } from 'react'
-import { LayoutDashboard, Newspaper, BookOpen, Tags, Users, UserCog, HeartHandshake, Award } from 'lucide-react'
+import { LayoutDashboard, Newspaper, BookOpen, Tags, Users, UserCog, HeartHandshake, Award, MessageCircle, FileEdit } from 'lucide-react'
 import { useAccount } from '@/context/AccountContext'
 
 const NAV: { href: string; label: string; icon: ComponentType<{ size?: number; className?: string }>; end?: boolean }[] = [
@@ -18,6 +18,8 @@ const NAV: { href: string; label: string; icon: ComponentType<{ size?: number; c
   { href: '/admin/issues', label: 'Issues', icon: BookOpen },
   { href: '/admin/authors', label: 'Authors', icon: Users },
   { href: '/admin/topics', label: 'Topics', icon: Tags },
+  { href: '/admin/submissions', label: 'Submissions', icon: FileEdit },
+  { href: '/admin/messages', label: 'Messages', icon: MessageCircle },
   { href: '/admin/donations', label: 'Donations', icon: HeartHandshake },
 ]
 

@@ -39,12 +39,6 @@ Blue programme for women and youth in the blue economy.`,
     'Consultancy insights and case studies, where suitable for public release',
     'Broader Gulf of Guinea and West African maritime affairs',
   ],
-  editorialBoard: [
-    { name: 'Rear Admiral (Rtd) E. K. Ansah', role: 'Editor-in-Chief', affiliation: 'Gulf of Guinea Maritime Institute' },
-    { name: 'Prof. Adjoa Mensimah Kufuor', role: 'Deputy Editor', affiliation: 'University of Ghana, Faculty of Law' },
-    { name: 'Dr. Comfort Adjei-Mensah', role: 'Editorial Board Member', affiliation: 'Institute for Security Studies' },
-    { name: 'Capt. Ibrahim Diallo', role: 'Editorial Board Member', affiliation: 'Regional Maritime University' },
-  ],
 }
 
 // Placeholder split — GoGMI has not set an official rate. Shown to donors
