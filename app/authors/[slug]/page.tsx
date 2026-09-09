@@ -5,6 +5,7 @@ import { getAuthors, getAuthorBySlug, getArticlesForAuthor } from '@/lib/content
 import ArticleCard from '@/components/ArticleCard'
 import Initials from '@/components/Initials'
 import BoardBadge from '@/components/BoardBadge'
+import ClaimAuthorLink from '@/components/ClaimAuthorLink'
 
 export async function generateStaticParams() {
   const authors = await getAuthors()
@@ -60,6 +61,7 @@ export default async function AuthorDetail({ params }: { params: Promise<{ slug:
           <div className="border-l-4 border-royal-blue p-6">
             <h3 className="kicker text-royal-blue mb-3">Biography</h3>
             <p className="text-sm text-slate-600 leading-relaxed">{author.bio}</p>
+            <ClaimAuthorLink authorSlug={author.slug} claimed={author.claimed} />
             <Link href="/authors" className="block mt-5 text-ocean-blue text-sm font-medium hover:underline">
               ← All authors
             </Link>

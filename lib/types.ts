@@ -17,6 +17,7 @@ export interface Journal {
 }
 
 export interface Author {
+  id: string
   slug: string
   name: string
   credentials: string
@@ -29,6 +30,10 @@ export interface Author {
   // Most authors have no linked account at all, so this is null far
   // more often than not.
   boardTitle: string | null
+  // True when authors.user_id is set — i.e. someone has claimed this
+  // profile (either self-service or an editor linked it directly).
+  // Drives whether the public author page offers a "claim this" CTA.
+  claimed: boolean
 }
 
 export interface Topic {

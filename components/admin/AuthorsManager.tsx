@@ -1,7 +1,7 @@
 'use client'
 
 import { useEffect, useState, type FormEvent } from 'react'
-import { Pencil, Trash2 } from 'lucide-react'
+import { Pencil, Trash2, Check, X } from 'lucide-react'
 import { createClient } from '@/lib/supabase/client'
 import { AdminHeading, ErrorBanner, Field, inputClass, primaryButtonClass, secondaryButtonClass } from './AdminUI'
 
@@ -16,6 +16,18 @@ interface AuthorRow {
   user_id: string | null
 }
 
+interface ClaimRow {
+  id: string
+  message: string | null
+  created_at: string
+  claimant: { full_name: string | null } | { full_name: string | null }[] | null
+  author: { name: string; slug: string } | { name: string; slug: string }[] | null
+}
+
+function one<T>(value: T | T[] | null): T | null {
+  return Array.isArray(value) ? (value[0] ?? null) : value
+}
+
 const EMPTY = { slug: '', name: '', credentials: '', affiliation: '', bio: '', photo_url: '', user_id: '' }
 
 export default function AuthorsManager() {
@@ -26,6 +38,11 @@ export default function AuthorsManager() {
   const [form, setForm] = useState(EMPTY)
   const [saving, setSaving] = useState(false)
   const [error, setError] = useState<string | null>(null)
+
+  const [claims, setClaims] = useState<ClaimRow[]>([])
+  const [claimsLoaded, setClaimsLoaded] = useState(false)
+  const [claimError, setClaimError] = useState<string | null>(null)
+  const [busyClaimId, setBusyClaimId] = useState<string | null>(null)
 
   function load() {
     const supabase = createClient()
@@ -40,7 +57,40 @@ export default function AuthorsManager() {
       })
   }
 
+  function loadClaims() {
+    const supabase = createClient()
+    supabase
+      .from('author_claims')
+      .select('id, message, created_at, claimant:profiles!author_claims_user_id_fkey(full_name), author:authors(name, slug)')
+      .eq('status', 'pending')
+      .order('created_at', { ascending: false })
+      .then(({ data, error: err }) => {
+        if (err) console.error('Failed to load author claims', err)
+        else setClaims(data as unknown as ClaimRow[])
+        setClaimsLoaded(true)
+      })
+  }
+
   useEffect(load, [])
+  useEffect(loadClaims, [])
+
+  async function handleClaimDecision(claim: ClaimRow, decision: 'approved' | 'declined') {
+    setBusyClaimId(claim.id)
+    setClaimError(null)
+    const res = await fetch(`/api/admin/author-claims/${claim.id}`, {
+      method: 'PATCH',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({ decision }),
+    })
+    setBusyClaimId(null)
+    if (!res.ok) {
+      const data = await res.json().catch(() => null)
+      setClaimError(data?.error ?? 'Failed to record decision.')
+      return
+    }
+    loadClaims()
+    load()
+  }
 
   function startCreate() {
     setEditingId(null)
@@ -114,6 +164,49 @@ export default function AuthorsManager() {
           </button>
         }
       />
+
+      {claimsLoaded && claims.length > 0 && (
+        <div className="mb-8">
+          <h2 className="text-sm font-semibold text-royal-blue mb-3">Pending claim requests ({claims.length})</h2>
+          <ErrorBanner message={claimError} />
+          <div className="border border-slate-200 divide-y divide-slate-200">
+            {claims.map((c) => {
+              const claimant = one(c.claimant)
+              const author = one(c.author)
+              return (
+                <div key={c.id} className="p-4">
+                  <div className="flex items-start justify-between gap-4 mb-2">
+                    <p className="text-sm text-slate-700">
+                      <strong className="text-royal-blue">{claimant?.full_name || 'Unnamed'}</strong> wants to claim{' '}
+                      <strong className="text-royal-blue">{author?.name ?? 'an author profile'}</strong>
+                    </p>
+                    <p className="text-xs text-slate-400 shrink-0">
+                      {new Date(c.created_at).toLocaleDateString('en-US', { month: 'short', day: 'numeric', year: 'numeric' })}
+                    </p>
+                  </div>
+                  {c.message && <p className="text-sm text-slate-600 whitespace-pre-wrap bg-slate-50 border border-slate-200 p-3 mb-3">{c.message}</p>}
+                  <div className="flex gap-3">
+                    <button
+                      disabled={busyClaimId === c.id}
+                      onClick={() => handleClaimDecision(c, 'approved')}
+                      className="flex items-center gap-1 text-sm text-emerald-700 hover:underline"
+                    >
+                      <Check size={14} /> Approve
+                    </button>
+                    <button
+                      disabled={busyClaimId === c.id}
+                      onClick={() => handleClaimDecision(c, 'declined')}
+                      className="flex items-center gap-1 text-sm text-red-700 hover:underline"
+                    >
+                      <X size={14} /> Decline
+                    </button>
+                  </div>
+                </div>
+              )
+            })}
+          </div>
+        </div>
+      )}
 
       {showForm && (
         <form onSubmit={handleSubmit} className="border border-slate-200 p-5 mb-6 space-y-4 max-w-xl">

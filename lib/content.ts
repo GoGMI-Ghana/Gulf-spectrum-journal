@@ -26,12 +26,14 @@ import type { Article, ArticleSection, Author, BoardMember, EditorialBoardMember
 type TopicRow = { slug: string; label: string; description: string }
 
 type AuthorRow = {
+  id: string
   slug: string
   name: string
   credentials: string | null
   affiliation: string | null
   bio: string | null
   photo_url: string | null
+  user_id: string | null
   // Many-to-one via authors.user_id -> profiles.id, so PostgREST can
   // infer this as an object or an array depending on whether generated
   // DB types are in play — same situation as every other embed in this
@@ -99,6 +101,7 @@ function one<T>(value: T | T[] | null): T | null {
 
 function mapAuthorRow(row: AuthorRow): Author {
   return {
+    id: row.id,
     slug: row.slug,
     name: row.name,
     credentials: row.credentials ?? '',
@@ -106,6 +109,7 @@ function mapAuthorRow(row: AuthorRow): Author {
     bio: row.bio ?? '',
     photo: row.photo_url,
     boardTitle: one(row.profile)?.board_title ?? null,
+    claimed: row.user_id !== null,
   }
 }
 
@@ -228,7 +232,7 @@ export const getArticleBySlug = cache(async (slug: string): Promise<Article | un
 // The explicit !authors_user_id_fkey is required: profiles.author_id
 // also references authors(id) in the other direction, so PostgREST
 // can't infer which relationship is meant without it.
-const AUTHOR_SELECT = 'slug, name, credentials, affiliation, bio, photo_url, profile:profiles!authors_user_id_fkey(board_title)'
+const AUTHOR_SELECT = 'id, slug, name, credentials, affiliation, bio, photo_url, user_id, profile:profiles!authors_user_id_fkey(board_title)'
 
 export const getAuthors = cache(async (): Promise<Author[]> => {
   const supabase = await createClient()
