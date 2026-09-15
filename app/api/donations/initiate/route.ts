@@ -49,20 +49,24 @@ export async function POST(request: Request) {
 
   const amountMinorUnits = Math.round(amount * 100) // GHS -> pesewas
 
-  const { data: donation, error: donationError } = await supabase
-    .from('donations')
-    .insert({
-      article_id: article.id,
-      donor_name: donorName || null,
-      donor_email: donorEmail,
-      amount_minor_units: amountMinorUnits,
-      currency: 'GHS',
-      payment_provider: 'paystack',
-    })
-    .select('id')
-    .single()
+  // Generated here rather than left to the column's default and read back
+  // via .select() -- donations' only SELECT policy is editor-only
+  // ("editors read donations"), so an anon INSERT ... RETURNING fails RLS
+  // even though the insert itself is allowed (its own WITH CHECK is just
+  // `true`). Knowing the id upfront sidesteps needing it back at all.
+  const donationId = crypto.randomUUID()
 
-  if (donationError || !donation) {
+  const { error: donationError } = await supabase.from('donations').insert({
+    id: donationId,
+    article_id: article.id,
+    donor_name: donorName || null,
+    donor_email: donorEmail,
+    amount_minor_units: amountMinorUnits,
+    currency: 'GHS',
+    payment_provider: 'paystack',
+  })
+
+  if (donationError) {
     console.error('Failed to create donation row', donationError)
     return NextResponse.json({ error: 'Could not start donation.' }, { status: 500 })
   }
@@ -80,7 +84,7 @@ export async function POST(request: Request) {
       amount: amountMinorUnits,
       currency: 'GHS',
       callback_url: `${origin}/articles/${articleSlug}?donation=thanks`,
-      metadata: { type: 'donation', record_id: donation.id },
+      metadata: { type: 'donation', record_id: donationId },
     }),
   })
 
