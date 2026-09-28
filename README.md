@@ -1,6 +1,6 @@
 # Gulf Spectrum Journal
 
-The research journal of the Gulf of Guinea Maritime Institute (GoGMI). Built with Next.js (App Router), TypeScript, and Tailwind CSS v4.
+The research journal of the Gulf of Guinea Maritime Institute (GoGMI). **New to the project? Start with [HANDOVER.md](HANDOVER.md).** Built with Next.js (App Router), TypeScript, and Tailwind CSS v4.
 
 Backend (Supabase schema, seed data, edge functions, and the self-hosted deployment scripts) lives in a companion repo: [gulf-spectrum-backend](https://github.com/GoGMI-Ghana/gulf-spectrum-backend). This app queries a live instance of it, self-hosted on GoGMI's own VPS at `api.gulfspectrumjournal.com` — not Supabase Cloud.
 
@@ -81,14 +81,6 @@ npm run build    # production build + static generation
 npm run lint
 ```
 
-## What's real vs. placeholder
+## Handover and current status
 
-- **Real:** every article, author, issue, and topic — queried live from Postgres (self-hosted Supabase on GoGMI's VPS, see `gulf-spectrum-backend`), not static arrays. Citations, search, topic and issue browsing. Accounts — email+password sign-up/sign-in/sign-out via Supabase Auth, real sessions, a real `profiles` row per user. Bookmarks — a real `bookmarks` table row per save, scoped by RLS to the signed-in user, not `localStorage`. The Analytics dashboard's stat totals and CSV export (the per-article view/download *numbers* themselves are placeholder — see below).
-- **Placeholder, clearly labeled in the UI:** Analytics view/download counts (deterministic per-article, not real tracking — the schema's `article_events` table and `article_stats` view exist for this, just not wired up to log real events yet), the donation flow on article pages (no payment provider connected — shows a "no payment was processed" message on submit), Membership "Join" forms (same pattern, and deliberately collect only name/email — see the note in `gulf-spectrum-backend`'s README on why no card-entry form was built), and — inside the account menu specifically — My Profile / Messages / Notifications / Account Settings, which need the editorial CMS described in the site brief.
-- **Not built, and worth knowing why:** password reset / "forgot password". The self-hosted Auth service is on its default dev SMTP settings (a fake mail host that isn't even part of the running stack) — no real email delivery is configured, so a reset-link flow would fail silently. Sign-up works around this by auto-confirming new accounts instead of emailing a confirmation link. Needs a real SMTP provider before either can be built.
-
-## What's left to connect
-
-1. **Real payments** (donations, membership dues) — pick a provider (Paystack or Flutterwave are the common choices for Ghana). The backend repo's `paystack-webhook` edge function is ready for Paystack specifically; wire the checkout-initiation side into `components/SupportBox.tsx` and `components/JoinForm.tsx`, passing `metadata: { type, record_id }` so the webhook knows which row to mark paid.
-2. **Real analytics tracking** — log actual view/download events into `article_events` (an insert per page view, gated by RLS to insert-only for anon/authenticated) instead of the deterministic placeholder numbers in `lib/analyticsData.ts`.
-3. **Real SMTP**, to unblock password reset and email-confirmed sign-up (see above).
+See [HANDOVER.md](HANDOVER.md) for the architecture overview, deployment and operations, accounts to transfer, current feature status, and open items. (The old "What's real vs. placeholder" list here was out of date: payments, password reset and email delivery are all live now.)
