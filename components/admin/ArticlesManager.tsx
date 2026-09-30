@@ -4,6 +4,7 @@ import { useEffect, useState, useSyncExternalStore } from 'react'
 import Link from 'next/link'
 import { Pencil, Trash2 } from 'lucide-react'
 import { createClient } from '@/lib/supabase/client'
+import { refreshPublicSite } from '@/lib/refreshPublicSite'
 import { AdminHeading, primaryButtonClass } from './AdminUI'
 
 type Status = 'draft' | 'in_review' | 'published'
@@ -83,6 +84,7 @@ export default function ArticlesManager() {
       alert(`Couldn't delete: ${error.message}`)
       return
     }
+    await refreshPublicSite()
     load()
   }
 

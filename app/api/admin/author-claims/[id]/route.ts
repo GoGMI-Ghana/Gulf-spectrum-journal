@@ -7,6 +7,7 @@
 import { NextResponse } from 'next/server'
 import { createAdminClient } from '@/lib/supabase/admin'
 import { requireEditor } from '@/lib/adminAuth'
+import { revalidateContent } from '@/lib/revalidateContent'
 
 export async function PATCH(request: Request, { params }: { params: Promise<{ id: string }> }) {
   const { id } = await params
@@ -68,5 +69,8 @@ export async function PATCH(request: Request, { params }: { params: Promise<{ id
     return NextResponse.json({ error: 'Failed to record decision' }, { status: 500 })
   }
 
+  // Author pages (claimed state, board badge) and the editorial board
+  // page are statically generated — refresh them to reflect this change.
+  revalidateContent()
   return NextResponse.json({ ok: true })
 }

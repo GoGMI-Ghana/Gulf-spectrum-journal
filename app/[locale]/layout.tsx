@@ -30,6 +30,13 @@ export function generateStaticParams() {
   return locales.map((locale) => ({ locale }))
 }
 
+// Admin-panel saves refresh the public pages immediately (via
+// /api/revalidate — see lib/revalidateContent.ts). This hourly
+// regeneration is only the fallback for content changed some other way,
+// e.g. directly in Supabase Studio. Applies to every page below this
+// layout; a page can still set a shorter interval (analytics uses 300s).
+export const revalidate = 3600
+
 export async function generateMetadata({ params }: { params: Promise<{ locale: string }> }): Promise<Metadata> {
   const { locale } = await params
   const t = getDictionary(locale)

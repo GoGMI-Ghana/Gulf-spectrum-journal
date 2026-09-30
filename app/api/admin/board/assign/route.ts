@@ -7,6 +7,7 @@
 import { NextResponse } from 'next/server'
 import { createAdminClient } from '@/lib/supabase/admin'
 import { requireAdmin } from '@/lib/adminAuth'
+import { revalidateContent } from '@/lib/revalidateContent'
 import { grantBoardMembership } from '@/lib/board'
 
 export async function POST(request: Request) {
@@ -27,5 +28,8 @@ export async function POST(request: Request) {
     return NextResponse.json({ error }, { status: 500 })
   }
 
+  // Author pages (claimed state, board badge) and the editorial board
+  // page are statically generated — refresh them to reflect this change.
+  revalidateContent()
   return NextResponse.json({ ok: true })
 }

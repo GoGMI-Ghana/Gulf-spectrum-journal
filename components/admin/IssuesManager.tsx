@@ -4,6 +4,7 @@ import { useEffect, useState, type FormEvent } from 'react'
 import Link from 'next/link'
 import { Pencil, Trash2, Plus, X } from 'lucide-react'
 import { createClient } from '@/lib/supabase/client'
+import { refreshPublicSite } from '@/lib/refreshPublicSite'
 import { AdminHeading, ErrorBanner, Field, inputClass, primaryButtonClass, secondaryButtonClass } from './AdminUI'
 
 interface BoardMember {
@@ -144,6 +145,7 @@ export default function IssuesManager() {
       return
     }
     setShowForm(false)
+    await refreshPublicSite()
     load()
   }
 
@@ -155,6 +157,7 @@ export default function IssuesManager() {
       alert(`Couldn't delete: ${err.message}`)
       return
     }
+    await refreshPublicSite()
     load()
   }
 

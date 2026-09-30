@@ -6,6 +6,7 @@
 import { NextResponse } from 'next/server'
 import { createAdminClient } from '@/lib/supabase/admin'
 import { requireAdmin } from '@/lib/adminAuth'
+import { revalidateContent } from '@/lib/revalidateContent'
 
 export async function POST(request: Request) {
   const check = await requireAdmin()
@@ -22,5 +23,8 @@ export async function POST(request: Request) {
     return NextResponse.json({ error: 'Failed to remove board membership' }, { status: 500 })
   }
 
+  // Author pages (claimed state, board badge) and the editorial board
+  // page are statically generated — refresh them to reflect this change.
+  revalidateContent()
   return NextResponse.json({ ok: true })
 }

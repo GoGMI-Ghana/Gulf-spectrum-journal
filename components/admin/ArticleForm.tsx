@@ -4,6 +4,7 @@ import { useEffect, useState, type FormEvent } from 'react'
 import { useRouter } from 'next/navigation'
 import { ArrowUp, ArrowDown, X, Plus } from 'lucide-react'
 import { createClient } from '@/lib/supabase/client'
+import { refreshPublicSite } from '@/lib/refreshPublicSite'
 import { AdminHeading, ErrorBanner, Field, StringListEditor, inputClass, primaryButtonClass, secondaryButtonClass } from './AdminUI'
 
 interface Section {
@@ -289,6 +290,9 @@ export default function ArticleForm({ articleId }: { articleId?: string }) {
       }
     }
 
+    // Before navigating away, so the public pages pick up this save
+    // (and a status change to or from Published) on their next visit.
+    await refreshPublicSite()
     setSaving(false)
     router.push('/admin/articles')
   }

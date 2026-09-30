@@ -3,6 +3,7 @@
 import { useEffect, useState, type FormEvent } from 'react'
 import { Pencil, Trash2 } from 'lucide-react'
 import { createClient } from '@/lib/supabase/client'
+import { refreshPublicSite } from '@/lib/refreshPublicSite'
 import { AdminHeading, ErrorBanner, Field, inputClass, primaryButtonClass, secondaryButtonClass } from './AdminUI'
 
 interface TopicRow {
@@ -72,6 +73,7 @@ export default function TopicsManager() {
       return
     }
     setShowForm(false)
+    await refreshPublicSite()
     load()
   }
 
@@ -83,6 +85,7 @@ export default function TopicsManager() {
       alert(`Couldn't delete: ${err.message}`)
       return
     }
+    await refreshPublicSite()
     load()
   }
 

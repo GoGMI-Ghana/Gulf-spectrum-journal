@@ -3,6 +3,7 @@
 import { useEffect, useState, type FormEvent } from 'react'
 import { Pencil, Trash2, Check, X } from 'lucide-react'
 import { createClient } from '@/lib/supabase/client'
+import { refreshPublicSite } from '@/lib/refreshPublicSite'
 import { AdminHeading, ErrorBanner, Field, inputClass, primaryButtonClass, secondaryButtonClass } from './AdminUI'
 
 interface AuthorRow {
@@ -139,6 +140,7 @@ export default function AuthorsManager() {
       return
     }
     setShowForm(false)
+    await refreshPublicSite()
     load()
   }
 
@@ -150,6 +152,7 @@ export default function AuthorsManager() {
       alert(`Couldn't delete: ${err.message}`)
       return
     }
+    await refreshPublicSite()
     load()
   }
 
