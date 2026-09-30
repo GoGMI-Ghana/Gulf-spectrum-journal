@@ -127,6 +127,9 @@ Chaque volume est évalué par un comité de rédaction dédié, composé d’ex
     allTopics: 'Toutes les thématiques →',
     browseArticlesIssues: 'Parcourir les articles et numéros',
     viewAll: 'Tout voir →',
+    emptyHeading: 'Premier numéro à venir',
+    emptyBody:
+      'Gulf Spectrum Journal prépare son premier numéro. En attendant, découvrez la revue ou soumettez vos recherches.',
   },
 
   about: {
@@ -177,6 +180,7 @@ Chaque volume est évalué par un comité de rédaction dédié, composé d’ex
     description:
       'Parcourez Gulf Spectrum Journal par volume. Chaque numéro est un recueil thématique d’articles de recherche évalués par un comité de rédaction. Vous préférez parcourir par sujet ? {link}',
     seeTopics: 'Voir les thématiques →',
+    empty: 'Aucun numéro n’a encore été publié — le premier est en préparation.',
   },
 
   issue: {
@@ -250,6 +254,7 @@ Chaque volume est évalué par un comité de rédaction dédié, composé d’ex
   },
 
   authors: {
+    empty: 'Les profils des contributeurs apparaîtront ici dès la publication des premiers articles.',
     metaTitle: 'Auteurs',
     metaDescription:
       'Découvrez les officiers de marine, chercheurs et juristes qui contribuent à Gulf Spectrum Journal.',
@@ -336,6 +341,7 @@ Chaque volume est évalué par un comité de rédaction dédié, composé d’ex
     browseArticles: 'Parcourir les articles →',
     issueLabel: 'Numéro {number} · {year}',
     viewArticle: 'Voir l’article →',
+    empty: 'Les citations apparaîtront ici dès la publication des premiers articles.',
   },
 
   contact: {
@@ -495,6 +501,7 @@ Chaque volume est évalué par un comité de rédaction dédié, composé d’ex
     shareCta: 'Partagez vos recherches avec d’autres professionnels maritimes du golfe de Guinée →',
     recent: 'Articles récents',
     submitNew: 'Soumettre un nouvel article',
+    empty: 'Aucun article n’a encore été publié.',
   },
 
   bookmarks: {

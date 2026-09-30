@@ -127,6 +127,9 @@ Cada volumen es revisado por un comité editorial dedicado de expertos en la mat
     allTopics: 'Todos los temas →',
     browseArticlesIssues: 'Explorar artículos y números',
     viewAll: 'Ver todo →',
+    emptyHeading: 'Primer número en camino',
+    emptyBody:
+      'Gulf Spectrum Journal está preparando su primer número. Mientras tanto, conozca la revista o envíe su investigación para su consideración.',
   },
 
   about: {
@@ -177,6 +180,7 @@ Cada volumen es revisado por un comité editorial dedicado de expertos en la mat
     description:
       'Explore Gulf Spectrum Journal por volumen. Cada número es una colección temática de artículos de investigación revisados por un comité editorial. ¿Prefiere explorar por materia? {link}',
     seeTopics: 'Ver temas →',
+    empty: 'Todavía no se ha publicado ningún número: el primero está en camino.',
   },
 
   issue: {
@@ -250,6 +254,7 @@ Cada volumen es revisado por un comité editorial dedicado de expertos en la mat
   },
 
   authors: {
+    empty: 'Los perfiles de los colaboradores aparecerán aquí cuando se publiquen los primeros artículos.',
     metaTitle: 'Autores',
     metaDescription:
       'Conozca a los oficiales navales, investigadores y juristas que colaboran con Gulf Spectrum Journal.',
@@ -336,6 +341,7 @@ Cada volumen es revisado por un comité editorial dedicado de expertos en la mat
     browseArticles: 'Explorar artículos →',
     issueLabel: 'Número {number} · {year}',
     viewArticle: 'Ver artículo →',
+    empty: 'Las citas aparecerán aquí cuando se publiquen los primeros artículos.',
   },
 
   contact: {
@@ -494,6 +500,7 @@ Cada volumen es revisado por un comité editorial dedicado de expertos en la mat
     shareCta: 'Comparta su investigación con otros profesionales marítimos del golfo de Guinea →',
     recent: 'Artículos recientes',
     submitNew: 'Enviar nuevo artículo',
+    empty: 'Todavía no se ha publicado ningún artículo.',
   },
 
   bookmarks: {

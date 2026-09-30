@@ -135,6 +135,9 @@ Each volume is reviewed by a dedicated editorial board of subject-matter experts
     allTopics: 'All topics →',
     browseArticlesIssues: 'Browse Articles and Issues',
     viewAll: 'View all →',
+    emptyHeading: 'First issue coming soon',
+    emptyBody:
+      'Gulf Spectrum Journal is preparing its first issue. In the meantime, read about the journal or submit your research for consideration.',
   },
 
   about: {
@@ -183,6 +186,7 @@ Each volume is reviewed by a dedicated editorial board of subject-matter experts
     description:
       'Browse Gulf Spectrum Journal by volume. Each issue is a themed, editorially reviewed collection of research articles. Prefer to browse by subject? {link}',
     seeTopics: 'See Topics →',
+    empty: 'No issues have been published yet — the first one is on its way.',
   },
 
   issue: {
@@ -255,6 +259,7 @@ Each volume is reviewed by a dedicated editorial board of subject-matter experts
   },
 
   authors: {
+    empty: 'Contributor profiles will appear here once the first articles are published.',
     metaTitle: 'Authors',
     metaDescription:
       'Meet the naval officers, researchers, and legal practitioners contributing to Gulf Spectrum Journal.',
@@ -341,6 +346,7 @@ Each volume is reviewed by a dedicated editorial board of subject-matter experts
     browseArticles: 'Browse Articles →',
     issueLabel: 'Issue {number} · {year}',
     viewArticle: 'View article →',
+    empty: 'Citations will appear here once the first articles are published.',
   },
 
   contact: {
@@ -495,6 +501,7 @@ Each volume is reviewed by a dedicated editorial board of subject-matter experts
     shareCta: 'Share your research with other Gulf of Guinea maritime professionals →',
     recent: 'Recent Articles',
     submitNew: 'Submit New Article',
+    empty: 'No articles have been published yet.',
   },
 
   bookmarks: {

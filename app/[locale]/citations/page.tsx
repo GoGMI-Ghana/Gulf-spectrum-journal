@@ -156,6 +156,7 @@ export default async function Citations({ params }: LocaleParams) {
         <h2 className="font-display text-royal-blue text-2xl mb-8 pb-3 border-b-2 border-royal-blue">
           {t.citations.exploreHeading}
         </h2>
+        {rows.length === 0 && <p className="text-slate-600">{t.citations.empty}</p>}
         <div className="space-y-5">
           {rows.map((row) => (
             <CitationRow key={row.slug} {...row} />

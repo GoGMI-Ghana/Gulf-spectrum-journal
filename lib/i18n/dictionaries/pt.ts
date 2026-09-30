@@ -130,6 +130,9 @@ Cada volume é revisto por um conselho editorial dedicado, composto por especial
     allTopics: 'Todos os temas →',
     browseArticlesIssues: 'Explorar artigos e números',
     viewAll: 'Ver tudo →',
+    emptyHeading: 'Primeiro número em breve',
+    emptyBody:
+      'O Gulf Spectrum Journal está a preparar o seu primeiro número. Entretanto, conheça a revista ou submeta a sua investigação.',
   },
 
   about: {
@@ -180,6 +183,7 @@ Cada volume é revisto por um conselho editorial dedicado, composto por especial
     description:
       'Explore o Gulf Spectrum Journal por volume. Cada número é uma coleção temática de artigos de investigação revistos por um conselho editorial. Prefere explorar por assunto? {link}',
     seeTopics: 'Ver temas →',
+    empty: 'Ainda não foi publicado nenhum número — o primeiro está a caminho.',
   },
 
   issue: {
@@ -253,6 +257,7 @@ Cada volume é revisto por um conselho editorial dedicado, composto por especial
   },
 
   authors: {
+    empty: 'Os perfis dos colaboradores aparecerão aqui assim que os primeiros artigos forem publicados.',
     metaTitle: 'Autores',
     metaDescription:
       'Conheça os oficiais de marinha, investigadores e juristas que colaboram com o Gulf Spectrum Journal.',
@@ -339,6 +344,7 @@ Cada volume é revisto por um conselho editorial dedicado, composto por especial
     browseArticles: 'Explorar artigos →',
     issueLabel: 'Número {number} · {year}',
     viewArticle: 'Ver artigo →',
+    empty: 'As citações aparecerão aqui assim que os primeiros artigos forem publicados.',
   },
 
   contact: {
@@ -498,6 +504,7 @@ Cada volume é revisto por um conselho editorial dedicado, composto por especial
     shareCta: 'Partilhe a sua investigação com outros profissionais marítimos do golfo da Guiné →',
     recent: 'Artigos recentes',
     submitNew: 'Submeter novo artigo',
+    empty: 'Ainda não foi publicado nenhum artigo.',
   },
 
   bookmarks: {

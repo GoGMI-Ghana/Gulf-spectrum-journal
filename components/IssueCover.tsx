@@ -14,13 +14,18 @@ export default function IssueCover({ issue, className = '' }: { issue: Issue; cl
   const { t } = useI18n()
   return (
     <div className={`relative aspect-[3/4] overflow-hidden bg-royal-blue ${className}`}>
-      <Image
-        src={issue.coverImage}
-        alt={fmt(t.issue.coverAlt, { number: issue.number, theme: issue.theme })}
-        fill
-        sizes="(max-width: 768px) 40vw, 220px"
-        className="object-cover"
-      />
+      {/* cover_image is optional in the admin panel — without one, the
+          plain royal-blue panel plus the number/theme below is the cover
+          (next/image throws on an empty src). */}
+      {issue.coverImage && (
+        <Image
+          src={issue.coverImage}
+          alt={fmt(t.issue.coverAlt, { number: issue.number, theme: issue.theme })}
+          fill
+          sizes="(max-width: 768px) 40vw, 220px"
+          className="object-cover"
+        />
+      )}
       <div
         className="absolute inset-x-0 bottom-0 pt-10 pb-3 px-3"
         style={{ background: 'linear-gradient(to top, rgba(0,10,25,0.92), rgba(0,10,25,0.55) 60%, transparent)' }}

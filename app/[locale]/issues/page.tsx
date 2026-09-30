@@ -42,6 +42,7 @@ export default async function Issues({ params }: LocaleParams) {
       />
 
       <section className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-14">
+        {years.length === 0 && <p className="text-slate-600">{t.issues.empty}</p>}
         {years.map((year) => (
           <div key={year} className="mb-12">
             <h2 className="text-lg font-bold text-royal-blue font-display border-b-2 border-royal-blue pb-2 mb-6">{year}</h2>

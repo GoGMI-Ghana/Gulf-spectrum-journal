@@ -116,7 +116,8 @@ public/email-templates/ HTML for auth emails
 
 ```
 supabase/migrations/    Schema history, applied in filename order
-supabase/seed.sql       Issue No. 1 content
+supabase/seed.sql       Topics (the journal's scope areas)
+supabase/cleanup/       One-off data scripts (removing the old placeholder Issue No. 1)
 self-hosting/           deploy.sh, apply-schema.sh, setup-https-nginx.sh, setup-https.sh + README
 ```
 

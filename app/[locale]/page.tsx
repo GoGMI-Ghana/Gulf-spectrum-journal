@@ -18,8 +18,10 @@ export default async function Home({ params }: LocaleParams) {
   const t = getDictionary((await params).locale)
   const issues = await getIssues()
   const topics = await getTopics()
-  const latestIssue = issues[0]
-  const latestArticles = await getArticlesForIssue(latestIssue.slug)
+  // Undefined until the first issue is published — every section below
+  // that depends on it has an empty state rather than assuming it exists.
+  const latestIssue = issues.at(0)
+  const latestArticles = latestIssue ? await getArticlesForIssue(latestIssue.slug) : []
   const topicCounts = await Promise.all(topics.map((t) => getArticlesForTopic(t.slug)))
 
   return (
@@ -37,12 +39,21 @@ export default async function Home({ params }: LocaleParams) {
               {t.home.intro}
             </p>
             <div className="flex flex-wrap gap-4">
-              <Link
-                href={`/issues/${latestIssue.slug}`}
-                className="bg-gold hover:bg-soft-gold text-ink font-semibold px-6 py-3 transition-colors tracking-wide"
-              >
-                {t.home.readLatest}
-              </Link>
+              {latestIssue ? (
+                <Link
+                  href={`/issues/${latestIssue.slug}`}
+                  className="bg-gold hover:bg-soft-gold text-ink font-semibold px-6 py-3 transition-colors tracking-wide"
+                >
+                  {t.home.readLatest}
+                </Link>
+              ) : (
+                <Link
+                  href="/submissions"
+                  className="bg-gold hover:bg-soft-gold text-ink font-semibold px-6 py-3 transition-colors tracking-wide"
+                >
+                  {t.home.submitHeading}
+                </Link>
+              )}
               <Link
                 href="/about"
                 className="border border-white/40 hover:border-gold text-white hover:text-gold font-medium px-6 py-3 transition-colors tracking-wide"
@@ -52,9 +63,11 @@ export default async function Home({ params }: LocaleParams) {
             </div>
           </div>
 
-          <Link href={`/issues/${latestIssue.slug}`} className="hidden md:block w-44 lg:w-52 shrink-0 group">
-            <IssueCover issue={latestIssue} className="w-full shadow-2xl shadow-black/40 group-hover:opacity-90 transition-opacity" />
-          </Link>
+          {latestIssue && (
+            <Link href={`/issues/${latestIssue.slug}`} className="hidden md:block w-44 lg:w-52 shrink-0 group">
+              <IssueCover issue={latestIssue} className="w-full shadow-2xl shadow-black/40 group-hover:opacity-90 transition-opacity" />
+            </Link>
+          )}
         </div>
       </section>
 
@@ -64,19 +77,30 @@ export default async function Home({ params }: LocaleParams) {
       <section className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-14">
         <div className="grid grid-cols-1 lg:grid-cols-3 gap-10">
           <div className="lg:col-span-2">
-            <div className="flex items-end justify-between mb-6 border-b-2 border-royal-blue pb-3">
-              <h2 className="text-2xl font-bold text-royal-blue font-display">
-                {fmt(t.home.issueHeading, { number: latestIssue.number, theme: latestIssue.theme })}
-              </h2>
-              <Link href={`/issues/${latestIssue.slug}`} className="text-ocean-blue text-sm font-medium hover:underline whitespace-nowrap ml-4">
-                {t.home.viewIssue}
-              </Link>
-            </div>
-            <div>
-              {latestArticles.map((article) => (
-                <ArticleCard key={article.slug} article={article} />
-              ))}
-            </div>
+            {latestIssue ? (
+              <>
+                <div className="flex items-end justify-between mb-6 border-b-2 border-royal-blue pb-3">
+                  <h2 className="text-2xl font-bold text-royal-blue font-display">
+                    {fmt(t.home.issueHeading, { number: latestIssue.number, theme: latestIssue.theme })}
+                  </h2>
+                  <Link href={`/issues/${latestIssue.slug}`} className="text-ocean-blue text-sm font-medium hover:underline whitespace-nowrap ml-4">
+                    {t.home.viewIssue}
+                  </Link>
+                </div>
+                <div>
+                  {latestArticles.map((article) => (
+                    <ArticleCard key={article.slug} article={article} />
+                  ))}
+                </div>
+              </>
+            ) : (
+              <>
+                <h2 className="text-2xl font-bold text-royal-blue font-display mb-6 border-b-2 border-royal-blue pb-3">
+                  {t.home.emptyHeading}
+                </h2>
+                <p className="text-slate-600 leading-relaxed">{t.home.emptyBody}</p>
+              </>
+            )}
           </div>
 
           <aside className="space-y-8">
@@ -150,34 +174,36 @@ export default async function Home({ params }: LocaleParams) {
       </section>
 
       {/* Past issues teaser */}
-      <section className="bg-slate-50">
-        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-14">
-          <div className="flex items-end justify-between mb-6 border-b-2 border-royal-blue pb-3">
-            <h2 className="text-2xl font-bold text-royal-blue font-display">{t.home.browseArticlesIssues}</h2>
-            <Link href="/issues" className="text-ocean-blue text-sm font-medium hover:underline">
-              {t.home.viewAll}
-            </Link>
-          </div>
-          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-px bg-slate-200">
-            {issues.map((issue) => (
-              <Link
-                key={issue.slug}
-                href={`/issues/${issue.slug}`}
-                className="flex gap-5 bg-white p-6 hover:bg-soft-gold/40 transition-colors"
-              >
-                <IssueCover issue={issue} className="w-16 shrink-0 shadow" />
-                <div>
-                  <p className="kicker text-ocean-blue mb-1.5">
-                    {fmt(t.common.volumeShort, { volume: issue.volume, date: issue.publishedDate })}
-                  </p>
-                  <h3 className="font-semibold text-royal-blue mb-1.5 font-display">{issue.theme}</h3>
-                  <p className="text-sm text-slate-500 line-clamp-3">{issue.aboutThisVolume}</p>
-                </div>
+      {issues.length > 0 && (
+        <section className="bg-slate-50">
+          <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-14">
+            <div className="flex items-end justify-between mb-6 border-b-2 border-royal-blue pb-3">
+              <h2 className="text-2xl font-bold text-royal-blue font-display">{t.home.browseArticlesIssues}</h2>
+              <Link href="/issues" className="text-ocean-blue text-sm font-medium hover:underline">
+                {t.home.viewAll}
               </Link>
-            ))}
+            </div>
+            <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-px bg-slate-200">
+              {issues.map((issue) => (
+                <Link
+                  key={issue.slug}
+                  href={`/issues/${issue.slug}`}
+                  className="flex gap-5 bg-white p-6 hover:bg-soft-gold/40 transition-colors"
+                >
+                  <IssueCover issue={issue} className="w-16 shrink-0 shadow" />
+                  <div>
+                    <p className="kicker text-ocean-blue mb-1.5">
+                      {fmt(t.common.volumeShort, { volume: issue.volume, date: issue.publishedDate })}
+                    </p>
+                    <h3 className="font-semibold text-royal-blue mb-1.5 font-display">{issue.theme}</h3>
+                    <p className="text-sm text-slate-500 line-clamp-3">{issue.aboutThisVolume}</p>
+                  </div>
+                </Link>
+              ))}
+            </div>
           </div>
-        </div>
-      </section>
+        </section>
+      )}
     </div>
   )
 }

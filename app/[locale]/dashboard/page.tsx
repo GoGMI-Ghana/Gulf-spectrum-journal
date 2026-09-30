@@ -31,6 +31,7 @@ export default async function Dashboard({ params }: LocaleParams) {
         <h2 className="text-lg font-bold text-royal-blue font-display mb-4 pb-2 border-b-2 border-royal-blue">
           {t.dashboard.recent}
         </h2>
+        {articles.length === 0 && <p className="text-slate-600">{t.dashboard.empty}</p>}
         <div>
           {articles.map((article, i) => (
             <ArticleCard key={article.slug} article={article} issue={issuesForArticles[i]} />
