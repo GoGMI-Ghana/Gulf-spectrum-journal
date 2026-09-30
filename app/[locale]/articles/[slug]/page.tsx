@@ -6,7 +6,7 @@ import { formatApaCitation } from '@/lib/citation'
 import { getDictionary } from '@/lib/i18n'
 import { fmt } from '@/lib/i18n/format'
 import type { LocaleSlugParams } from '@/lib/i18n/page'
-import Initials from '@/components/Initials'
+import AuthorAvatar from '@/components/AuthorAvatar'
 import BookmarkButton from '@/components/BookmarkButton'
 import ShareBar from '@/components/ShareBar'
 import CiteBox from '@/components/CiteBox'
@@ -82,7 +82,7 @@ export default async function ArticleDetail({ params }: LocaleSlugParams) {
             href={`/authors/${author.slug}`}
             className="flex items-center gap-3 group"
           >
-            <Initials name={author.name} size="sm" />
+            <AuthorAvatar name={author.name} photo={author.photo} size="sm" />
             <div>
               <p className="text-sm font-semibold text-royal-blue group-hover:underline">{author.name}</p>
               <p className="text-xs text-slate-500">{author.affiliation}</p>
@@ -145,7 +145,7 @@ export default async function ArticleDetail({ params }: LocaleSlugParams) {
         <div className="grid sm:grid-cols-2 gap-6">
           {authors.map((author) => (
             <div key={author.slug} className="flex gap-4">
-              <Initials name={author.name} size="md" />
+              <AuthorAvatar name={author.name} photo={author.photo} size="md" />
               <div>
                 <Link href={`/authors/${author.slug}`} className="font-semibold text-royal-blue hover:underline">
                   {author.name}

@@ -5,6 +5,7 @@ import { Pencil, Trash2, Check, X } from 'lucide-react'
 import { createClient } from '@/lib/supabase/client'
 import { refreshPublicSite } from '@/lib/refreshPublicSite'
 import { AdminHeading, ErrorBanner, Field, inputClass, primaryButtonClass, secondaryButtonClass } from './AdminUI'
+import ImageUpload from './ImageUpload'
 
 interface AuthorRow {
   id: string
@@ -231,8 +232,8 @@ export default function AuthorsManager() {
           <Field label="Bio">
             <textarea rows={4} className={inputClass} value={form.bio} onChange={(e) => setForm({ ...form, bio: e.target.value })} />
           </Field>
-          <Field label="Photo URL" hint="A hosted image URL — there's no upload yet, so this must already exist somewhere.">
-            <input className={inputClass} value={form.photo_url} onChange={(e) => setForm({ ...form, photo_url: e.target.value })} />
+          <Field as="div" label="Photo" hint="JPEG, PNG or WebP, up to 5 MB. A square head-and-shoulders photo works best.">
+            <ImageUpload folder="authors" value={form.photo_url} onChange={(url) => setForm({ ...form, photo_url: url })} />
           </Field>
           <Field label="Linked account ID (optional)" hint="Connects this author page to a reader account, from Users & Roles.">
             <input className={inputClass} value={form.user_id} onChange={(e) => setForm({ ...form, user_id: e.target.value })} />

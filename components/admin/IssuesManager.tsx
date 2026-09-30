@@ -6,6 +6,7 @@ import { Pencil, Trash2, Plus, X } from 'lucide-react'
 import { createClient } from '@/lib/supabase/client'
 import { refreshPublicSite } from '@/lib/refreshPublicSite'
 import { AdminHeading, ErrorBanner, Field, inputClass, primaryButtonClass, secondaryButtonClass } from './AdminUI'
+import ImageUpload from './ImageUpload'
 
 interface BoardMember {
   name: string
@@ -208,8 +209,13 @@ export default function IssuesManager() {
           <Field label="Published date (display text)" hint='e.g. "November 2025" — shown as-is, not parsed.'>
             <input className={inputClass} value={form.published_date} onChange={(e) => setForm({ ...form, published_date: e.target.value })} />
           </Field>
-          <Field label="Cover image URL">
-            <input className={inputClass} value={form.cover_image} onChange={(e) => setForm({ ...form, cover_image: e.target.value })} />
+          <Field as="div" label="Cover image" hint="JPEG, PNG or WebP, up to 5 MB. Shown in portrait (3:4) with the issue number and theme over the bottom.">
+            <ImageUpload
+              folder="issues"
+              value={form.cover_image}
+              previewClassName="w-20 aspect-[3/4]"
+              onChange={(url) => setForm({ ...form, cover_image: url })}
+            />
           </Field>
           <Field label="About this volume">
             <textarea rows={4} className={inputClass} value={form.about_this_volume} onChange={(e) => setForm({ ...form, about_this_volume: e.target.value })} />

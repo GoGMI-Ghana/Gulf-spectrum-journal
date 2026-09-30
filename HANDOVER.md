@@ -174,6 +174,8 @@ On the VPS, the backend's settings live in `~/gulf-spectrum-backend/self-hosting
 ### Frontend
 Pushing to `main` on GitHub triggers a Vercel deployment. Content pages are pre-built, but saving or deleting an article, issue, author or topic in `/admin` refreshes them automatically: the admin panel calls `/api/revalidate`, and each page regenerates on its next visit. Board and author-claim changes do the same from their API routes. Changes made outside the admin panel (e.g. directly in Studio) show up within an hour, the fallback regeneration interval set in `app/[locale]/layout.tsx`. A redeploy is only needed for code changes.
 
+Author photos and issue covers uploaded in `/admin` are stored in the public `journal-images` Supabase Storage bucket (created by the backend migration `20260930120000_journal_images_bucket.sql`). Only editors and admins can upload, files are limited to 5 MB, and only JPEG, PNG and WebP are accepted. Storage enforces these rules, not just the form. Editors can still paste an image URL instead.
+
 ### Backend (VPS)
 The full procedure is in `gulf-spectrum-backend/self-hosting/README.md`. In short:
 
@@ -231,11 +233,10 @@ Credentials are not stored in the repositories. Before the handover is complete,
 1. **Confirm the donation split.** `lib/staticContent.ts` shows donors a 90% / 10% author/platform split. It is a **placeholder**, and GoGMI has not set an official rate.
 2. **Paystack live mode.** Confirm whether the keys in Vercel are test or live keys, and that the webhook URL is registered in the Paystack dashboard. Then run one real low-value donation end to end.
 3. **Sign-up email confirmation.** The Auth service has `ENABLE_EMAIL_AUTOCONFIRM` turned on, so new accounts are not asked to verify their email. Now that email delivery works, consider turning it off.
-4. **Image uploads.** Editors paste image URLs for author photos and issue covers, and there is no upload flow yet. `next.config.ts` allows any `https` image host for this reason. Supabase Storage is already running and could be used for uploads.
-5. **Backups.** Set up scheduled `pg_dump` backups of the VPS database to off-server storage, and test a restore. None are set up at the moment.
-6. **Tests and CI.** There is no automated test suite. At minimum, add `npm run lint` and `npm run build` checks on pull requests.
-7. **Keep the stack updated.** Update the Supabase Docker images (see "Updating later" in the self-hosting README) and the npm dependencies regularly.
-8. **Outdated documentation to be aware of.** The backend `.env.example` and parts of the self-hosting README still mention a Paystack *Edge Function*. That was removed, and the webhook now lives in the frontend.
+4. **Backups.** Set up scheduled `pg_dump` backups of the VPS database to off-server storage, and test a restore. None are set up at the moment.
+5. **Tests and CI.** There is no automated test suite. At minimum, add `npm run lint` and `npm run build` checks on pull requests.
+6. **Keep the stack updated.** Update the Supabase Docker images (see "Updating later" in the self-hosting README) and the npm dependencies regularly.
+7. **Outdated documentation to be aware of.** The backend `.env.example` and parts of the self-hosting README still mention a Paystack *Edge Function*. That was removed, and the webhook now lives in the frontend.
 
 ---
 

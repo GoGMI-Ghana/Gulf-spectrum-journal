@@ -8,7 +8,7 @@ function getInitials(name: string): string {
   return (first + last).toUpperCase()
 }
 
-const sizes = {
+export const avatarSizes = {
   sm: 'w-10 h-10 text-xs',
   md: 'w-14 h-14 text-base',
   lg: 'w-20 h-20 text-2xl',
@@ -20,12 +20,12 @@ export default function Initials({
   className = '',
 }: {
   name: string
-  size?: keyof typeof sizes
+  size?: keyof typeof avatarSizes
   className?: string
 }) {
   return (
     <div
-      className={`${sizes[size]} bg-royal-blue text-gold font-display flex items-center justify-center shrink-0 ${className}`}
+      className={`${avatarSizes[size]} bg-royal-blue text-gold font-display flex items-center justify-center shrink-0 ${className}`}
       aria-hidden="true"
     >
       {getInitials(name)}

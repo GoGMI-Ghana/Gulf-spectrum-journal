@@ -5,7 +5,7 @@ import { getAuthors, getAuthorBySlug, getArticlesForAuthor } from '@/lib/content
 import { getDictionary } from '@/lib/i18n'
 import type { LocaleSlugParams } from '@/lib/i18n/page'
 import ArticleCard from '@/components/ArticleCard'
-import Initials from '@/components/Initials'
+import AuthorAvatar from '@/components/AuthorAvatar'
 import BoardBadge from '@/components/BoardBadge'
 import ClaimAuthorLink from '@/components/ClaimAuthorLink'
 
@@ -34,7 +34,7 @@ export default async function AuthorDetail({ params }: LocaleSlugParams) {
     <div>
       <section className="bg-royal-blue">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-10 sm:py-14 flex items-center gap-6">
-          <Initials name={author.name} size="lg" />
+          <AuthorAvatar name={author.name} photo={author.photo} size="lg" />
           <div>
             <h1 className="font-display text-white text-2xl sm:text-3xl mb-1 flex items-center gap-2.5">
               {author.name}

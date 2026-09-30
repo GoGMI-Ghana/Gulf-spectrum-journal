@@ -16,13 +16,26 @@ export const primaryButtonClass =
 export const secondaryButtonClass =
   'border border-slate-300 text-slate-700 hover:bg-slate-50 font-medium px-5 py-2 text-sm transition-colors'
 
-export function Field({ label, hint, children }: { label: string; hint?: string; children: ReactNode }) {
+// `as="div"` for fields containing more than one control (e.g.
+// ImageUpload's buttons plus URL input) — a <label> would forward clicks
+// on its text to the first of them.
+export function Field({
+  label,
+  hint,
+  as: Tag = 'label',
+  children,
+}: {
+  label: string
+  hint?: string
+  as?: 'label' | 'div'
+  children: ReactNode
+}) {
   return (
-    <label className="block">
+    <Tag className="block">
       <span className="block text-sm font-medium text-slate-700 mb-1">{label}</span>
       {children}
       {hint && <span className="block text-xs text-slate-400 mt-1">{hint}</span>}
-    </label>
+    </Tag>
   )
 }
 
