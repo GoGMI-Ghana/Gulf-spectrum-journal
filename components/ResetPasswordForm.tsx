@@ -3,6 +3,8 @@
 import { useState, type FormEvent } from 'react'
 import Link from 'next/link'
 import { createClient } from '@/lib/supabase/client'
+import { useI18n } from '@/context/I18nContext'
+import { rich } from '@/lib/i18n/format'
 
 // Requests a password-recovery email. Clicking the emailed link lands on
 // /auth/callback?redirect=/account-settings -- that route already
@@ -12,6 +14,7 @@ import { createClient } from '@/lib/supabase/client'
 // link signs the visitor in for real, and they just use the password
 // field that's already there.
 export default function ResetPasswordForm() {
+  const { t } = useI18n()
   const [email, setEmail] = useState('')
   const [submitting, setSubmitting] = useState(false)
   const [sent, setSent] = useState(false)
@@ -41,9 +44,7 @@ export default function ResetPasswordForm() {
   if (sent) {
     return (
       <p className="text-slate-600 bg-soft-gold/40 border-l-4 border-gold p-4">
-        If an account exists for <strong>{email}</strong>, a password reset link is on its way.
-        Check your inbox — the link signs you in and takes you straight to where you can set a new
-        password.
+        {rich(t.resetPassword.sent, { email: <strong>{email}</strong> })}
       </p>
     )
   }
@@ -53,7 +54,7 @@ export default function ResetPasswordForm() {
       {error && <p className="text-sm text-red-700 bg-red-50 border border-red-200 px-3 py-2">{error}</p>}
       <div>
         <label htmlFor="reset-email" className="block text-sm font-medium text-slate-700 mb-1">
-          Email
+          {t.common.email}
         </label>
         <input
           id="reset-email"
@@ -70,11 +71,11 @@ export default function ResetPasswordForm() {
         disabled={submitting}
         className="w-full bg-royal-blue hover:bg-ocean-blue text-white font-semibold px-4 py-2.5 transition-colors disabled:opacity-60"
       >
-        {submitting ? 'Sending…' : 'Send Reset Link'}
+        {submitting ? t.common.sending : t.resetPassword.submit}
       </button>
       <p className="text-sm text-slate-500 text-center">
         <Link href="/sign-in" className="text-ocean-blue hover:underline">
-          ← Back to sign in
+          {t.resetPassword.back}
         </Link>
       </p>
     </form>

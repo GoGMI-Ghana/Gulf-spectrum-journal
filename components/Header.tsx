@@ -5,25 +5,29 @@ import Link from 'next/link'
 import Image from 'next/image'
 import { usePathname } from 'next/navigation'
 import { Menu, X, Home, Quote, BarChart3, Upload, Grid3x3 } from 'lucide-react'
-import { journal } from '@/lib/staticContent'
+import { useI18n } from '@/context/I18nContext'
+import type { Dictionary } from '@/lib/i18n/dictionaries/en'
 import AccountMenu from './AccountMenu'
+import LanguageSwitcher from './LanguageSwitcher'
 
-const navLinks = [
-  { href: '/', label: 'Home', end: true },
-  { href: '/issues', label: 'Articles and Issues' },
-  { href: '/topics', label: 'Topics' },
-  { href: '/about', label: 'About the Journal' },
-  { href: '/authors', label: 'Authors' },
-  { href: '/submissions', label: 'Submission Guidelines' },
-  { href: '/contact', label: 'Contact' },
+type NavKey = keyof Dictionary['nav']
+
+const navLinks: { href: string; label: NavKey; end?: boolean }[] = [
+  { href: '/', label: 'home', end: true },
+  { href: '/issues', label: 'articlesAndIssues' },
+  { href: '/topics', label: 'topics' },
+  { href: '/about', label: 'about' },
+  { href: '/authors', label: 'authors' },
+  { href: '/submissions', label: 'submissions' },
+  { href: '/contact', label: 'contact' },
 ]
 
-const iconNav = [
-  { href: '/', label: 'Home', icon: Home, end: true },
-  { href: '/citations', label: 'Citations', icon: Quote },
-  { href: '/analytics', label: 'Analytics', icon: BarChart3 },
-  { href: '/submissions', label: 'Upload', icon: Upload },
-  { href: '/tools', label: 'Tools', icon: Grid3x3 },
+const iconNav: { href: string; label: NavKey; icon: ComponentType<{ size?: number }>; end?: boolean }[] = [
+  { href: '/', label: 'home', icon: Home, end: true },
+  { href: '/citations', label: 'citations', icon: Quote },
+  { href: '/analytics', label: 'analytics', icon: BarChart3 },
+  { href: '/submissions', label: 'upload', icon: Upload },
+  { href: '/tools', label: 'tools', icon: Grid3x3 },
 ]
 
 function useIsActive(href: string, end?: boolean) {
@@ -47,7 +51,7 @@ function NavItem({
     <Link
       href={href}
       onClick={onClick}
-      className={`text-sm font-medium tracking-wide transition-colors ${
+      className={`text-sm font-medium tracking-wide whitespace-nowrap transition-colors ${
         isActive ? 'text-gold' : 'text-white/85 hover:text-gold'
       }`}
     >
@@ -83,23 +87,27 @@ function IconNavItem({
 
 export default function Header() {
   const [open, setOpen] = useState(false)
+  const { t } = useI18n()
 
   return (
     <header className="sticky top-0 z-50">
       {/* Utility bar */}
       <div className="bg-ink text-white/60 text-[11px]">
-        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-1.5 flex items-center justify-between">
+        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-1.5 flex items-center justify-between gap-4">
           <span className="hidden sm:inline kicker font-normal tracking-[0.1em] text-white/50">
-            A publication of the Gulf of Guinea Maritime Institute
+            {t.header.publicationOf}
           </span>
-          <a
-            href="https://www.gogmi.org.gh"
-            target="_blank"
-            rel="noopener noreferrer"
-            className="hover:text-gold transition-colors kicker font-normal tracking-[0.1em]"
-          >
-            gogmi.org.gh
-          </a>
+          <div className="flex items-center gap-4 ml-auto">
+            <LanguageSwitcher className="text-white/60" />
+            <a
+              href="https://www.gogmi.org.gh"
+              target="_blank"
+              rel="noopener noreferrer"
+              className="hover:text-gold transition-colors kicker font-normal tracking-[0.1em]"
+            >
+              gogmi.org.gh
+            </a>
+          </div>
         </div>
       </div>
 
@@ -120,14 +128,14 @@ export default function Header() {
                 Gulf Spectrum Journal
               </span>
               <span className="block text-soft-gold text-[10px] sm:text-[11px] uppercase tracking-[0.18em]">
-                {journal.subtitle}
+                {t.journal.subtitle}
               </span>
             </span>
           </Link>
 
           <div className="hidden md:flex items-center gap-1">
             {iconNav.map((item) => (
-              <IconNavItem key={item.href} {...item} />
+              <IconNavItem key={item.href} {...item} label={t.nav[item.label]} />
             ))}
           </div>
 
@@ -138,7 +146,7 @@ export default function Header() {
           <button
             className="md:hidden text-white p-2"
             onClick={() => setOpen((v) => !v)}
-            aria-label="Toggle navigation menu"
+            aria-label={t.header.toggleMenu}
           >
             {open ? <X size={24} /> : <Menu size={24} />}
           </button>
@@ -147,9 +155,11 @@ export default function Header() {
 
       {/* Nav */}
       <nav className="hidden md:block bg-ink border-t border-gold">
-        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 flex items-center gap-8 h-11">
+        {/* French/Spanish/Portuguese labels run longer than English: tighter
+            gaps below lg, and scroll rather than wrap if they still overflow. */}
+        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 flex items-center gap-5 lg:gap-8 h-11 overflow-x-auto">
           {navLinks.map((l) => (
-            <NavItem key={l.href} {...l} />
+            <NavItem key={l.href} {...l} label={t.nav[l.label]} />
           ))}
         </div>
       </nav>
@@ -159,12 +169,12 @@ export default function Header() {
         <nav className="md:hidden bg-ink border-t border-gold">
           <div className="px-4 py-4 flex flex-col gap-4">
             {navLinks.map((l) => (
-              <NavItem key={l.href} {...l} onClick={() => setOpen(false)} />
+              <NavItem key={l.href} {...l} label={t.nav[l.label]} onClick={() => setOpen(false)} />
             ))}
             {iconNav
               .filter((i) => i.href !== '/')
               .map((item) => (
-                <NavItem key={item.href} href={item.href} label={item.label} onClick={() => setOpen(false)} />
+                <NavItem key={item.href} href={item.href} label={t.nav[item.label]} onClick={() => setOpen(false)} />
               ))}
           </div>
         </nav>

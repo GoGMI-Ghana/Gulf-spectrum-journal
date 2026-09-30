@@ -4,6 +4,8 @@ import { useEffect, useState } from 'react'
 import Link from 'next/link'
 import { createClient } from '@/lib/supabase/client'
 import { useAccount } from '@/context/AccountContext'
+import { useI18n } from '@/context/I18nContext'
+import { rich } from '@/lib/i18n/format'
 
 // Shown on an author's public page only when it's genuinely actionable:
 // signed in, this author isn't claimed yet, the viewer isn't already
@@ -14,6 +16,7 @@ import { useAccount } from '@/context/AccountContext'
 // if this component's logic is ever wrong or bypassed.
 export default function ClaimAuthorLink({ authorSlug, claimed }: { authorSlug: string; claimed: boolean }) {
   const { user, authLoading } = useAccount()
+  const { t } = useI18n()
   const [eligible, setEligible] = useState<boolean | null>(null)
 
   useEffect(() => {
@@ -41,11 +44,13 @@ export default function ClaimAuthorLink({ authorSlug, claimed }: { authorSlug: s
   if (!user) {
     return (
       <p className="text-xs text-slate-400 mt-3">
-        Is this you?{' '}
-        <Link href={`/sign-in?redirect=/authors/${authorSlug}/claim`} className="text-ocean-blue hover:underline">
-          Sign in to claim this profile
-        </Link>
-        .
+        {rich(t.author.isThisYou, {
+          link: (
+            <Link href={`/sign-in?redirect=/authors/${authorSlug}/claim`} className="text-ocean-blue hover:underline">
+              {t.author.signInToClaim}
+            </Link>
+          ),
+        })}
       </p>
     )
   }
@@ -55,11 +60,13 @@ export default function ClaimAuthorLink({ authorSlug, claimed }: { authorSlug: s
 
   return (
     <p className="text-xs text-slate-400 mt-3">
-      Is this you?{' '}
-      <Link href={`/authors/${authorSlug}/claim`} className="text-ocean-blue hover:underline">
-        Claim this profile
-      </Link>
-      .
+      {rich(t.author.isThisYou, {
+        link: (
+          <Link href={`/authors/${authorSlug}/claim`} className="text-ocean-blue hover:underline">
+            {t.author.claimProfile}
+          </Link>
+        ),
+      })}
     </p>
   )
 }

@@ -26,6 +26,7 @@ import {
   Award,
 } from 'lucide-react'
 import { useAccount } from '@/context/AccountContext'
+import { useI18n } from '@/context/I18nContext'
 import { createClient } from '@/lib/supabase/client'
 import Initials from './Initials'
 import BoardBadge from './BoardBadge'
@@ -89,6 +90,7 @@ export default function AccountMenu() {
   const ref = useRef<HTMLDivElement>(null)
   const router = useRouter()
   const { user, isEditor, boardTitle, bookmarks, unreadNotifications, unreadMessages } = useAccount()
+  const { t } = useI18n()
 
   useEffect(() => {
     function onClickOutside(e: MouseEvent) {
@@ -111,13 +113,13 @@ export default function AccountMenu() {
     router.push('/')
   }
 
-  const displayName = user?.fullName || user?.email || 'Guest Researcher'
+  const displayName = user?.fullName || user?.email || t.accountMenu.guest
 
   return (
     <div className="relative" ref={ref}>
       <button
         onClick={() => setOpen((v) => !v)}
-        aria-label="Account menu"
+        aria-label={t.accountMenu.ariaLabel}
         aria-expanded={open}
         className="flex items-center gap-1.5 text-white/85 hover:text-gold transition-colors text-sm"
       >
@@ -134,62 +136,62 @@ export default function AccountMenu() {
                 {displayName}
                 {boardTitle && <BoardBadge title={boardTitle} />}
               </p>
-              <p className="text-xs text-slate-400">{user ? user.email : 'Not signed in'}</p>
+              <p className="text-xs text-slate-400">{user ? user.email : t.accountMenu.notSignedIn}</p>
             </div>
           </div>
 
-          <SectionLabel>Account</SectionLabel>
+          <SectionLabel>{t.accountMenu.sectionAccount}</SectionLabel>
           <div className="pb-2">
-            <MenuLink href="/profile" icon={User} label="My Profile" onNavigate={close} />
-            <MenuLink href="/messages" icon={Mail} label="Messages" badge={unreadMessages} onNavigate={close} />
+            <MenuLink href="/profile" icon={User} label={t.nav.myProfile} onNavigate={close} />
+            <MenuLink href="/messages" icon={Mail} label={t.nav.messages} badge={unreadMessages} onNavigate={close} />
             <MenuLink
               href="/notifications"
               icon={Bell}
-              label="Notifications"
+              label={t.nav.notifications}
               badge={unreadNotifications}
               onNavigate={close}
             />
-            <MenuLink href="/account-settings" icon={Settings} label="Account Settings" onNavigate={close} />
+            <MenuLink href="/account-settings" icon={Settings} label={t.nav.accountSettings} onNavigate={close} />
             {user ? (
-              <MenuButton icon={LogOut} label="Sign Out" onClick={handleSignOut} />
+              <MenuButton icon={LogOut} label={t.common.signOut} onClick={handleSignOut} />
             ) : (
               <>
-                <MenuLink href="/sign-in" icon={LogIn} label="Sign In" onNavigate={close} />
-                <MenuLink href="/sign-up" icon={UserPlus} label="Sign Up" onNavigate={close} />
+                <MenuLink href="/sign-in" icon={LogIn} label={t.common.signInButton} onNavigate={close} />
+                <MenuLink href="/sign-up" icon={UserPlus} label={t.common.signUpButton} onNavigate={close} />
               </>
             )}
           </div>
 
           {isEditor && (
             <>
-              <SectionLabel>Editorial</SectionLabel>
+              <SectionLabel>{t.accountMenu.sectionEditorial}</SectionLabel>
               <div className="pb-2">
-                <MenuLink href="/admin" icon={ShieldCheck} label="Editorial Admin" onNavigate={close} />
+                <MenuLink href="/admin" icon={ShieldCheck} label={t.nav.editorialAdmin} onNavigate={close} />
               </div>
             </>
           )}
 
-          <SectionLabel>My Research</SectionLabel>
+          <SectionLabel>{t.accountMenu.sectionMyResearch}</SectionLabel>
           <div className="pb-2">
-            <MenuLink href="/dashboard" icon={LayoutDashboard} label="Dashboard" onNavigate={close} />
-            <MenuLink href="/bookmarks" icon={Bookmark} label="Bookmarks" badge={bookmarks.length} onNavigate={close} />
-            <MenuLink href="/citations" icon={Quote} label="Citations" onNavigate={close} />
-            <MenuLink href="/analytics" icon={BarChart3} label="Analytics" onNavigate={close} />
+            <MenuLink href="/dashboard" icon={LayoutDashboard} label={t.nav.dashboard} onNavigate={close} />
+            <MenuLink href="/bookmarks" icon={Bookmark} label={t.nav.bookmarks} badge={bookmarks.length} onNavigate={close} />
+            <MenuLink href="/citations" icon={Quote} label={t.nav.citations} onNavigate={close} />
+            <MenuLink href="/analytics" icon={BarChart3} label={t.nav.analytics} onNavigate={close} />
           </div>
 
           <SectionLabel>Gulf Spectrum Journal</SectionLabel>
           <div className="pb-2">
-            <MenuLink href="/issues" icon={Newspaper} label="Articles and Issues" onNavigate={close} />
-            <MenuLink href="/topics" icon={Tags} label="Topics" onNavigate={close} />
-            <MenuLink href="/authors" icon={Users} label="Authors" onNavigate={close} />
-            <MenuLink href="/editorial-board" icon={Award} label="Editorial Board" onNavigate={close} />
-            <MenuLink href="/submissions" icon={Upload} label="Submission Guidelines" onNavigate={close} />
+            <MenuLink href="/issues" icon={Newspaper} label={t.nav.articlesAndIssues} onNavigate={close} />
+            <MenuLink href="/topics" icon={Tags} label={t.nav.topics} onNavigate={close} />
+            <MenuLink href="/authors" icon={Users} label={t.nav.authors} onNavigate={close} />
+            <MenuLink href="/editorial-board" icon={Award} label={t.nav.editorialBoard} onNavigate={close} />
+            <MenuLink href="/submissions" icon={Upload} label={t.nav.submissions} onNavigate={close} />
           </div>
 
-          <SectionLabel>More</SectionLabel>
+          <SectionLabel>{t.accountMenu.sectionMore}</SectionLabel>
           <div className="pb-3">
-            <MenuLink href="/tools" icon={Grid3x3} label="Tools" onNavigate={close} />
-            <MenuLink href="/contact" icon={MessageCircle} label="Contact" onNavigate={close} />
+            <MenuLink href="/tools" icon={Grid3x3} label={t.nav.tools} onNavigate={close} />
+            <MenuLink href="/contact" icon={MessageCircle} label={t.nav.contact} onNavigate={close} />
           </div>
         </div>
       )}

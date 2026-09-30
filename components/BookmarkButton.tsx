@@ -4,6 +4,7 @@ import Link from 'next/link'
 import { usePathname } from 'next/navigation'
 import { Bookmark } from 'lucide-react'
 import { useAccount } from '@/context/AccountContext'
+import { useI18n } from '@/context/I18nContext'
 
 export default function BookmarkButton({
   slug,
@@ -16,6 +17,7 @@ export default function BookmarkButton({
 }) {
   const { user, isBookmarked, toggleBookmark } = useAccount()
   const pathname = usePathname()
+  const { t } = useI18n()
   const active = isBookmarked(slug)
 
   // Bookmarks are tied to an account now (see AccountContext) — signed
@@ -27,10 +29,10 @@ export default function BookmarkButton({
       <Link
         href={`/sign-in?redirect=${encodeURIComponent(pathname)}`}
         className={`inline-flex items-center gap-1.5 text-sm text-slate-400 hover:text-royal-blue transition-colors ${className}`}
-        aria-label="Sign in to bookmark this article"
+        aria-label={t.bookmarkButton.signInAria}
       >
         <Bookmark size={16} />
-        {showLabel && <span>Sign in to bookmark</span>}
+        {showLabel && <span>{t.bookmarkButton.signInLabel}</span>}
       </Link>
     )
   }
@@ -44,13 +46,13 @@ export default function BookmarkButton({
         toggleBookmark(slug)
       }}
       aria-pressed={active}
-      aria-label={active ? 'Remove bookmark' : 'Bookmark this article'}
+      aria-label={active ? t.bookmarkButton.remove : t.bookmarkButton.add}
       className={`inline-flex items-center gap-1.5 text-sm transition-colors ${
         active ? 'text-gold' : 'text-slate-400 hover:text-royal-blue'
       } ${className}`}
     >
       <Bookmark size={16} fill={active ? 'currentColor' : 'none'} />
-      {showLabel && <span>{active ? 'Bookmarked' : 'Bookmark'}</span>}
+      {showLabel && <span>{active ? t.bookmarkButton.bookmarked : t.bookmarkButton.bookmark}</span>}
     </button>
   )
 }

@@ -31,7 +31,7 @@ function points(values: number[], max: number): { x: number; y: number }[] {
   }))
 }
 
-export default function EngagementChart({ data }: { data: DailySeriesPoint[] }) {
+export default function EngagementChart({ data, label }: { data: DailySeriesPoint[]; label: string }) {
   const views = data.map((d) => d.views)
   const downloads = data.map((d) => d.downloads)
   const max = Math.max(1, ...views, ...downloads)
@@ -45,7 +45,7 @@ export default function EngagementChart({ data }: { data: DailySeriesPoint[] }) 
   const labelEvery = Math.max(1, Math.ceil(data.length / 8))
 
   return (
-    <svg viewBox={`0 0 ${WIDTH} ${HEIGHT}`} className="w-full h-auto" role="img" aria-label="Article views and downloads over time">
+    <svg viewBox={`0 0 ${WIDTH} ${HEIGHT}`} className="w-full h-auto" role="img" aria-label={label}>
       {/* baseline */}
       <line x1={PAD_LEFT} y1={baselineY} x2={WIDTH - PAD_RIGHT} y2={baselineY} stroke="#e2e8f0" strokeWidth="1" />
       <text x={PAD_LEFT - 8} y={baselineY + 4} textAnchor="end" fontSize="12" fill="#94a3b8">0</text>

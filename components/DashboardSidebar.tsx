@@ -5,6 +5,7 @@ import { usePathname, useRouter } from 'next/navigation'
 import { Mail, Bell, Bookmark, UserCircle, LogOut, ShieldCheck } from 'lucide-react'
 import type { ComponentType } from 'react'
 import { useAccount } from '@/context/AccountContext'
+import { useI18n } from '@/context/I18nContext'
 import { createClient } from '@/lib/supabase/client'
 import Initials from './Initials'
 import BoardBadge from './BoardBadge'
@@ -31,10 +32,11 @@ function SidebarLink({
 
 export default function DashboardSidebar() {
   const { user, isEditor, boardTitle, bookmarks, unreadNotifications, unreadMessages } = useAccount()
+  const { t } = useI18n()
   const router = useRouter()
   const pathname = usePathname()
-  const displayName = user?.fullName || user?.email || 'Guest Researcher'
-  const subtitle = user ? (user.fullName ? user.email : 'Signed in') : 'Not signed in'
+  const displayName = user?.fullName || user?.email || t.accountMenu.guest
+  const subtitle = user ? (user.fullName ? user.email : t.accountMenu.signedIn) : t.accountMenu.notSignedIn
 
   async function handleSignOut() {
     const supabase = createClient()
@@ -54,32 +56,32 @@ export default function DashboardSidebar() {
             onClick={handleSignOut}
             className="inline-flex items-center gap-1.5 text-sm text-slate-500 hover:text-royal-blue transition-colors"
           >
-            <LogOut size={14} /> Sign Out
+            <LogOut size={14} /> {t.common.signOut}
           </button>
         ) : (
           <div className="flex items-center justify-center gap-3 text-sm">
             <Link href={`/sign-in?redirect=${encodeURIComponent(pathname)}`} className="text-ocean-blue hover:underline font-medium">
-              Sign In
+              {t.common.signInButton}
             </Link>
             <span className="text-slate-300">·</span>
             <Link href="/sign-up" className="text-ocean-blue hover:underline font-medium">
-              Sign Up
+              {t.common.signUpButton}
             </Link>
           </div>
         )}
       </div>
 
-      <SidebarLink href="/messages" icon={Mail} label="Messages" trailing={unreadMessages} />
-      <SidebarLink href="/notifications" icon={Bell} label="Notifications" trailing={unreadNotifications} />
-      <SidebarLink href="/bookmarks" icon={Bookmark} label="Bookmarks" trailing={bookmarks.length} />
-      <SidebarLink href="/authors" icon={UserCircle} label="Author Profiles" />
-      {isEditor && <SidebarLink href="/admin" icon={ShieldCheck} label="Editorial Admin" />}
+      <SidebarLink href="/messages" icon={Mail} label={t.nav.messages} trailing={unreadMessages} />
+      <SidebarLink href="/notifications" icon={Bell} label={t.nav.notifications} trailing={unreadNotifications} />
+      <SidebarLink href="/bookmarks" icon={Bookmark} label={t.nav.bookmarks} trailing={bookmarks.length} />
+      <SidebarLink href="/authors" icon={UserCircle} label={t.nav.authorProfiles} />
+      {isEditor && <SidebarLink href="/admin" icon={ShieldCheck} label={t.nav.editorialAdmin} />}
 
       <Link
         href="/submissions"
         className="block text-center bg-gold hover:bg-soft-gold hover:text-royal-blue text-ink font-semibold text-sm px-4 py-2.5 mt-4 transition-colors tracking-wide"
       >
-        Submit New Article
+        {t.dashboard.submitNew}
       </Link>
     </aside>
   )

@@ -1,16 +1,22 @@
+'use client'
+
 // Real photography from GoGMI's own Maritime Security Conference, used as
 // the issue's cover image — with a bottom scrim so the issue number and
 // title stay readable over whatever is in the shot.
 
 import Image from 'next/image'
 import type { Issue } from '@/lib/types'
+import { useI18n } from '@/context/I18nContext'
+import { fmt } from '@/lib/i18n/format'
 
+// A Client Component only for the translated alt text.
 export default function IssueCover({ issue, className = '' }: { issue: Issue; className?: string }) {
+  const { t } = useI18n()
   return (
     <div className={`relative aspect-[3/4] overflow-hidden bg-royal-blue ${className}`}>
       <Image
         src={issue.coverImage}
-        alt={`Cover: Issue ${issue.number}, ${issue.theme}`}
+        alt={fmt(t.issue.coverAlt, { number: issue.number, theme: issue.theme })}
         fill
         sizes="(max-width: 768px) 40vw, 220px"
         className="object-cover"

@@ -6,9 +6,12 @@ import { Download } from 'lucide-react'
 import type { Article, Author, Topic } from '@/lib/types'
 import type { ArticleStat } from '@/lib/analytics'
 import { lastNDates, dateKey, formatAxisLabel, type DailySeriesPoint } from '@/lib/analyticsData'
+import { useI18n } from '@/context/I18nContext'
+import { fmt, formatNumber } from '@/lib/i18n/format'
+import { intlLocales } from '@/lib/i18n/config'
 import EngagementChart from './EngagementChart'
 
-const TABS = ['Overview', 'Papers', 'Topics', 'Authors'] as const
+const TABS = ['overview', 'papers', 'topics', 'authors'] as const
 type Tab = (typeof TABS)[number]
 
 interface Props {
@@ -66,8 +69,17 @@ export default function AnalyticsDashboard({
   statsBySlug,
   dailyStatsBySlug,
 }: Props) {
-  const [tab, setTab] = useState<Tab>('Overview')
+  const { locale, t } = useI18n()
+  const [tab, setTab] = useState<Tab>('overview')
+  const tabLabels: Record<Tab, string> = {
+    overview: t.analytics.tabOverview,
+    papers: t.analytics.tabPapers,
+    topics: t.analytics.tabTopics,
+    authors: t.analytics.tabAuthors,
+  }
   const [rangeDays, setRangeDays] = useState<30 | 60>(30)
+  const periodViewsLabel = fmt(t.analytics.periodViews, { days: rangeDays })
+  const periodDownloadsLabel = fmt(t.analytics.periodDownloads, { days: rangeDays })
 
   const days = useMemo(() => lastNDates(rangeDays), [rangeDays])
 
@@ -84,9 +96,9 @@ export default function AnalyticsDashboard({
             downloads += stat.downloads
           }
         }
-        return { label: formatAxisLabel(day), views, downloads }
+        return { label: formatAxisLabel(day, intlLocales[locale]), views, downloads }
       }),
-    [articles, days, dailyStatsBySlug]
+    [articles, days, dailyStatsBySlug, locale]
   )
 
   const perArticle: PeriodStat[] = useMemo(
@@ -120,19 +132,19 @@ export default function AnalyticsDashboard({
     .filter((r) => r.articleCount > 0)
 
   function handleExport() {
-    if (tab === 'Topics') {
+    if (tab === 'topics') {
       downloadCsv(`topics-${rangeDays}d.csv`, [
-        ['Topic', 'Articles', `${rangeDays}-day Views`, `${rangeDays}-day Downloads`],
+        [t.analytics.colTopic, t.analytics.colArticles, periodViewsLabel, periodDownloadsLabel],
         ...topicRows.map((r) => [r.topic.label, r.articleCount, r.views, r.downloads]),
       ])
-    } else if (tab === 'Authors') {
+    } else if (tab === 'authors') {
       downloadCsv(`authors-${rangeDays}d.csv`, [
-        ['Author', 'Articles', `${rangeDays}-day Views`, `${rangeDays}-day Downloads`],
+        [t.analytics.colAuthor, t.analytics.colArticles, periodViewsLabel, periodDownloadsLabel],
         ...authorRows.map((r) => [r.author.name, r.articleCount, r.views, r.downloads]),
       ])
     } else {
       downloadCsv(`articles-${rangeDays}d.csv`, [
-        ['Title', `${rangeDays}-day Views`, `${rangeDays}-day Downloads`, 'All-time Views', 'All-time Downloads'],
+        [t.analytics.colTitle, periodViewsLabel, periodDownloadsLabel, t.analytics.allTimeViews, t.analytics.allTimeDownloads],
         ...perArticle.map((a) => [
           a.article.title,
           a.views,
@@ -149,15 +161,15 @@ export default function AnalyticsDashboard({
       {/* Tab bar */}
       <div className="border-b border-slate-200 flex flex-wrap items-center justify-between gap-4 mb-8">
         <nav className="flex flex-wrap gap-6">
-          {TABS.map((t) => (
+          {TABS.map((tabKey) => (
             <button
-              key={t}
-              onClick={() => setTab(t)}
+              key={tabKey}
+              onClick={() => setTab(tabKey)}
               className={`text-sm font-medium py-3 border-b-2 -mb-px transition-colors ${
-                tab === t ? 'text-royal-blue border-gold' : 'text-slate-500 border-transparent hover:text-royal-blue'
+                tab === tabKey ? 'text-royal-blue border-gold' : 'text-slate-500 border-transparent hover:text-royal-blue'
               }`}
             >
-              {t}
+              {tabLabels[tabKey]}
             </button>
           ))}
         </nav>
@@ -167,19 +179,19 @@ export default function AnalyticsDashboard({
               onClick={() => setRangeDays(30)}
               className={`px-3 py-1.5 text-sm ${rangeDays === 30 ? 'bg-royal-blue text-white' : 'text-slate-600 hover:bg-slate-50'}`}
             >
-              30 Days
+              {t.analytics.days30}
             </button>
             <button
               onClick={() => setRangeDays(60)}
               className={`px-3 py-1.5 text-sm border-l border-slate-300 ${rangeDays === 60 ? 'bg-royal-blue text-white' : 'text-slate-600 hover:bg-slate-50'}`}
             >
-              60 Days
+              {t.analytics.days60}
             </button>
           </div>
           <button
             onClick={handleExport}
-            aria-label="Export as CSV"
-            title="Export as CSV"
+            aria-label={t.analytics.exportCsv}
+            title={t.analytics.exportCsv}
             className="border border-slate-300 p-2 text-slate-600 hover:bg-slate-50 hover:text-royal-blue transition-colors"
           >
             <Download size={16} />
@@ -187,27 +199,27 @@ export default function AnalyticsDashboard({
         </div>
       </div>
 
-      {tab === 'Overview' && (
+      {tab === 'overview' && (
         <>
           <div className="border border-slate-200 mb-8">
             <h3 className="text-sm font-semibold text-royal-blue px-5 py-3 border-b border-slate-200">
-              Article Engagement
+              {t.analytics.engagement}
             </h3>
             <div className="p-4">
-              <EngagementChart data={series} />
+              <EngagementChart data={series} label={t.analytics.chartLabel} />
             </div>
             <div className="grid grid-cols-2 border-t border-slate-200">
               <div className="px-5 py-4 border-r border-slate-200">
                 <p className="flex items-center gap-2 text-sm text-slate-500 mb-1">
-                  <span className="w-2.5 h-2.5 rounded-full bg-gold inline-block" /> {rangeDays}-day Views
+                  <span className="w-2.5 h-2.5 rounded-full bg-gold inline-block" /> {periodViewsLabel}
                 </p>
-                <p className="numeral text-2xl font-bold text-royal-blue">{periodViewsTotal.toLocaleString()}</p>
+                <p className="numeral text-2xl font-bold text-royal-blue">{formatNumber(locale, periodViewsTotal)}</p>
               </div>
               <div className="px-5 py-4">
                 <p className="flex items-center gap-2 text-sm text-slate-500 mb-1">
-                  <span className="w-2.5 h-2.5 rounded-full bg-royal-blue inline-block" /> {rangeDays}-day Downloads
+                  <span className="w-2.5 h-2.5 rounded-full bg-royal-blue inline-block" /> {periodDownloadsLabel}
                 </p>
-                <p className="numeral text-2xl font-bold text-royal-blue">{periodDownloadsTotal.toLocaleString()}</p>
+                <p className="numeral text-2xl font-bold text-royal-blue">{formatNumber(locale, periodDownloadsTotal)}</p>
               </div>
             </div>
           </div>
@@ -215,17 +227,17 @@ export default function AnalyticsDashboard({
         </>
       )}
 
-      {tab === 'Papers' && <ArticlesTable rows={perArticle} statsBySlug={statsBySlug} rangeDays={rangeDays} />}
+      {tab === 'papers' && <ArticlesTable rows={perArticle} statsBySlug={statsBySlug} rangeDays={rangeDays} />}
 
-      {tab === 'Topics' && (
+      {tab === 'topics' && (
         <div className="overflow-x-auto border border-slate-200">
           <table className="w-full text-sm">
             <thead>
               <tr className="text-left text-slate-500 text-xs uppercase tracking-wide border-b border-slate-200 bg-slate-50">
-                <th className="py-3 px-4 font-medium">Topic</th>
-                <th className="py-3 px-4 font-medium text-right">Articles</th>
-                <th className="py-3 px-4 font-medium text-right">{rangeDays}-day Views</th>
-                <th className="py-3 px-4 font-medium text-right">{rangeDays}-day Downloads</th>
+                <th className="py-3 px-4 font-medium">{t.analytics.colTopic}</th>
+                <th className="py-3 px-4 font-medium text-right">{t.analytics.colArticles}</th>
+                <th className="py-3 px-4 font-medium text-right">{periodViewsLabel}</th>
+                <th className="py-3 px-4 font-medium text-right">{periodDownloadsLabel}</th>
               </tr>
             </thead>
             <tbody>
@@ -237,8 +249,8 @@ export default function AnalyticsDashboard({
                     </Link>
                   </td>
                   <td className="py-3 px-4 text-right numeral">{r.articleCount}</td>
-                  <td className="py-3 px-4 text-right numeral">{r.views.toLocaleString()}</td>
-                  <td className="py-3 px-4 text-right numeral">{r.downloads.toLocaleString()}</td>
+                  <td className="py-3 px-4 text-right numeral">{formatNumber(locale, r.views)}</td>
+                  <td className="py-3 px-4 text-right numeral">{formatNumber(locale, r.downloads)}</td>
                 </tr>
               ))}
             </tbody>
@@ -246,15 +258,15 @@ export default function AnalyticsDashboard({
         </div>
       )}
 
-      {tab === 'Authors' && (
+      {tab === 'authors' && (
         <div className="overflow-x-auto border border-slate-200">
           <table className="w-full text-sm">
             <thead>
               <tr className="text-left text-slate-500 text-xs uppercase tracking-wide border-b border-slate-200 bg-slate-50">
-                <th className="py-3 px-4 font-medium">Author</th>
-                <th className="py-3 px-4 font-medium text-right">Articles</th>
-                <th className="py-3 px-4 font-medium text-right">{rangeDays}-day Views</th>
-                <th className="py-3 px-4 font-medium text-right">{rangeDays}-day Downloads</th>
+                <th className="py-3 px-4 font-medium">{t.analytics.colAuthor}</th>
+                <th className="py-3 px-4 font-medium text-right">{t.analytics.colArticles}</th>
+                <th className="py-3 px-4 font-medium text-right">{periodViewsLabel}</th>
+                <th className="py-3 px-4 font-medium text-right">{periodDownloadsLabel}</th>
               </tr>
             </thead>
             <tbody>
@@ -266,8 +278,8 @@ export default function AnalyticsDashboard({
                     </Link>
                   </td>
                   <td className="py-3 px-4 text-right numeral">{r.articleCount}</td>
-                  <td className="py-3 px-4 text-right numeral">{r.views.toLocaleString()}</td>
-                  <td className="py-3 px-4 text-right numeral">{r.downloads.toLocaleString()}</td>
+                  <td className="py-3 px-4 text-right numeral">{formatNumber(locale, r.views)}</td>
+                  <td className="py-3 px-4 text-right numeral">{formatNumber(locale, r.downloads)}</td>
                 </tr>
               ))}
             </tbody>
@@ -276,9 +288,7 @@ export default function AnalyticsDashboard({
       )}
 
       <p className="text-xs text-slate-400 mt-4">
-        Views are logged from real visits to each article page, starting from when this tracking
-        shipped — figures will be low or zero for anything before that. Downloads stay at zero: there&apos;s
-        no per-article file download feature on the site yet for that count to reflect.
+        {t.analytics.footnote}
       </p>
     </div>
   )
@@ -293,16 +303,19 @@ function ArticlesTable({
   statsBySlug: Record<string, ArticleStat>
   rangeDays: number
 }) {
+  const { locale, t } = useI18n()
+  const periodViewsLabel = fmt(t.analytics.periodViews, { days: rangeDays })
+  const periodDownloadsLabel = fmt(t.analytics.periodDownloads, { days: rangeDays })
   return (
     <div className="overflow-x-auto border border-slate-200">
       <table className="w-full text-sm">
         <thead>
           <tr className="text-left text-slate-500 text-xs uppercase tracking-wide border-b border-slate-200 bg-slate-50">
-            <th className="py-3 px-4 font-medium">Title</th>
-            <th className="py-3 px-4 font-medium text-right">{rangeDays}-day Views</th>
-            <th className="py-3 px-4 font-medium text-right">{rangeDays}-day Downloads</th>
-            <th className="py-3 px-4 font-medium text-right">All-time Views</th>
-            <th className="py-3 px-4 font-medium text-right">All-time Downloads</th>
+            <th className="py-3 px-4 font-medium">{t.analytics.colTitle}</th>
+            <th className="py-3 px-4 font-medium text-right">{periodViewsLabel}</th>
+            <th className="py-3 px-4 font-medium text-right">{periodDownloadsLabel}</th>
+            <th className="py-3 px-4 font-medium text-right">{t.analytics.allTimeViews}</th>
+            <th className="py-3 px-4 font-medium text-right">{t.analytics.allTimeDownloads}</th>
           </tr>
         </thead>
         <tbody>
@@ -315,8 +328,8 @@ function ArticlesTable({
               </td>
               <td className="py-3 px-4 text-right numeral">{views}</td>
               <td className="py-3 px-4 text-right numeral">{downloads}</td>
-              <td className="py-3 px-4 text-right numeral">{(statsBySlug[article.slug]?.views ?? 0).toLocaleString()}</td>
-              <td className="py-3 px-4 text-right numeral">{(statsBySlug[article.slug]?.downloads ?? 0).toLocaleString()}</td>
+              <td className="py-3 px-4 text-right numeral">{formatNumber(locale, statsBySlug[article.slug]?.views ?? 0)}</td>
+              <td className="py-3 px-4 text-right numeral">{formatNumber(locale, statsBySlug[article.slug]?.downloads ?? 0)}</td>
             </tr>
           ))}
         </tbody>

@@ -5,10 +5,13 @@ import Link from 'next/link'
 import { useRouter } from 'next/navigation'
 import { createClient } from '@/lib/supabase/client'
 import { useAccount } from '@/context/AccountContext'
+import { useI18n } from '@/context/I18nContext'
+import { rich } from '@/lib/i18n/format'
 
 export default function AccountSettingsForm() {
   const { user, authLoading } = useAccount()
   const router = useRouter()
+  const { t } = useI18n()
 
   const [newPassword, setNewPassword] = useState('')
   const [confirmPassword, setConfirmPassword] = useState('')
@@ -28,11 +31,11 @@ export default function AccountSettingsForm() {
     setPasswordSaved(false)
 
     if (newPassword.length < 8) {
-      setPasswordError('Password must be at least 8 characters.')
+      setPasswordError(t.accountSettings.tooShort)
       return
     }
     if (newPassword !== confirmPassword) {
-      setPasswordError('Passwords do not match.')
+      setPasswordError(t.accountSettings.mismatch)
       return
     }
 
@@ -65,7 +68,7 @@ export default function AccountSettingsForm() {
     setDeleteError(null)
 
     if (confirmEmail.trim().toLowerCase() !== user.email.toLowerCase()) {
-      setDeleteError('Type your account email exactly to confirm.')
+      setDeleteError(t.accountSettings.confirmMismatch)
       return
     }
 
@@ -74,7 +77,7 @@ export default function AccountSettingsForm() {
     if (!res.ok) {
       setDeleting(false)
       const body = await res.json().catch(() => null)
-      setDeleteError(body?.error || 'Failed to delete account.')
+      setDeleteError(body?.error || t.accountSettings.deleteFailed)
       return
     }
 
@@ -86,16 +89,19 @@ export default function AccountSettingsForm() {
   }
 
   if (authLoading) {
-    return <p className="text-slate-500 text-sm">Loading…</p>
+    return <p className="text-slate-500 text-sm">{t.common.loading}</p>
   }
 
   if (!user) {
     return (
       <p className="text-slate-600">
-        <Link href="/sign-in?redirect=/account-settings" className="text-ocean-blue hover:underline">
-          Sign in
-        </Link>{' '}
-        to manage your account settings.
+        {rich(t.accountSettings.signInPrompt, {
+          link: (
+            <Link href="/sign-in?redirect=/account-settings" className="text-ocean-blue hover:underline">
+              {t.common.signIn}
+            </Link>
+          ),
+        })}
       </p>
     )
   }
@@ -104,9 +110,9 @@ export default function AccountSettingsForm() {
     <div className="max-w-lg space-y-12">
       {/* Change password */}
       <div>
-        <h2 className="text-lg font-bold text-royal-blue font-display mb-1">Change Password</h2>
+        <h2 className="text-lg font-bold text-royal-blue font-display mb-1">{t.accountSettings.changePassword}</h2>
         <p className="text-sm text-slate-500 mb-4">
-          If you signed up with Google, this sets a password you can also use to sign in directly.
+          {t.accountSettings.changePasswordBody}
         </p>
         <form onSubmit={handlePasswordSubmit} className="space-y-4">
           {passwordError && (
@@ -114,12 +120,12 @@ export default function AccountSettingsForm() {
           )}
           {passwordSaved && !passwordError && (
             <p className="text-sm text-emerald-700 bg-emerald-50 border border-emerald-200 px-3 py-2">
-              Password updated.
+              {t.accountSettings.passwordUpdated}
             </p>
           )}
           <div>
             <label htmlFor="newPassword" className="block text-sm font-medium text-slate-700 mb-1">
-              New password
+              {t.accountSettings.newPassword}
             </label>
             <input
               id="newPassword"
@@ -133,7 +139,7 @@ export default function AccountSettingsForm() {
           </div>
           <div>
             <label htmlFor="confirmPassword" className="block text-sm font-medium text-slate-700 mb-1">
-              Confirm new password
+              {t.accountSettings.confirmPassword}
             </label>
             <input
               id="confirmPassword"
@@ -150,32 +156,31 @@ export default function AccountSettingsForm() {
             disabled={passwordSaving}
             className="bg-royal-blue hover:bg-ocean-blue text-white font-semibold px-6 py-2.5 transition-colors disabled:opacity-60"
           >
-            {passwordSaving ? 'Saving…' : 'Update Password'}
+            {passwordSaving ? t.common.saving : t.accountSettings.updatePassword}
           </button>
         </form>
       </div>
 
       {/* Sessions */}
       <div className="pt-8 border-t border-slate-200">
-        <h2 className="text-lg font-bold text-royal-blue font-display mb-1">Sessions</h2>
+        <h2 className="text-lg font-bold text-royal-blue font-display mb-1">{t.accountSettings.sessions}</h2>
         <p className="text-sm text-slate-500 mb-4">
-          Sign out everywhere if you think another device or browser still has you signed in.
+          {t.accountSettings.sessionsBody}
         </p>
         <button
           onClick={handleSignOutEverywhere}
           disabled={signingOutEverywhere}
           className="border border-slate-300 hover:border-royal-blue text-slate-700 font-medium px-6 py-2.5 transition-colors disabled:opacity-60"
         >
-          {signingOutEverywhere ? 'Signing out…' : 'Sign Out Everywhere'}
+          {signingOutEverywhere ? t.accountSettings.signingOut : t.accountSettings.signOutEverywhere}
         </button>
       </div>
 
       {/* Danger zone */}
       <div className="pt-8 border-t border-red-200">
-        <h2 className="text-lg font-bold text-red-700 font-display mb-1">Delete Account</h2>
+        <h2 className="text-lg font-bold text-red-700 font-display mb-1">{t.accountSettings.deleteHeading}</h2>
         <p className="text-sm text-slate-500 mb-4">
-          Permanently deletes your account, profile, bookmarks, messages, and notifications. This
-          cannot be undone.
+          {t.accountSettings.deleteBody}
         </p>
         <form onSubmit={handleDeleteAccount} className="space-y-3">
           {deleteError && (
@@ -183,7 +188,7 @@ export default function AccountSettingsForm() {
           )}
           <div>
             <label htmlFor="confirmEmail" className="block text-sm font-medium text-slate-700 mb-1">
-              Type <span className="font-mono">{user.email}</span> to confirm
+              {rich(t.accountSettings.confirmLabel, { email: <span className="font-mono">{user.email}</span> })}
             </label>
             <input
               id="confirmEmail"
@@ -198,7 +203,7 @@ export default function AccountSettingsForm() {
             disabled={deleting || confirmEmail.trim().toLowerCase() !== user.email.toLowerCase()}
             className="bg-red-700 hover:bg-red-800 text-white font-semibold px-6 py-2.5 transition-colors disabled:opacity-40 disabled:cursor-not-allowed"
           >
-            {deleting ? 'Deleting…' : 'Permanently Delete My Account'}
+            {deleting ? t.accountSettings.deleting : t.accountSettings.deleteButton}
           </button>
         </form>
       </div>

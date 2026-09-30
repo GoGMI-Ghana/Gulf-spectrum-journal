@@ -5,6 +5,9 @@ import Link from 'next/link'
 import { Newspaper, FileText } from 'lucide-react'
 import { createClient } from '@/lib/supabase/client'
 import { useAccount } from '@/context/AccountContext'
+import { useI18n } from '@/context/I18nContext'
+import { fmt, formatDate, rich } from '@/lib/i18n/format'
+import { intlLocales, type Locale } from '@/lib/i18n/config'
 
 type NotificationType = 'new_issue' | 'new_article_in_topic'
 
@@ -25,20 +28,24 @@ function one<T>(value: T | T[] | null): T | null {
   return value
 }
 
-function timeAgo(iso: string): string {
+// Intl.RelativeTimeFormat handles the wording ("5 min ago", "il y a 5 min")
+// in each language, rather than a hand-built "5m ago" per locale.
+function timeAgo(locale: Locale, iso: string): string {
+  const rtf = new Intl.RelativeTimeFormat(intlLocales[locale], { numeric: 'auto', style: 'short' })
   const seconds = Math.floor((Date.now() - new Date(iso).getTime()) / 1000)
-  if (seconds < 60) return 'just now'
+  if (seconds < 60) return rtf.format(0, 'second')
   const minutes = Math.floor(seconds / 60)
-  if (minutes < 60) return `${minutes}m ago`
+  if (minutes < 60) return rtf.format(-minutes, 'minute')
   const hours = Math.floor(minutes / 60)
-  if (hours < 24) return `${hours}h ago`
+  if (hours < 24) return rtf.format(-hours, 'hour')
   const days = Math.floor(hours / 24)
-  if (days < 30) return `${days}d ago`
-  return new Date(iso).toLocaleDateString('en-US', { month: 'short', day: 'numeric', year: 'numeric' })
+  if (days < 30) return rtf.format(-days, 'day')
+  return formatDate(locale, iso, { month: 'short', day: 'numeric', year: 'numeric' })
 }
 
 export default function NotificationsList() {
   const { user, authLoading, markNotificationsRead } = useAccount()
+  const { locale, t } = useI18n()
   const [notifications, setNotifications] = useState<NotificationRow[]>([])
   // Same pattern as AccountContext/ProfileForm: whose data this is, not a
   // separate setLoading(true) at the top of the effect.
@@ -92,16 +99,19 @@ export default function NotificationsList() {
   }
 
   if (authLoading || loading) {
-    return <p className="text-slate-500 text-sm">Loading your notifications…</p>
+    return <p className="text-slate-500 text-sm">{t.notifications.loading}</p>
   }
 
   if (!user) {
     return (
       <p className="text-slate-600">
-        <Link href="/sign-in?redirect=/notifications" className="text-ocean-blue hover:underline">
-          Sign in
-        </Link>{' '}
-        to see your notifications.
+        {rich(t.notifications.signInPrompt, {
+          link: (
+            <Link href="/sign-in?redirect=/notifications" className="text-ocean-blue hover:underline">
+              {t.common.signIn}
+            </Link>
+          ),
+        })}
       </p>
     )
   }
@@ -109,8 +119,7 @@ export default function NotificationsList() {
   if (notifications.length === 0) {
     return (
       <p className="text-slate-600">
-        No notifications yet. You&apos;ll see one here when a new issue is published, or when a new
-        article appears in a topic you&apos;ve bookmarked from.
+        {t.notifications.empty}
       </p>
     )
   }
@@ -120,7 +129,7 @@ export default function NotificationsList() {
       {unread.length > 0 && (
         <div className="flex justify-end mb-4">
           <button onClick={handleMarkAllRead} className="text-sm text-ocean-blue hover:underline">
-            Mark all as read
+            {t.notifications.markAll}
           </button>
         </div>
       )}
@@ -130,10 +139,10 @@ export default function NotificationsList() {
           const href = n.type === 'new_issue' && n.issue ? `/issues/${n.issue.slug}` : n.article ? `/articles/${n.article.slug}` : null
           const label =
             n.type === 'new_issue' && n.issue
-              ? `New issue published: ${n.issue.theme}`
+              ? fmt(t.notifications.newIssue, { theme: n.issue.theme })
               : n.type === 'new_article_in_topic' && n.article
-                ? `New article in a topic you follow: ${n.article.title}`
-                : 'Update'
+                ? fmt(t.notifications.newArticle, { title: n.article.title })
+                : t.notifications.update
           const Icon = n.type === 'new_issue' ? Newspaper : FileText
 
           const content = (
@@ -141,9 +150,9 @@ export default function NotificationsList() {
               <Icon size={16} className="text-ocean-blue shrink-0 mt-0.5" />
               <div className="flex-1 min-w-0">
                 <p className={`text-sm ${isUnread ? 'font-semibold text-royal-blue' : 'text-slate-600'}`}>{label}</p>
-                <p className="text-xs text-slate-400 mt-0.5">{timeAgo(n.created_at)}</p>
+                <p className="text-xs text-slate-400 mt-0.5">{timeAgo(locale, n.created_at)}</p>
               </div>
-              {isUnread && <span className="w-2 h-2 rounded-full bg-gold shrink-0 mt-1.5" aria-label="Unread" />}
+              {isUnread && <span className="w-2 h-2 rounded-full bg-gold shrink-0 mt-1.5" aria-label={t.notifications.unread} />}
             </div>
           )
 

@@ -1,6 +1,7 @@
 'use client'
 
 import { useSyncExternalStore } from 'react'
+import { useI18n } from '@/context/I18nContext'
 
 // Reads the ?donation=thanks query param via useSyncExternalStore rather
 // than the searchParams page prop, the useSearchParams() hook, or an
@@ -26,14 +27,14 @@ function getServerSnapshot() {
 
 export default function DonationThanksBanner() {
   const show = useSyncExternalStore(subscribe, getSnapshot, getServerSnapshot)
+  const { t } = useI18n()
 
   if (!show) return null
 
   return (
     <div className="border-l-4 border-gold bg-soft-gold/60 text-royal-blue p-4 my-6">
       <p className="text-sm leading-relaxed">
-        Thank you for your donation — we&apos;re confirming the payment now. It&apos;s usually
-        instant; your receipt will come from Paystack directly.
+        {t.support.thanks}
       </p>
     </div>
   )

@@ -4,6 +4,8 @@ import { useEffect, useState, type FormEvent } from 'react'
 import Link from 'next/link'
 import { createClient } from '@/lib/supabase/client'
 import { useAccount } from '@/context/AccountContext'
+import { useI18n } from '@/context/I18nContext'
+import { formatDate, rich } from '@/lib/i18n/format'
 
 interface ProfileRow {
   full_name: string | null
@@ -12,15 +14,9 @@ interface ProfileRow {
   created_at: string
 }
 
-const ROLE_LABELS: Record<ProfileRow['role'], string> = {
-  reader: 'Reader',
-  author: 'Author',
-  editor: 'Editor',
-  admin: 'Admin',
-}
-
 export default function ProfileForm() {
   const { user, authLoading } = useAccount()
+  const { locale, t } = useI18n()
   const [profile, setProfile] = useState<ProfileRow | null>(null)
   const [authorSlug, setAuthorSlug] = useState<string | null>(null)
   // Whose profile `profile` holds, compared against the current user below
@@ -107,16 +103,19 @@ export default function ProfileForm() {
   const loading = Boolean(user) && profileForUserId !== user?.id
 
   if (authLoading || loading) {
-    return <p className="text-slate-500 text-sm">Loading your profile…</p>
+    return <p className="text-slate-500 text-sm">{t.profile.loading}</p>
   }
 
   if (!user) {
     return (
       <p className="text-slate-600">
-        <Link href="/sign-in?redirect=/profile" className="text-ocean-blue hover:underline">
-          Sign in
-        </Link>{' '}
-        to view your profile.
+        {rich(t.profile.signInPrompt, {
+          link: (
+            <Link href="/sign-in?redirect=/profile" className="text-ocean-blue hover:underline">
+              {t.common.signIn}
+            </Link>
+          ),
+        })}
       </p>
     )
   }
@@ -126,12 +125,12 @@ export default function ProfileForm() {
       <form onSubmit={handleSubmit} className="space-y-4 mb-10">
         {error && <p className="text-sm text-red-700 bg-red-50 border border-red-200 px-3 py-2">{error}</p>}
         {saved && !error && (
-          <p className="text-sm text-emerald-700 bg-emerald-50 border border-emerald-200 px-3 py-2">Saved.</p>
+          <p className="text-sm text-emerald-700 bg-emerald-50 border border-emerald-200 px-3 py-2">{t.profile.saved}</p>
         )}
 
         <div>
           <label htmlFor="fullName" className="block text-sm font-medium text-slate-700 mb-1">
-            Full name
+            {t.common.fullName}
           </label>
           <input
             id="fullName"
@@ -146,9 +145,9 @@ export default function ProfileForm() {
         </div>
 
         <div>
-          <label className="block text-sm font-medium text-slate-700 mb-1">Email</label>
+          <label className="block text-sm font-medium text-slate-700 mb-1">{t.common.email}</label>
           <p className="text-sm text-slate-600 border border-slate-200 bg-slate-50 px-3 py-2">{user.email}</p>
-          <p className="text-xs text-slate-400 mt-1">Changing your email isn&apos;t available yet.</p>
+          <p className="text-xs text-slate-400 mt-1">{t.profile.emailNote}</p>
         </div>
 
         <button
@@ -156,27 +155,27 @@ export default function ProfileForm() {
           disabled={saving}
           className="bg-royal-blue hover:bg-ocean-blue text-white font-semibold px-6 py-2.5 transition-colors disabled:opacity-60"
         >
-          {saving ? 'Saving…' : 'Save changes'}
+          {saving ? t.common.saving : t.profile.save}
         </button>
       </form>
 
       <div className="border-l-4 border-royal-blue p-5 bg-slate-50 space-y-3">
         <div className="flex items-center justify-between">
-          <span className="text-sm text-slate-500">Account type</span>
-          <span className="text-sm font-medium text-royal-blue">{profile ? ROLE_LABELS[profile.role] : '—'}</span>
+          <span className="text-sm text-slate-500">{t.profile.accountType}</span>
+          <span className="text-sm font-medium text-royal-blue">{profile ? t.profile.roles[profile.role] : '—'}</span>
         </div>
         {profile && (
           <div className="flex items-center justify-between">
-            <span className="text-sm text-slate-500">Member since</span>
+            <span className="text-sm text-slate-500">{t.profile.memberSince}</span>
             <span className="text-sm font-medium text-royal-blue">
-              {new Date(profile.created_at).toLocaleDateString('en-US', { month: 'long', year: 'numeric' })}
+              {formatDate(locale, profile.created_at, { month: 'long', year: 'numeric' })}
             </span>
           </div>
         )}
         {authorSlug && (
           <div className="pt-2 border-t border-slate-200">
             <Link href={`/authors/${authorSlug}`} className="text-sm text-ocean-blue hover:underline">
-              View your author profile and published articles →
+              {t.profile.viewAuthor}
             </Link>
           </div>
         )}

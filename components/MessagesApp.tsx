@@ -5,6 +5,9 @@ import Link from 'next/link'
 import { Send, Search, X } from 'lucide-react'
 import { createClient } from '@/lib/supabase/client'
 import { useAccount } from '@/context/AccountContext'
+import { useI18n } from '@/context/I18nContext'
+import { rich } from '@/lib/i18n/format'
+import { intlLocales } from '@/lib/i18n/config'
 import Initials from './Initials'
 
 interface OtherUser {
@@ -39,10 +42,6 @@ function one<T>(value: T | T[] | null | undefined): T | null {
   return value ?? null
 }
 
-function displayName(user: OtherUser | ProfileSearchResult): string {
-  return user.fullName || 'Unnamed reader'
-}
-
 // A single template literal (no runtime concatenation) so supabase-js's
 // type-level select-string parser can actually infer the embedded
 // user_a/user_b shape — building this via `+` between string literals
@@ -56,6 +55,8 @@ const CONVERSATION_SELECT = `
 
 export default function MessagesApp() {
   const { user, authLoading, refreshUnreadMessages } = useAccount()
+  const { locale, t } = useI18n()
+  const displayName = (u: OtherUser | ProfileSearchResult) => u.fullName || t.messages.unnamed
   const [conversations, setConversations] = useState<ConversationSummary[]>([])
   const [conversationsLoaded, setConversationsLoaded] = useState(false)
   const [selectedId, setSelectedId] = useState<string | null>(null)
@@ -281,16 +282,19 @@ export default function MessagesApp() {
   }
 
   if (authLoading) {
-    return <p className="text-slate-500 text-sm">Loading…</p>
+    return <p className="text-slate-500 text-sm">{t.common.loading}</p>
   }
 
   if (!user) {
     return (
       <p className="text-slate-600">
-        <Link href="/sign-in?redirect=/messages" className="text-ocean-blue hover:underline">
-          Sign in
-        </Link>{' '}
-        to send and receive messages.
+        {rich(t.messages.signInPrompt, {
+          link: (
+            <Link href="/sign-in?redirect=/messages" className="text-ocean-blue hover:underline">
+              {t.common.signIn}
+            </Link>
+          ),
+        })}
       </p>
     )
   }
@@ -313,16 +317,16 @@ export default function MessagesApp() {
                   type="text"
                   value={searchQuery}
                   onChange={(e) => setSearchQuery(e.target.value)}
-                  placeholder="Search members by name…"
+                  placeholder={t.messages.searchPlaceholder}
                   className="flex-1 border border-slate-300 px-2 py-1.5 text-sm focus:outline-none focus:border-royal-blue"
                 />
-                <button onClick={() => setSearchOpen(false)} aria-label="Close search" className="text-slate-400 hover:text-royal-blue">
+                <button onClick={() => setSearchOpen(false)} aria-label={t.messages.closeSearch} className="text-slate-400 hover:text-royal-blue">
                   <X size={16} />
                 </button>
               </div>
-              {searching && <p className="text-xs text-slate-400 px-1">Searching…</p>}
+              {searching && <p className="text-xs text-slate-400 px-1">{t.messages.searching}</p>}
               {!searching && trimmedQuery.length >= 2 && visibleSearchResults.length === 0 && (
-                <p className="text-xs text-slate-400 px-1">No members found.</p>
+                <p className="text-xs text-slate-400 px-1">{t.messages.noMembers}</p>
               )}
               <ul className="space-y-1 max-h-64 overflow-y-auto">
                 {visibleSearchResults.map((r) => (
@@ -343,16 +347,16 @@ export default function MessagesApp() {
               onClick={() => setSearchOpen(true)}
               className="w-full flex items-center justify-center gap-2 bg-royal-blue hover:bg-ocean-blue text-white text-sm font-semibold px-3 py-2 transition-colors"
             >
-              <Search size={14} /> New Message
+              <Search size={14} /> {t.messages.newMessage}
             </button>
           )}
         </div>
 
         <div className="flex-1 overflow-y-auto">
-          {!conversationsLoaded && <p className="text-sm text-slate-400 p-4">Loading…</p>}
+          {!conversationsLoaded && <p className="text-sm text-slate-400 p-4">{t.common.loading}</p>}
           {conversationsLoaded && conversations.length === 0 && (
             <p className="text-sm text-slate-500 p-4">
-              No conversations yet. Use &ldquo;New Message&rdquo; to find another member.
+              {t.messages.empty}
             </p>
           )}
           <ul>
@@ -377,13 +381,13 @@ export default function MessagesApp() {
       <div className={`flex flex-col ${selectedId ? 'flex' : 'hidden md:flex'}`}>
         {!selected ? (
           <div className="flex-1 flex items-center justify-center text-sm text-slate-400 p-6 text-center">
-            Select a conversation, or start a new one.
+            {t.messages.selectPrompt}
           </div>
         ) : (
           <>
             <div className="flex items-center gap-3 px-4 py-3 border-b border-slate-200">
               <button onClick={() => setSelectedId(null)} className="md:hidden text-slate-400 hover:text-royal-blue text-sm">
-                ← Back
+                {t.messages.back}
               </button>
               <Initials name={displayName(selected.otherUser)} size="sm" />
               <span className="font-semibold text-royal-blue text-sm">{displayName(selected.otherUser)}</span>
@@ -401,7 +405,7 @@ export default function MessagesApp() {
                     >
                       <p className="whitespace-pre-line break-words">{m.body}</p>
                       <p className={`text-[10px] mt-1 ${mine ? 'text-white/60' : 'text-slate-400'}`}>
-                        {new Date(m.createdAt).toLocaleTimeString('en-US', { hour: 'numeric', minute: '2-digit' })}
+                        {new Date(m.createdAt).toLocaleTimeString(intlLocales[locale], { hour: 'numeric', minute: '2-digit' })}
                       </p>
                     </div>
                   </div>
@@ -415,13 +419,13 @@ export default function MessagesApp() {
                 type="text"
                 value={draft}
                 onChange={(e) => setDraft(e.target.value)}
-                placeholder="Type a message…"
+                placeholder={t.messages.typePlaceholder}
                 className="flex-1 border border-slate-300 px-3 py-2 text-sm focus:outline-none focus:border-royal-blue"
               />
               <button
                 type="submit"
                 disabled={sending || !draft.trim()}
-                aria-label="Send message"
+                aria-label={t.messages.send}
                 className="bg-royal-blue hover:bg-ocean-blue text-white p-2.5 transition-colors disabled:opacity-50"
               >
                 <Send size={16} />

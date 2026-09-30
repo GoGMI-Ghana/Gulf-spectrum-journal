@@ -6,14 +6,10 @@ export interface EditorialBoardMember {
 
 export interface Journal {
   name: string
-  subtitle: string
   publisher: string
   domain: string
   founded: number
-  issn: string
-  frequency: string
-  aboutText: string
-  scopeAreas: string[]
+  issn: string | null
 }
 
 export interface Author {

@@ -4,6 +4,8 @@ import { useEffect, useState, type FormEvent } from 'react'
 import Link from 'next/link'
 import { createClient } from '@/lib/supabase/client'
 import { useAccount } from '@/context/AccountContext'
+import { useI18n } from '@/context/I18nContext'
+import { rich } from '@/lib/i18n/format'
 
 type Eligibility = 'checking' | 'eligible' | 'already-linked' | 'pending' | 'claimed'
 
@@ -19,6 +21,7 @@ export default function ClaimAuthorForm({
   claimed: boolean
 }) {
   const { user, authLoading } = useAccount()
+  const { t } = useI18n()
   const [eligibility, setEligibility] = useState<Eligibility>(claimed ? 'claimed' : 'checking')
   const [message, setMessage] = useState('')
   const [submitting, setSubmitting] = useState(false)
@@ -65,16 +68,19 @@ export default function ClaimAuthorForm({
   }
 
   if (authLoading) {
-    return <p className="text-slate-500 text-sm">Loading…</p>
+    return <p className="text-slate-500 text-sm">{t.common.loading}</p>
   }
 
   if (!user) {
     return (
       <p className="text-slate-600">
-        <Link href={`/sign-in?redirect=/authors/${authorSlug}/claim`} className="text-ocean-blue hover:underline">
-          Sign in
-        </Link>{' '}
-        to claim this profile.
+        {rich(t.claim.signInPrompt, {
+          link: (
+            <Link href={`/sign-in?redirect=/authors/${authorSlug}/claim`} className="text-ocean-blue hover:underline">
+              {t.common.signIn}
+            </Link>
+          ),
+        })}
       </p>
     )
   }
@@ -82,18 +88,17 @@ export default function ClaimAuthorForm({
   // Only reachable once we know there's a signed-in user to check
   // eligibility for — the effect above never resolves it otherwise.
   if (eligibility === 'checking') {
-    return <p className="text-slate-500 text-sm">Loading…</p>
+    return <p className="text-slate-500 text-sm">{t.common.loading}</p>
   }
 
   if (eligibility === 'claimed') {
-    return <p className="text-slate-600 bg-slate-100 border-l-4 border-slate-300 p-4">This profile is already linked to an account.</p>
+    return <p className="text-slate-600 bg-slate-100 border-l-4 border-slate-300 p-4">{t.claim.alreadyClaimed}</p>
   }
 
   if (eligibility === 'already-linked') {
     return (
       <p className="text-slate-600 bg-slate-100 border-l-4 border-slate-300 p-4">
-        Your account is already linked to a different author profile. Contact the editorial office if that&apos;s a
-        mistake.
+        {t.claim.alreadyLinked}
       </p>
     )
   }
@@ -101,8 +106,7 @@ export default function ClaimAuthorForm({
   if (eligibility === 'pending' || submitted) {
     return (
       <p className="text-slate-600 bg-amber-50 border-l-4 border-amber-300 p-4">
-        Your claim on <strong>{authorName}</strong> is in with the editorial team for review. You&apos;ll see the
-        profile linked to your account once it&apos;s approved.
+        {rich(t.claim.pending, { name: <strong>{authorName}</strong> })}
       </p>
     )
   }
@@ -111,19 +115,18 @@ export default function ClaimAuthorForm({
     <form onSubmit={handleSubmit} className="space-y-4 max-w-xl">
       {error && <p className="text-sm text-red-700 bg-red-50 border border-red-200 px-3 py-2">{error}</p>}
       <p className="text-slate-600 text-sm">
-        Claiming <strong>{authorName}</strong> links this author profile to your account, so you can keep the bio,
-        photo, and credentials up to date yourself.
+        {rich(t.claim.intro, { name: <strong>{authorName}</strong> })}
       </p>
       <div>
         <label htmlFor="claim-message" className="block text-sm font-medium text-slate-700 mb-1">
-          Anything that helps confirm this is you (optional)
+          {t.claim.messageLabel}
         </label>
         <textarea
           id="claim-message"
           rows={4}
           value={message}
           onChange={(e) => setMessage(e.target.value)}
-          placeholder="e.g. your institutional email, a link to your work, or how the editorial office can verify this."
+          placeholder={t.claim.messagePlaceholder}
           className="w-full border border-slate-300 px-3 py-2 text-sm focus:outline-none focus:border-royal-blue"
         />
       </div>
@@ -132,7 +135,7 @@ export default function ClaimAuthorForm({
         disabled={submitting}
         className="bg-royal-blue hover:bg-ocean-blue text-white font-semibold px-6 py-2.5 transition-colors disabled:opacity-60"
       >
-        {submitting ? 'Submitting…' : 'Submit Claim'}
+        {submitting ? t.common.submitting : t.claim.submit}
       </button>
     </form>
   )

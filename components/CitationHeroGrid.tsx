@@ -1,12 +1,16 @@
-import { BookOpen, Layers, Users } from 'lucide-react'
+'use client'
 
-const pills = [
-  { icon: BookOpen, label: 'Topics', top: '8%', left: '18%' },
-  { icon: Layers, label: 'Issues', top: '42%', left: '52%' },
-  { icon: Users, label: 'Authors', top: '72%', left: '14%' },
+import { BookOpen, Layers, Users } from 'lucide-react'
+import { useI18n } from '@/context/I18nContext'
+
+const pills: { icon: typeof BookOpen; label: 'topics' | 'issues' | 'authors'; top: string; left: string }[] = [
+  { icon: BookOpen, label: 'topics', top: '8%', left: '18%' },
+  { icon: Layers, label: 'issues', top: '42%', left: '52%' },
+  { icon: Users, label: 'authors', top: '72%', left: '14%' },
 ]
 
 export default function CitationHeroGrid() {
+  const { t } = useI18n()
   return (
     <div
       className="relative hidden lg:block h-64 overflow-hidden"
@@ -25,7 +29,7 @@ export default function CitationHeroGrid() {
           style={{ top: p.top, left: p.left }}
         >
           <p.icon size={14} className="text-ocean-blue" />
-          {p.label}
+          {t.citations.heroPills[p.label]}
         </span>
       ))}
     </div>

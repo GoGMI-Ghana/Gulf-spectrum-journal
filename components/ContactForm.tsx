@@ -2,6 +2,7 @@
 
 import { useState, type FormEvent } from 'react'
 import { createClient } from '@/lib/supabase/client'
+import { useI18n } from '@/context/I18nContext'
 
 // Real insert straight through the browser client — RLS already allows
 // anyone to insert a contact message ("anyone can send a contact
@@ -9,6 +10,7 @@ import { createClient } from '@/lib/supabase/client'
 // as every other anon-writable table in this app (donations, bookmarks
 // aside). Reading these back is editor-only; see /admin/messages.
 export default function ContactForm() {
+  const { t } = useI18n()
   const [name, setName] = useState('')
   const [email, setEmail] = useState('')
   const [subject, setSubject] = useState('')
@@ -51,7 +53,7 @@ export default function ContactForm() {
         <div className="grid sm:grid-cols-2 gap-5">
           <div>
             <label className="block text-xs font-medium text-slate-600 mb-1" htmlFor="c-name">
-              Name
+              {t.contact.name}
             </label>
             <input
               id="c-name"
@@ -64,7 +66,7 @@ export default function ContactForm() {
           </div>
           <div>
             <label className="block text-xs font-medium text-slate-600 mb-1" htmlFor="c-email">
-              Email
+              {t.common.email}
             </label>
             <input
               id="c-email"
@@ -78,7 +80,7 @@ export default function ContactForm() {
         </div>
         <div>
           <label className="block text-xs font-medium text-slate-600 mb-1" htmlFor="c-subject">
-            Subject
+            {t.contact.subject}
           </label>
           <input
             id="c-subject"
@@ -91,7 +93,7 @@ export default function ContactForm() {
         </div>
         <div>
           <label className="block text-xs font-medium text-slate-600 mb-1" htmlFor="c-message">
-            Message
+            {t.contact.message}
           </label>
           <textarea
             id="c-message"
@@ -107,12 +109,12 @@ export default function ContactForm() {
           disabled={submitting}
           className="bg-gold hover:bg-soft-gold hover:text-royal-blue text-ink font-semibold text-sm px-6 py-2.5 transition-colors tracking-wide disabled:opacity-60"
         >
-          {submitting ? 'Sending…' : 'Send Message'}
+          {submitting ? t.common.sending : t.contact.send}
         </button>
       </form>
       {submitted && (
         <p className="mt-4 text-sm text-royal-blue bg-soft-gold/60 border-l-4 border-gold p-3">
-          Thank you — your message has been sent to the editorial office.
+          {t.contact.thanks}
         </p>
       )}
     </div>

@@ -3,6 +3,8 @@
 import { useState, type FormEvent } from 'react'
 import { useRouter } from 'next/navigation'
 import { createClient } from '@/lib/supabase/client'
+import { useI18n } from '@/context/I18nContext'
+import { rich } from '@/lib/i18n/format'
 
 // Passwordless sign-in: request a 6-digit code by email, then verify it.
 // signInWithOtp with shouldCreateUser (the default) means this covers
@@ -14,6 +16,7 @@ import { createClient } from '@/lib/supabase/client'
 // file, and same fix: set it later from the Profile page.
 export default function EmailOtpForm({ redirectTo = '/' }: { redirectTo?: string }) {
   const router = useRouter()
+  const { t } = useI18n()
   const [step, setStep] = useState<'request' | 'verify'>('request')
   const [email, setEmail] = useState('')
   const [code, setCode] = useState('')
@@ -54,11 +57,11 @@ export default function EmailOtpForm({ redirectTo = '/' }: { redirectTo?: string
       <form onSubmit={handleVerifyCode} className="space-y-4">
         {error && <p className="text-sm text-red-700 bg-red-50 border border-red-200 px-3 py-2">{error}</p>}
         <p className="text-sm text-slate-600">
-          We sent a 6-digit code to <strong>{email}</strong>. It&apos;s valid for a few minutes.
+          {rich(t.otp.sentTo, { email: <strong>{email}</strong> })}
         </p>
         <div>
           <label htmlFor="otp-code" className="block text-sm font-medium text-slate-700 mb-1">
-            Code
+            {t.otp.code}
           </label>
           <input
             id="otp-code"
@@ -78,7 +81,7 @@ export default function EmailOtpForm({ redirectTo = '/' }: { redirectTo?: string
           disabled={loading || code.length !== 6}
           className="w-full bg-royal-blue hover:bg-ocean-blue text-white font-semibold px-4 py-2.5 transition-colors disabled:opacity-60"
         >
-          {loading ? 'Verifying…' : 'Verify & Sign In'}
+          {loading ? t.otp.verifying : t.otp.verify}
         </button>
         <button
           type="button"
@@ -89,7 +92,7 @@ export default function EmailOtpForm({ redirectTo = '/' }: { redirectTo?: string
           }}
           className="w-full text-sm text-ocean-blue hover:underline"
         >
-          Use a different email or resend
+          {t.otp.different}
         </button>
       </form>
     )
@@ -100,7 +103,7 @@ export default function EmailOtpForm({ redirectTo = '/' }: { redirectTo?: string
       {error && <p className="text-sm text-red-700 bg-red-50 border border-red-200 px-3 py-2">{error}</p>}
       <div>
         <label htmlFor="otp-email" className="block text-sm font-medium text-slate-700 mb-1">
-          Email
+          {t.common.email}
         </label>
         <input
           id="otp-email"
@@ -112,7 +115,7 @@ export default function EmailOtpForm({ redirectTo = '/' }: { redirectTo?: string
           className="w-full border border-slate-300 px-3 py-2 text-sm focus:outline-none focus:border-royal-blue"
         />
         <p className="text-xs text-slate-400 mt-1">
-          No password needed — we&apos;ll email you a code. New here? This creates your account too.
+          {t.otp.hint}
         </p>
       </div>
       <button
@@ -120,7 +123,7 @@ export default function EmailOtpForm({ redirectTo = '/' }: { redirectTo?: string
         disabled={loading}
         className="w-full bg-royal-blue hover:bg-ocean-blue text-white font-semibold px-4 py-2.5 transition-colors disabled:opacity-60"
       >
-        {loading ? 'Sending…' : 'Email Me a Code'}
+        {loading ? t.common.sending : t.otp.request}
       </button>
     </form>
   )

@@ -25,8 +25,8 @@ export function dateKey(d: Date): string {
   return d.toISOString().slice(0, 10)
 }
 
-export function formatAxisLabel(d: Date): string {
-  return d.toLocaleDateString('en-US', { month: 'short', day: 'numeric', timeZone: 'UTC' })
+export function formatAxisLabel(d: Date, intlLocale = 'en-US'): string {
+  return d.toLocaleDateString(intlLocale, { month: 'short', day: 'numeric', timeZone: 'UTC' })
 }
 
 export function lastNDates(n: number): Date[] {

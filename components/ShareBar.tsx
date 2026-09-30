@@ -1,3 +1,7 @@
+'use client'
+
+import { useI18n } from '@/context/I18nContext'
+
 // Minimal generic glyphs for social share targets (lucide-react no longer ships brand icons).
 function XGlyph(props: React.SVGProps<SVGSVGElement>) {
   return (
@@ -22,15 +26,16 @@ function LinkedInGlyph(props: React.SVGProps<SVGSVGElement>) {
 }
 
 export default function ShareBar({ title }: { title: string }) {
+  const { t } = useI18n()
   const shareText = encodeURIComponent(title)
   return (
     <div className="flex items-center gap-4 py-3 border-y border-slate-200">
-      <span className="kicker text-slate-500">Share</span>
+      <span className="kicker text-slate-500">{t.article.share}</span>
       <a
         href={`https://twitter.com/intent/tweet?text=${shareText}`}
         target="_blank"
         rel="noopener noreferrer"
-        aria-label="Share on X"
+        aria-label={t.article.shareOnX}
         className="text-slate-500 hover:text-royal-blue transition-colors"
       >
         <XGlyph />
@@ -39,7 +44,7 @@ export default function ShareBar({ title }: { title: string }) {
         href="https://www.facebook.com/sharer/sharer.php"
         target="_blank"
         rel="noopener noreferrer"
-        aria-label="Share on Facebook"
+        aria-label={t.article.shareOnFacebook}
         className="text-slate-500 hover:text-royal-blue transition-colors"
       >
         <FacebookGlyph />
@@ -48,7 +53,7 @@ export default function ShareBar({ title }: { title: string }) {
         href="https://www.linkedin.com/sharing/share-offsite/"
         target="_blank"
         rel="noopener noreferrer"
-        aria-label="Share on LinkedIn"
+        aria-label={t.article.shareOnLinkedIn}
         className="text-slate-500 hover:text-royal-blue transition-colors"
       >
         <LinkedInGlyph />

@@ -2,6 +2,8 @@
 
 import Link from 'next/link'
 import { useAccount } from '@/context/AccountContext'
+import { useI18n } from '@/context/I18nContext'
+import { rich } from '@/lib/i18n/format'
 import { ArticleCardView } from './ArticleCardView'
 import type { Article, Author, Issue, Topic } from '@/lib/types'
 
@@ -14,20 +16,26 @@ export interface ResolvedArticle {
 
 export default function BookmarksList({ allArticles }: { allArticles: ResolvedArticle[] }) {
   const { user, authLoading, bookmarks, bookmarksLoading } = useAccount()
+  const { t } = useI18n()
 
   if (authLoading) return null
 
   if (!user) {
     return (
       <p className="text-slate-600">
-        <Link href="/sign-in?redirect=/bookmarks" className="text-ocean-blue hover:underline">Sign in</Link>{' '}
-        to see your bookmarks — they&apos;re saved to your account now, not just this browser.
+        {rich(t.bookmarks.signInPrompt, {
+          link: (
+            <Link href="/sign-in?redirect=/bookmarks" className="text-ocean-blue hover:underline">
+              {t.common.signIn}
+            </Link>
+          ),
+        })}
       </p>
     )
   }
 
   if (bookmarksLoading) {
-    return <p className="text-slate-500 text-sm">Loading your bookmarks…</p>
+    return <p className="text-slate-500 text-sm">{t.bookmarks.loading}</p>
   }
 
   const saved = allArticles.filter((a) => bookmarks.includes(a.article.slug))
@@ -35,10 +43,13 @@ export default function BookmarksList({ allArticles }: { allArticles: ResolvedAr
   if (saved.length === 0) {
     return (
       <p className="text-slate-600">
-        No bookmarks yet. Open any article and tap the bookmark icon to save it here.
-        Browse{' '}
-        <Link href="/issues" className="text-ocean-blue hover:underline">articles and issues</Link>{' '}
-        to get started.
+        {rich(t.bookmarks.empty, {
+          link: (
+            <Link href="/issues" className="text-ocean-blue hover:underline">
+              {t.bookmarks.emptyLink}
+            </Link>
+          ),
+        })}
       </p>
     )
   }

@@ -1,6 +1,7 @@
 import Link from 'next/link'
 import type { Article, Author, Issue, Topic } from '@/lib/types'
 import BookmarkButton from './BookmarkButton'
+import ArticleKicker from './ArticleKicker'
 
 // Pure, synchronous view — takes already-resolved data, so it can be
 // rendered from a Client Component too (e.g. the Bookmarks page, where the
@@ -28,8 +29,7 @@ export function ArticleCardView({
       <div className="flex items-start justify-between gap-3">
         <p className="kicker text-ocean-blue mb-2 flex flex-wrap items-center gap-x-2">
           <span>
-            Research Article
-            {issue && <span className="text-slate-400 font-normal normal-case tracking-normal"> — Issue {issue.number}</span>}
+            <ArticleKicker issueNumber={issue?.number} />
           </span>
           {topic && (
             <Link

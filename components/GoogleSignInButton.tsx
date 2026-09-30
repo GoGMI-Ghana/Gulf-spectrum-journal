@@ -1,6 +1,7 @@
 'use client'
 
 import { createClient } from '@/lib/supabase/client'
+import { useI18n } from '@/context/I18nContext'
 
 // Renders regardless of whether Google sign-in is actually configured on
 // the backend yet (see gulf-spectrum-backend/self-hosting — the Google
@@ -11,6 +12,8 @@ import { createClient } from '@/lib/supabase/client'
 // button existing isn't a promise it works yet, but that's an honest
 // failure mode, not a broken one.
 export default function GoogleSignInButton({ redirectTo }: { redirectTo?: string }) {
+  const { t } = useI18n()
+
   async function handleClick() {
     const supabase = createClient()
     const callbackUrl = new URL('/auth/callback', window.location.origin)
@@ -34,7 +37,7 @@ export default function GoogleSignInButton({ redirectTo }: { redirectTo?: string
         <path fill="#FBBC05" d="M3.93 10.69A5.4 5.4 0 0 1 3.65 9c0-.59.1-1.16.28-1.69V4.98H.9A9 9 0 0 0 0 9c0 1.45.35 2.83.9 4.02z" />
         <path fill="#EA4335" d="M9 3.58c1.32 0 2.51.46 3.44 1.35l2.58-2.58C13.46.89 11.43 0 9 0A9 9 0 0 0 .9 4.98l3.03 2.33C4.64 5.17 6.64 3.58 9 3.58z" />
       </svg>
-      Continue with Google
+      {t.signIn.google}
     </button>
   )
 }

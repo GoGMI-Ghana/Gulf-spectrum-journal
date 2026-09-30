@@ -3,6 +3,7 @@
 import { useState } from 'react'
 import Link from 'next/link'
 import { Copy, Check } from 'lucide-react'
+import { useI18n } from '@/context/I18nContext'
 
 export default function CitationRow({
   slug,
@@ -20,6 +21,7 @@ export default function CitationRow({
   issueLabel?: string
 }) {
   const [copied, setCopied] = useState(false)
+  const { t } = useI18n()
 
   function handleCopy() {
     navigator.clipboard?.writeText(citation)
@@ -48,10 +50,10 @@ export default function CitationRow({
           className="inline-flex items-center gap-1.5 text-sm font-medium text-ocean-blue hover:underline"
         >
           {copied ? <Check size={15} /> : <Copy size={15} />}
-          {copied ? 'Copied' : 'Copy citation'}
+          {copied ? t.common.copied : t.common.copyCitation}
         </button>
         <Link href={`/articles/${slug}`} className="text-sm font-medium text-slate-500 hover:text-royal-blue">
-          View article →
+          {t.citations.viewArticle}
         </Link>
       </div>
     </div>

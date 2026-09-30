@@ -2,12 +2,14 @@
 
 import { useState, type FormEvent } from 'react'
 import { createClient } from '@/lib/supabase/client'
+import { useI18n } from '@/context/I18nContext'
 
 // Same pattern as ContactForm: a direct insert through the browser
 // client, since RLS already allows anyone to submit a proposal
 // ("anyone can submit an article proposal"). Editors triage these from
 // /admin/submissions.
 export default function SubmissionForm() {
+  const { t } = useI18n()
   const [name, setName] = useState('')
   const [email, setEmail] = useState('')
   const [title, setTitle] = useState('')
@@ -45,12 +47,12 @@ export default function SubmissionForm() {
 
   return (
     <div className="border-l-4 border-gold p-6 sticky top-32 bg-white">
-      <h3 className="kicker text-royal-blue mb-4">Start Your Submission</h3>
+      <h3 className="kicker text-royal-blue mb-4">{t.submissions.formHeading}</h3>
       <form className="space-y-4" onSubmit={handleSubmit}>
         {error && <p className="text-sm text-red-700 bg-red-50 border border-red-200 px-3 py-2">{error}</p>}
         <div>
           <label className="block text-xs font-medium text-slate-600 mb-1" htmlFor="sub-name">
-            Full name
+            {t.common.fullName}
           </label>
           <input
             id="sub-name"
@@ -63,7 +65,7 @@ export default function SubmissionForm() {
         </div>
         <div>
           <label className="block text-xs font-medium text-slate-600 mb-1" htmlFor="sub-email">
-            Email
+            {t.common.email}
           </label>
           <input
             id="sub-email"
@@ -76,7 +78,7 @@ export default function SubmissionForm() {
         </div>
         <div>
           <label className="block text-xs font-medium text-slate-600 mb-1" htmlFor="sub-title">
-            Proposed article title
+            {t.submissions.titleLabel}
           </label>
           <input
             id="sub-title"
@@ -89,7 +91,7 @@ export default function SubmissionForm() {
         </div>
         <div>
           <label className="block text-xs font-medium text-slate-600 mb-1" htmlFor="sub-abstract">
-            Abstract (draft)
+            {t.submissions.abstractLabel}
           </label>
           <textarea
             id="sub-abstract"
@@ -104,12 +106,12 @@ export default function SubmissionForm() {
           disabled={submitting}
           className="w-full bg-gold hover:bg-soft-gold hover:text-royal-blue text-ink font-semibold text-sm px-4 py-2.5 transition-colors tracking-wide disabled:opacity-60"
         >
-          {submitting ? 'Submitting…' : 'Submit for Review'}
+          {submitting ? t.common.submitting : t.submissions.submit}
         </button>
       </form>
       {submitted && (
         <p className="mt-4 text-sm text-royal-blue bg-soft-gold/60 border-l-4 border-gold p-3">
-          Thank you — your proposal has been sent to the editorial office for review.
+          {t.submissions.thanks}
         </p>
       )}
     </div>
