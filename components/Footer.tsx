@@ -46,7 +46,7 @@ export default function Footer() {
             <li>
               <Link href="/contact" className="hover:text-gold">{t.footer.contactOffice}</Link>
             </li>
-            <li>journal@gogmi.org.gh</li>
+            <li>{journal.contactEmail}</li>
             <li>{journal.issn ?? t.journal.issnPending}</li>
           </ul>
         </div>

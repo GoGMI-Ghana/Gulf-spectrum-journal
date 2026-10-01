@@ -20,6 +20,22 @@ export async function POST() {
   }
 
   const admin = createAdminClient()
+
+  // Same guard as the role-change route (app/api/admin/users/[id]): the
+  // last remaining admin can't remove themselves, or nobody would be left
+  // who can manage users, roles or the editorial board — recovering from
+  // that takes direct database access.
+  const { data: profile } = await admin.from('profiles').select('role').eq('id', user.id).single()
+  if (profile?.role === 'admin') {
+    const { count } = await admin.from('profiles').select('id', { count: 'exact', head: true }).eq('role', 'admin')
+    if ((count ?? 0) <= 1) {
+      return NextResponse.json(
+        { error: "You're the only admin. Make someone else an admin in Users & Roles before deleting this account." },
+        { status: 400 }
+      )
+    }
+  }
+
   const { error } = await admin.auth.admin.deleteUser(user.id)
 
   if (error) {

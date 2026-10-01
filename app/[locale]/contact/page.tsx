@@ -1,4 +1,5 @@
 import type { Metadata } from 'next'
+import { journal } from '@/lib/staticContent'
 import { getDictionary } from '@/lib/i18n'
 import type { LocaleParams } from '@/lib/i18n/page'
 import PageBanner from '@/components/PageBanner'
@@ -26,7 +27,7 @@ export default async function Contact({ params }: LocaleParams) {
             <dl className="space-y-3 text-sm text-slate-600">
               <div>
                 <dt className="text-slate-400 text-xs uppercase tracking-wide">{t.common.email}</dt>
-                <dd>journal@gogmi.org.gh</dd>
+                <dd>{journal.contactEmail}</dd>
               </div>
               <div>
                 <dt className="text-slate-400 text-xs uppercase tracking-wide">{t.contact.address}</dt>

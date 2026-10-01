@@ -15,6 +15,7 @@ export const journal: Journal = {
   name: 'Gulf Spectrum Journal',
   publisher: 'Gulf of Guinea Maritime Institute (GoGMI)',
   domain: 'www.gulfspectrumjournal.com',
+  contactEmail: 'info@gogmi.org.gh',
   founded: 2025,
   // null until one is assigned — the UI shows the translated "ISSN
   // pending" text meanwhile.

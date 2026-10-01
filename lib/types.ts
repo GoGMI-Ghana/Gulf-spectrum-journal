@@ -8,6 +8,7 @@ export interface Journal {
   name: string
   publisher: string
   domain: string
+  contactEmail: string
   founded: number
   issn: string | null
 }
