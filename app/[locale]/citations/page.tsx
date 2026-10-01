@@ -1,6 +1,6 @@
 import Link from 'next/link'
 import type { Metadata } from 'next'
-import { Quote, Library, Tags, FileCheck2, Sparkles, MousePointerClick } from 'lucide-react'
+import { TextQuote, Library, Tags, FileCheck2, Sparkles, MousePointerClick } from 'lucide-react'
 import { getArticles, getTopics, getAuthorsForArticle, getIssueForArticle, getTopicForArticle, getArticlesForTopic } from '@/lib/content'
 import { formatApaCitation } from '@/lib/citation'
 import { getDictionary } from '@/lib/i18n'
@@ -14,7 +14,7 @@ export async function generateMetadata({ params }: LocaleParams): Promise<Metada
   return { title: t.citations.metaTitle, description: t.citations.metaDescription }
 }
 
-const featureIcons = [Quote, Library, Tags]
+const featureIcons = [TextQuote, Library, Tags]
 
 const bottomFeatureIcons = [FileCheck2, Sparkles, MousePointerClick]
 
@@ -75,7 +75,7 @@ export default async function Citations({ params }: LocaleParams) {
             const Icon = featureIcons[i]
             return (
               <div key={f.title} className="bg-white border border-slate-200 p-6">
-                <Icon className="text-ocean-blue mb-3" size={24} />
+                <Icon className="text-ocean-blue mb-3" size={20} />
                 <h3 className="font-semibold text-royal-blue">{f.title}</h3>
                 <p className="text-xs text-slate-400 uppercase tracking-wide mb-2">{f.subtitle}</p>
                 <p className="text-sm text-slate-600 leading-relaxed">{f.body}</p>
@@ -189,7 +189,7 @@ export default async function Citations({ params }: LocaleParams) {
             const Icon = bottomFeatureIcons[i]
             return (
               <div key={label} className="flex flex-col items-center gap-2">
-                <Icon className="text-gold" size={26} />
+                <Icon className="text-gold" size={22} />
                 <p className="text-sm font-medium text-slate-700">{label}</p>
               </div>
             )

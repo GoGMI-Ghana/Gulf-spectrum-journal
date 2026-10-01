@@ -2,7 +2,7 @@
 
 import Link from 'next/link'
 import { usePathname, useRouter } from 'next/navigation'
-import { Mail, Bell, Bookmark, UserCircle, LogOut, ShieldCheck } from 'lucide-react'
+import { Mail, Bell, Bookmark, CircleUserRound, LogOut, ShieldCheck } from 'lucide-react'
 import type { ComponentType } from 'react'
 import { useAccount } from '@/context/AccountContext'
 import { useI18n } from '@/context/I18nContext'
@@ -74,7 +74,7 @@ export default function DashboardSidebar() {
       <SidebarLink href="/messages" icon={Mail} label={t.nav.messages} trailing={unreadMessages} />
       <SidebarLink href="/notifications" icon={Bell} label={t.nav.notifications} trailing={unreadNotifications} />
       <SidebarLink href="/bookmarks" icon={Bookmark} label={t.nav.bookmarks} trailing={bookmarks.length} />
-      <SidebarLink href="/authors" icon={UserCircle} label={t.nav.authorProfiles} />
+      <SidebarLink href="/authors" icon={CircleUserRound} label={t.nav.authorProfiles} />
       {isEditor && <SidebarLink href="/admin" icon={ShieldCheck} label={t.nav.editorialAdmin} />}
 
       <Link

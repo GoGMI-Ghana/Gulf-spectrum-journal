@@ -4,7 +4,7 @@ import { useState, type ComponentType } from 'react'
 import Link from 'next/link'
 import Image from 'next/image'
 import { usePathname } from 'next/navigation'
-import { Menu, X, Home, Quote, BarChart3, Upload, Grid3x3 } from 'lucide-react'
+import { Menu, X, House, TextQuote, ChartNoAxesCombined, FileUp, LayoutGrid } from 'lucide-react'
 import { useI18n } from '@/context/I18nContext'
 import type { Dictionary } from '@/lib/i18n/dictionaries/en'
 import AccountMenu from './AccountMenu'
@@ -23,11 +23,11 @@ const navLinks: { href: string; label: NavKey; end?: boolean }[] = [
 ]
 
 const iconNav: { href: string; label: NavKey; icon: ComponentType<{ size?: number }>; end?: boolean }[] = [
-  { href: '/', label: 'home', icon: Home, end: true },
-  { href: '/citations', label: 'citations', icon: Quote },
-  { href: '/analytics', label: 'analytics', icon: BarChart3 },
-  { href: '/submissions', label: 'upload', icon: Upload },
-  { href: '/tools', label: 'tools', icon: Grid3x3 },
+  { href: '/', label: 'home', icon: House, end: true },
+  { href: '/citations', label: 'citations', icon: TextQuote },
+  { href: '/analytics', label: 'analytics', icon: ChartNoAxesCombined },
+  { href: '/submissions', label: 'upload', icon: FileUp },
+  { href: '/tools', label: 'tools', icon: LayoutGrid },
 ]
 
 function useIsActive(href: string, end?: boolean) {
@@ -75,11 +75,11 @@ function IconNavItem({
   return (
     <Link
       href={href}
-      className={`flex flex-col items-center gap-0.5 px-2 py-1 transition-colors ${
+      className={`flex flex-col items-center gap-1 px-2.5 py-1 transition-colors ${
         isActive ? 'text-gold' : 'text-white/80 hover:text-gold'
       }`}
     >
-      <Icon size={18} />
+      <Icon size={16} />
       <span className="text-[10px] font-medium tracking-wide">{label}</span>
     </Link>
   )
@@ -148,7 +148,7 @@ export default function Header() {
             onClick={() => setOpen((v) => !v)}
             aria-label={t.header.toggleMenu}
           >
-            {open ? <X size={24} /> : <Menu size={24} />}
+            {open ? <X size={22} /> : <Menu size={22} />}
           </button>
         </div>
       </div>

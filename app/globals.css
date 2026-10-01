@@ -68,3 +68,11 @@ html {
   -webkit-line-clamp: 3;
   -webkit-box-orient: vertical;
 }
+
+/* All icons (lucide-react renders each as svg.lucide) use a 1.5px line
+   instead of the library's default 2px — finer strokes sit better beside
+   the journal's light display type, where the default reads as heavy.
+   Set here rather than per icon so every icon stays consistent. */
+.lucide {
+  stroke-width: 1.5;
+}

@@ -4,7 +4,7 @@ import { useState, useRef, useEffect, type ComponentType } from 'react'
 import Link from 'next/link'
 import { useRouter } from 'next/navigation'
 import {
-  UserCircle,
+  CircleUserRound,
   User,
   UserPlus,
   Mail,
@@ -14,13 +14,13 @@ import {
   LogOut,
   LayoutDashboard,
   Bookmark,
-  Quote,
-  BarChart3,
+  TextQuote,
+  ChartNoAxesCombined,
   Newspaper,
   Tags,
   Users,
-  Upload,
-  Grid3x3,
+  FileUp,
+  LayoutGrid,
   MessageCircle,
   ShieldCheck,
   Award,
@@ -123,7 +123,7 @@ export default function AccountMenu() {
         aria-expanded={open}
         className="flex items-center gap-1.5 text-white/85 hover:text-gold transition-colors text-sm"
       >
-        <UserCircle size={20} />
+        <CircleUserRound size={18} />
       </button>
 
       {open && (
@@ -175,8 +175,8 @@ export default function AccountMenu() {
           <div className="pb-2">
             <MenuLink href="/dashboard" icon={LayoutDashboard} label={t.nav.dashboard} onNavigate={close} />
             <MenuLink href="/bookmarks" icon={Bookmark} label={t.nav.bookmarks} badge={bookmarks.length} onNavigate={close} />
-            <MenuLink href="/citations" icon={Quote} label={t.nav.citations} onNavigate={close} />
-            <MenuLink href="/analytics" icon={BarChart3} label={t.nav.analytics} onNavigate={close} />
+            <MenuLink href="/citations" icon={TextQuote} label={t.nav.citations} onNavigate={close} />
+            <MenuLink href="/analytics" icon={ChartNoAxesCombined} label={t.nav.analytics} onNavigate={close} />
           </div>
 
           <SectionLabel>Gulf Spectrum Journal</SectionLabel>
@@ -185,12 +185,12 @@ export default function AccountMenu() {
             <MenuLink href="/topics" icon={Tags} label={t.nav.topics} onNavigate={close} />
             <MenuLink href="/authors" icon={Users} label={t.nav.authors} onNavigate={close} />
             <MenuLink href="/editorial-board" icon={Award} label={t.nav.editorialBoard} onNavigate={close} />
-            <MenuLink href="/submissions" icon={Upload} label={t.nav.submissions} onNavigate={close} />
+            <MenuLink href="/submissions" icon={FileUp} label={t.nav.submissions} onNavigate={close} />
           </div>
 
           <SectionLabel>{t.accountMenu.sectionMore}</SectionLabel>
           <div className="pb-3">
-            <MenuLink href="/tools" icon={Grid3x3} label={t.nav.tools} onNavigate={close} />
+            <MenuLink href="/tools" icon={LayoutGrid} label={t.nav.tools} onNavigate={close} />
             <MenuLink href="/contact" icon={MessageCircle} label={t.nav.contact} onNavigate={close} />
           </div>
         </div>
