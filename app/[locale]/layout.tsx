@@ -8,6 +8,7 @@ import { AccountProvider } from '@/context/AccountContext'
 import { I18nProvider } from '@/context/I18nContext'
 import { getDictionary } from '@/lib/i18n'
 import { isLocale, locales } from '@/lib/i18n/config'
+import { siteUrl, socialMetadata } from '@/lib/seo'
 
 const poppins = Poppins({
   subsets: ['latin'],
@@ -41,11 +42,17 @@ export async function generateMetadata({ params }: { params: Promise<{ locale: s
   const { locale } = await params
   const t = getDictionary(locale)
   return {
+    // Lets pages give relative URLs for canonical links and preview
+    // images; social crawlers need absolute ones.
+    metadataBase: new URL(siteUrl),
     title: {
       default: t.meta.siteTitle,
       template: '%s | Gulf Spectrum Journal',
     },
     description: t.meta.siteDescription,
+    // Site-wide default link preview, inherited by every page that
+    // doesn't set its own (hence no URL — see socialMetadata).
+    ...socialMetadata({ title: t.meta.siteTitle, description: t.meta.siteDescription }),
     // Favicon comes from app/icon.png (Next.js file-convention icon) — the
     // real GoGMI logo, no manual `icons` entry needed.
   }

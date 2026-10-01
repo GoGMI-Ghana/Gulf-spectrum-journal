@@ -206,6 +206,9 @@ Chaque volume est évalué par un comité de rédaction dédié, composé d’ex
     shareOnX: 'Partager sur X',
     shareOnFacebook: 'Partager sur Facebook',
     shareOnLinkedIn: 'Partager sur LinkedIn',
+    shareOnWhatsApp: 'Partager sur WhatsApp',
+    copyLink: 'Copier le lien',
+    linkCopied: 'Lien copié',
   },
 
   bookmarkButton: {

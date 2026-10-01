@@ -4,6 +4,7 @@ import type { Metadata } from 'next'
 import { getAuthors, getAuthorBySlug, getArticlesForAuthor } from '@/lib/content'
 import { getDictionary } from '@/lib/i18n'
 import type { LocaleSlugParams } from '@/lib/i18n/page'
+import { socialMetadata } from '@/lib/seo'
 import ArticleCard from '@/components/ArticleCard'
 import AuthorAvatar from '@/components/AuthorAvatar'
 import BoardBadge from '@/components/BoardBadge'
@@ -19,7 +20,11 @@ export async function generateMetadata({ params }: LocaleSlugParams): Promise<Me
   const t = getDictionary(locale)
   const author = await getAuthorBySlug(slug)
   if (!author) return { title: t.author.notFound }
-  return { title: author.name, description: author.bio }
+  return {
+    title: author.name,
+    description: author.bio,
+    ...socialMetadata({ title: author.name, description: author.bio, path: `/authors/${author.slug}` }),
+  }
 }
 
 export default async function AuthorDetail({ params }: LocaleSlugParams) {

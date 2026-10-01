@@ -206,6 +206,9 @@ Cada volumen es revisado por un comité editorial dedicado de expertos en la mat
     shareOnX: 'Compartir en X',
     shareOnFacebook: 'Compartir en Facebook',
     shareOnLinkedIn: 'Compartir en LinkedIn',
+    shareOnWhatsApp: 'Compartir en WhatsApp',
+    copyLink: 'Copiar enlace',
+    linkCopied: 'Enlace copiado',
   },
 
   bookmarkButton: {

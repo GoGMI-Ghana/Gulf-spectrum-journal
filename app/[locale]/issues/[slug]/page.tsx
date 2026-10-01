@@ -5,6 +5,7 @@ import { getIssues, getIssueBySlug, getArticlesForIssue } from '@/lib/content'
 import { getDictionary } from '@/lib/i18n'
 import { fmt } from '@/lib/i18n/format'
 import type { LocaleSlugParams } from '@/lib/i18n/page'
+import { socialMetadata } from '@/lib/seo'
 import ArticleCard from '@/components/ArticleCard'
 import IssueCover from '@/components/IssueCover'
 
@@ -18,9 +19,17 @@ export async function generateMetadata({ params }: LocaleSlugParams): Promise<Me
   const t = getDictionary(locale)
   const issue = await getIssueBySlug(slug)
   if (!issue) return { title: t.issue.notFound }
+  const title = fmt(t.issue.metaTitle, { number: issue.number, theme: issue.theme })
   return {
-    title: fmt(t.issue.metaTitle, { number: issue.number, theme: issue.theme }),
+    title,
     description: issue.aboutThisVolume,
+    ...socialMetadata({
+      title,
+      description: issue.aboutThisVolume,
+      path: `/issues/${issue.slug}`,
+      // The issue's own cover when it has one, else the generic card.
+      image: issue.coverImage || undefined,
+    }),
   }
 }
 

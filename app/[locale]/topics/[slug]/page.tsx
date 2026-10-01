@@ -5,6 +5,7 @@ import { getTopics, getTopicBySlug, getArticlesForTopic } from '@/lib/content'
 import { getDictionary } from '@/lib/i18n'
 import { rich } from '@/lib/i18n/format'
 import type { LocaleSlugParams } from '@/lib/i18n/page'
+import { socialMetadata } from '@/lib/seo'
 import ArticleCard from '@/components/ArticleCard'
 
 export async function generateStaticParams() {
@@ -16,7 +17,11 @@ export async function generateMetadata({ params }: LocaleSlugParams): Promise<Me
   const { locale, slug } = await params
   const topic = await getTopicBySlug(slug)
   if (!topic) return { title: getDictionary(locale).topic.notFound }
-  return { title: topic.label, description: topic.description }
+  return {
+    title: topic.label,
+    description: topic.description,
+    ...socialMetadata({ title: topic.label, description: topic.description, path: `/topics/${topic.slug}` }),
+  }
 }
 
 export default async function TopicDetail({ params }: LocaleSlugParams) {

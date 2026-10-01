@@ -212,6 +212,9 @@ Each volume is reviewed by a dedicated editorial board of subject-matter experts
     shareOnX: 'Share on X',
     shareOnFacebook: 'Share on Facebook',
     shareOnLinkedIn: 'Share on LinkedIn',
+    shareOnWhatsApp: 'Share on WhatsApp',
+    copyLink: 'Copy link',
+    linkCopied: 'Link copied',
   },
 
   bookmarkButton: {

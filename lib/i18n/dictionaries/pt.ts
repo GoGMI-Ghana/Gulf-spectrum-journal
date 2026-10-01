@@ -209,6 +209,9 @@ Cada volume é revisto por um conselho editorial dedicado, composto por especial
     shareOnX: 'Partilhar no X',
     shareOnFacebook: 'Partilhar no Facebook',
     shareOnLinkedIn: 'Partilhar no LinkedIn',
+    shareOnWhatsApp: 'Partilhar no WhatsApp',
+    copyLink: 'Copiar ligação',
+    linkCopied: 'Ligação copiada',
   },
 
   bookmarkButton: {

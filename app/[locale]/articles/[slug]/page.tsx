@@ -6,6 +6,7 @@ import { formatApaCitation } from '@/lib/citation'
 import { getDictionary } from '@/lib/i18n'
 import { fmt } from '@/lib/i18n/format'
 import type { LocaleSlugParams } from '@/lib/i18n/page'
+import { siteUrl, socialMetadata } from '@/lib/seo'
 import AuthorAvatar from '@/components/AuthorAvatar'
 import BookmarkButton from '@/components/BookmarkButton'
 import ShareBar from '@/components/ShareBar'
@@ -24,7 +25,17 @@ export async function generateMetadata({ params }: LocaleSlugParams): Promise<Me
   const t = getDictionary(locale)
   const article = await getArticleBySlug(slug)
   if (!article) return { title: t.article.notFound }
-  return { title: article.title, description: article.abstract }
+  return {
+    title: article.title,
+    description: article.abstract,
+    ...socialMetadata({
+      title: article.title,
+      description: article.abstract,
+      path: `/articles/${article.slug}`,
+      image: `/api/og/article/${article.slug}`,
+      type: 'article',
+    }),
+  }
 }
 
 export default async function ArticleDetail({ params }: LocaleSlugParams) {
@@ -91,7 +102,7 @@ export default async function ArticleDetail({ params }: LocaleSlugParams) {
         ))}
       </div>
 
-      <ShareBar title={article.title} />
+      <ShareBar title={article.title} url={`${siteUrl}/articles/${article.slug}`} />
 
       {/* Abstract */}
       <div className="border-l-4 border-royal-blue bg-slate-50 p-6 my-8">
