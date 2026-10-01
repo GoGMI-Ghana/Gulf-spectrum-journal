@@ -45,9 +45,12 @@ const COPY: Record<string, { subject: string; intro: string }> = {
     subject: 'Confirm your Gulf Spectrum Journal account',
     intro: 'Use this code to confirm your new Gulf Spectrum Journal account.',
   },
+  // Neutral wording: the same one-time code email is used for signing in
+  // and for confirming a password change in Account Settings (GoTrue
+  // reports both as 'magiclink', so they can't be told apart here).
   magiclink: {
-    subject: 'Your Gulf Spectrum Journal sign-in code',
-    intro: 'Use this code to sign in to your Gulf Spectrum Journal account.',
+    subject: 'Your Gulf Spectrum Journal verification code',
+    intro: 'Use this code to sign in, or to confirm a change to your Gulf Spectrum Journal account.',
   },
   recovery: {
     subject: 'Reset your Gulf Spectrum Journal password',

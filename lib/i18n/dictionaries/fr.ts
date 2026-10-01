@@ -637,6 +637,10 @@ Chaque volume est évalué par un comité de rédaction dédié, composé d’ex
     newPassword: 'Nouveau mot de passe',
     confirmPassword: 'Confirmer le nouveau mot de passe',
     updatePassword: 'Mettre à jour le mot de passe',
+    codeIntro: 'Par sécurité, nous avons envoyé un code à 6 chiffres à {email}. Saisissez-le pour confirmer le changement de mot de passe.',
+    confirmChange: 'Confirmer et mettre à jour',
+    resendCode: 'Renvoyer le code',
+    cancelChange: 'Annuler',
     sessions: 'Sessions',
     sessionsBody:
       'Déconnectez-vous partout si vous pensez qu’un autre appareil ou navigateur est encore connecté à votre compte.',

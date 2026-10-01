@@ -8,6 +8,27 @@ import { useAccount } from '@/context/AccountContext'
 import { useI18n } from '@/context/I18nContext'
 import { rich } from '@/lib/i18n/format'
 
+const EMAIL_PROOF_WINDOW_SECONDS = 10 * 60
+
+// True when this session was established by something emailed to the
+// account's address (a one-time code or a password-recovery link) within
+// the last few minutes. Read from the access token's `amr` claim, where
+// the auth server lists each sign-in method with its timestamp.
+function emailVerifiedRecently(accessToken: string | undefined): boolean {
+  if (!accessToken) return false
+  try {
+    const payload = JSON.parse(atob(accessToken.split('.')[1].replace(/-/g, '+').replace(/_/g, '/'))) as {
+      amr?: { method: string; timestamp: number }[]
+    }
+    const now = Date.now() / 1000
+    return (payload.amr ?? []).some(
+      (entry) => ['otp', 'recovery', 'magiclink'].includes(entry.method) && now - entry.timestamp < EMAIL_PROOF_WINDOW_SECONDS
+    )
+  } catch {
+    return false
+  }
+}
+
 export default function AccountSettingsForm() {
   const { user, authLoading } = useAccount()
   const router = useRouter()
@@ -18,6 +39,8 @@ export default function AccountSettingsForm() {
   const [passwordSaving, setPasswordSaving] = useState(false)
   const [passwordError, setPasswordError] = useState<string | null>(null)
   const [passwordSaved, setPasswordSaved] = useState(false)
+  const [passwordStep, setPasswordStep] = useState<'form' | 'code'>('form')
+  const [passwordCode, setPasswordCode] = useState('')
 
   const [signingOutEverywhere, setSigningOutEverywhere] = useState(false)
 
@@ -77,7 +100,55 @@ export default function AccountSettingsForm() {
 
     setPasswordSaving(true)
     const supabase = createClient()
-    const { error } = await supabase.auth.updateUser({ password: newPassword })
+
+    // Arriving from the emailed password-reset link (or having just
+    // signed in with an emailed code) already proved control of the
+    // inbox — don't ask for a second code minutes later.
+    const { data: sessionData } = await supabase.auth.getSession()
+    if (emailVerifiedRecently(sessionData.session?.access_token)) {
+      await applyNewPassword()
+      return
+    }
+
+    await sendPasswordCode()
+  }
+
+  // Emails a 6-digit code to the account's own address. A signed-in
+  // session alone isn't enough to change the password: this is what stops
+  // someone at an unlocked, signed-in device from locking the owner out.
+  async function sendPasswordCode() {
+    if (!user) return
+    setPasswordSaving(true)
+    setPasswordError(null)
+    const { error } = await createClient().auth.signInWithOtp({ email: user.email, options: { shouldCreateUser: false } })
+    setPasswordSaving(false)
+    if (error) {
+      setPasswordError(error.message)
+      return
+    }
+    setPasswordCode('')
+    setPasswordStep('code')
+  }
+
+  async function handlePasswordCodeSubmit(e: FormEvent) {
+    e.preventDefault()
+    if (!user) return
+    setPasswordError(null)
+    setPasswordSaving(true)
+    // Verifying the code is a real server-side check (it issues a fresh
+    // session for this same account); the password is only sent after it
+    // succeeds.
+    const { error } = await createClient().auth.verifyOtp({ email: user.email, token: passwordCode, type: 'email' })
+    if (error) {
+      setPasswordSaving(false)
+      setPasswordError(error.message)
+      return
+    }
+    await applyNewPassword()
+  }
+
+  async function applyNewPassword() {
+    const { error } = await createClient().auth.updateUser({ password: newPassword })
     setPasswordSaving(false)
 
     if (error) {
@@ -86,7 +157,15 @@ export default function AccountSettingsForm() {
     }
     setNewPassword('')
     setConfirmPassword('')
+    setPasswordCode('')
+    setPasswordStep('form')
     setPasswordSaved(true)
+  }
+
+  function cancelPasswordCode() {
+    setPasswordStep('form')
+    setPasswordCode('')
+    setPasswordError(null)
   }
 
   async function handleSignOutEverywhere() {
@@ -150,51 +229,94 @@ export default function AccountSettingsForm() {
         <p className="text-sm text-slate-500 mb-4">
           {t.accountSettings.changePasswordBody}
         </p>
-        <form onSubmit={handlePasswordSubmit} className="space-y-4">
-          {passwordError && (
-            <p className="text-sm text-red-700 bg-red-50 border border-red-200 px-3 py-2">{passwordError}</p>
-          )}
-          {passwordSaved && !passwordError && (
-            <p className="text-sm text-emerald-700 bg-emerald-50 border border-emerald-200 px-3 py-2">
-              {t.accountSettings.passwordUpdated}
+        {passwordStep === 'code' ? (
+          <form onSubmit={handlePasswordCodeSubmit} className="space-y-4">
+            {passwordError && (
+              <p className="text-sm text-red-700 bg-red-50 border border-red-200 px-3 py-2">{passwordError}</p>
+            )}
+            <p className="text-sm text-slate-600">
+              {rich(t.accountSettings.codeIntro, { email: <strong>{user.email}</strong> })}
             </p>
-          )}
-          <div>
-            <label htmlFor="newPassword" className="block text-sm font-medium text-slate-700 mb-1">
-              {t.accountSettings.newPassword}
-            </label>
-            <input
-              id="newPassword"
-              type="password"
-              autoComplete="new-password"
-              minLength={8}
-              value={newPassword}
-              onChange={(e) => setNewPassword(e.target.value)}
-              className="w-full border border-slate-300 px-3 py-2 text-sm focus:outline-none focus:border-royal-blue"
-            />
-          </div>
-          <div>
-            <label htmlFor="confirmPassword" className="block text-sm font-medium text-slate-700 mb-1">
-              {t.accountSettings.confirmPassword}
-            </label>
-            <input
-              id="confirmPassword"
-              type="password"
-              autoComplete="new-password"
-              minLength={8}
-              value={confirmPassword}
-              onChange={(e) => setConfirmPassword(e.target.value)}
-              className="w-full border border-slate-300 px-3 py-2 text-sm focus:outline-none focus:border-royal-blue"
-            />
-          </div>
-          <button
-            type="submit"
-            disabled={passwordSaving}
-            className="bg-royal-blue hover:bg-ocean-blue text-white font-semibold px-6 py-2.5 transition-colors disabled:opacity-60"
-          >
-            {passwordSaving ? t.common.saving : t.accountSettings.updatePassword}
-          </button>
-        </form>
+            <div>
+              <label htmlFor="passwordCode" className="block text-sm font-medium text-slate-700 mb-1">
+                {t.otp.code}
+              </label>
+              <input
+                id="passwordCode"
+                type="text"
+                inputMode="numeric"
+                autoComplete="one-time-code"
+                required
+                maxLength={6}
+                value={passwordCode}
+                onChange={(e) => setPasswordCode(e.target.value.replace(/\D/g, ''))}
+                placeholder="000000"
+                className="w-full border border-slate-300 px-3 py-2 text-sm tracking-[0.3em] text-center focus:outline-none focus:border-royal-blue"
+              />
+            </div>
+            <button
+              type="submit"
+              disabled={passwordSaving || passwordCode.length !== 6}
+              className="bg-royal-blue hover:bg-ocean-blue text-white font-semibold px-6 py-2.5 transition-colors disabled:opacity-60"
+            >
+              {passwordSaving ? t.otp.verifying : t.accountSettings.confirmChange}
+            </button>
+            <div className="flex gap-5 text-sm">
+              <button type="button" onClick={sendPasswordCode} disabled={passwordSaving} className="text-ocean-blue hover:underline disabled:opacity-60">
+                {t.accountSettings.resendCode}
+              </button>
+              <button type="button" onClick={cancelPasswordCode} className="text-slate-500 hover:underline">
+                {t.accountSettings.cancelChange}
+              </button>
+            </div>
+          </form>
+        ) : (
+          <form onSubmit={handlePasswordSubmit} className="space-y-4">
+            {passwordError && (
+              <p className="text-sm text-red-700 bg-red-50 border border-red-200 px-3 py-2">{passwordError}</p>
+            )}
+            {passwordSaved && !passwordError && (
+              <p className="text-sm text-emerald-700 bg-emerald-50 border border-emerald-200 px-3 py-2">
+                {t.accountSettings.passwordUpdated}
+              </p>
+            )}
+            <div>
+              <label htmlFor="newPassword" className="block text-sm font-medium text-slate-700 mb-1">
+                {t.accountSettings.newPassword}
+              </label>
+              <input
+                id="newPassword"
+                type="password"
+                autoComplete="new-password"
+                minLength={8}
+                value={newPassword}
+                onChange={(e) => setNewPassword(e.target.value)}
+                className="w-full border border-slate-300 px-3 py-2 text-sm focus:outline-none focus:border-royal-blue"
+              />
+            </div>
+            <div>
+              <label htmlFor="confirmPassword" className="block text-sm font-medium text-slate-700 mb-1">
+                {t.accountSettings.confirmPassword}
+              </label>
+              <input
+                id="confirmPassword"
+                type="password"
+                autoComplete="new-password"
+                minLength={8}
+                value={confirmPassword}
+                onChange={(e) => setConfirmPassword(e.target.value)}
+                className="w-full border border-slate-300 px-3 py-2 text-sm focus:outline-none focus:border-royal-blue"
+              />
+            </div>
+            <button
+              type="submit"
+              disabled={passwordSaving}
+              className="bg-royal-blue hover:bg-ocean-blue text-white font-semibold px-6 py-2.5 transition-colors disabled:opacity-60"
+            >
+              {passwordSaving ? t.common.saving : t.accountSettings.updatePassword}
+            </button>
+          </form>
+        )}
       </div>
 
       {/* Sessions */}
