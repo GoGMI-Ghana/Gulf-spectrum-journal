@@ -1,8 +1,10 @@
-// Sends auth emails (OTP codes, password recovery, etc.) via Microsoft
+// Sends email — auth emails (OTP codes, password recovery, etc.) and
+// the new-issue announcement to members (see the bottom of this file,
+// called from app/api/admin/issues/[id]/announce) — via Microsoft
 // Graph's sendMail API, using an Azure app registration's client
 // credentials (app-only OAuth, not a signed-in user) — the modern
 // replacement for plain SMTP now that Microsoft 365 locks that down by
-// default. Called from app/api/auth/send-email-hook, GoTrue's "Send
+// default. Auth emails are called from app/api/auth/send-email-hook, GoTrue's "Send
 // Email Hook": GoTrue stops trying to send mail itself and instead POSTs
 // here with the email + one-time code, and we're responsible for
 // actually delivering it.
@@ -101,19 +103,22 @@ function buildEmailHtml(actionType: EmailActionType, token: string): string {
 </html>`
 }
 
-export async function sendAuthEmail(toEmail: string, actionType: EmailActionType, token: string): Promise<void> {
-  const accessToken = await getGraphAccessToken()
-  const sender = process.env.MS_SENDER_EMAIL!
-  const copy = COPY[actionType] ?? { subject: 'Your Gulf Spectrum Journal code' }
+const recipients = (addresses: string[]) => addresses.map((address) => ({ emailAddress: { address } }))
 
+async function sendGraphMail(
+  accessToken: string,
+  message: { subject: string; html: string; to: string[]; bcc?: string[] }
+): Promise<void> {
+  const sender = process.env.MS_SENDER_EMAIL!
   const res = await fetch(`https://graph.microsoft.com/v1.0/users/${encodeURIComponent(sender)}/sendMail`, {
     method: 'POST',
     headers: { Authorization: `Bearer ${accessToken}`, 'Content-Type': 'application/json' },
     body: JSON.stringify({
       message: {
-        subject: copy.subject,
-        body: { contentType: 'HTML', content: buildEmailHtml(actionType, token) },
-        toRecipients: [{ emailAddress: { address: toEmail } }],
+        subject: message.subject,
+        body: { contentType: 'HTML', content: message.html },
+        toRecipients: recipients(message.to),
+        bccRecipients: recipients(message.bcc ?? []),
       },
       saveToSentItems: false,
     }),
@@ -123,4 +128,110 @@ export async function sendAuthEmail(toEmail: string, actionType: EmailActionType
     const text = await res.text()
     throw new Error(`Microsoft Graph sendMail failed: ${res.status} ${text}`)
   }
+}
+
+export async function sendAuthEmail(toEmail: string, actionType: EmailActionType, token: string): Promise<void> {
+  const accessToken = await getGraphAccessToken()
+  const copy = COPY[actionType] ?? { subject: 'Your Gulf Spectrum Journal code' }
+  await sendGraphMail(accessToken, { subject: copy.subject, html: buildEmailHtml(actionType, token), to: [toEmail] })
+}
+
+// --- New-issue announcement ------------------------------------------
+
+export function isMailerConfigured(): boolean {
+  return Boolean(
+    process.env.MS_TENANT_ID && process.env.MS_CLIENT_ID && process.env.MS_CLIENT_SECRET && process.env.MS_SENDER_EMAIL
+  )
+}
+
+export interface IssueAnnouncement {
+  number: number
+  theme: string
+  aboutThisVolume: string | null
+  issueUrl: string
+  settingsUrl: string
+}
+
+// Issue fields are editor-entered free text going into HTML.
+function escapeHtml(value: string): string {
+  return value
+    .replace(/&/g, '&amp;')
+    .replace(/</g, '&lt;')
+    .replace(/>/g, '&gt;')
+    .replace(/"/g, '&quot;')
+    .replace(/'/g, '&#39;')
+}
+
+function buildAnnouncementHtml(issue: IssueAnnouncement): string {
+  const about = issue.aboutThisVolume
+    ? `<p style="font-size:15px; color:#12202e; line-height:1.6; margin:0 0 24px;">${escapeHtml(issue.aboutThisVolume)}</p>`
+    : ''
+  return `<!DOCTYPE html>
+<html>
+  <body style="margin:0; padding:0; background-color:#f1f5f9; font-family: Georgia, 'Times New Roman', serif;">
+    <table role="presentation" width="100%" cellpadding="0" cellspacing="0" style="background-color:#f1f5f9; padding:32px 16px;">
+      <tr>
+        <td align="center">
+          <table role="presentation" width="480" cellpadding="0" cellspacing="0" style="background-color:#ffffff; max-width:480px; width:100%;">
+            <tr>
+              <td style="background-color:#003366; padding:24px 32px;">
+                <div style="color:#ffffff; font-size:18px; font-weight:bold;">Gulf Spectrum Journal</div>
+              </td>
+            </tr>
+            <tr>
+              <td style="padding:32px;">
+                <p style="font-size:12px; color:#b8860b; letter-spacing:0.15em; text-transform:uppercase; margin:0 0 8px;">New issue &middot; No. ${issue.number}</p>
+                <h1 style="font-size:22px; color:#003366; line-height:1.3; margin:0 0 20px;">${escapeHtml(issue.theme)}</h1>
+                ${about}
+                <a href="${escapeHtml(issue.issueUrl)}" style="display:inline-block; background-color:#DAA520; color:#12202e; font-size:15px; font-weight:bold; text-decoration:none; padding:12px 24px;">Read the issue</a>
+              </td>
+            </tr>
+            <tr>
+              <td style="padding:16px 32px; border-top:1px solid #e2e8f0;">
+                <p style="font-size:11px; color:#94a3b8; line-height:1.6; margin:0;">
+                  Gulf Spectrum Journal, a publication of the Gulf of Guinea Maritime Institute (GoGMI).
+                  You are receiving this because you have a Gulf Spectrum Journal account.
+                  To stop these emails, turn off new-issue emails in your
+                  <a href="${escapeHtml(issue.settingsUrl)}" style="color:#64748b;">account settings</a>.
+                </p>
+              </td>
+            </tr>
+          </table>
+        </td>
+      </tr>
+    </table>
+  </body>
+</html>`
+}
+
+// Microsoft Graph accepts up to 500 recipients per message; well under
+// that so one bad address or a throttled call only costs a small batch.
+const ANNOUNCEMENT_BATCH_SIZE = 50
+
+// Sends one identical message per batch with every member in BCC (and
+// the journal's own mailbox in To), so recipients never see each other's
+// addresses. Batches run one at a time — Exchange Online throttles a
+// mailbox at roughly 30 messages a minute, and this stays far below it.
+// A failed batch is logged and counted rather than aborting the rest.
+export async function sendIssueAnnouncement(
+  emails: string[],
+  issue: IssueAnnouncement
+): Promise<{ sent: number; failed: number }> {
+  const accessToken = await getGraphAccessToken()
+  const subject = `New issue of Gulf Spectrum Journal: ${issue.theme}`
+  const html = buildAnnouncementHtml(issue)
+
+  let sent = 0
+  let failed = 0
+  for (let i = 0; i < emails.length; i += ANNOUNCEMENT_BATCH_SIZE) {
+    const batch = emails.slice(i, i + ANNOUNCEMENT_BATCH_SIZE)
+    try {
+      await sendGraphMail(accessToken, { subject, html, to: [process.env.MS_SENDER_EMAIL!], bcc: batch })
+      sent += batch.length
+    } catch (err) {
+      console.error('Failed to send an issue announcement batch', err)
+      failed += batch.length
+    }
+  }
+  return { sent, failed }
 }

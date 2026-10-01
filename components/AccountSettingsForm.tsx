@@ -1,6 +1,6 @@
 'use client'
 
-import { useState, type FormEvent } from 'react'
+import { useEffect, useState, type FormEvent } from 'react'
 import Link from 'next/link'
 import { useRouter } from 'next/navigation'
 import { createClient } from '@/lib/supabase/client'
@@ -24,6 +24,42 @@ export default function AccountSettingsForm() {
   const [confirmEmail, setConfirmEmail] = useState('')
   const [deleting, setDeleting] = useState(false)
   const [deleteError, setDeleteError] = useState<string | null>(null)
+
+  // null until loaded — and stays null (hiding the section) if the read
+  // fails, rather than showing a toggle that might not reflect reality.
+  const [emailPref, setEmailPref] = useState<boolean | null>(null)
+  const [emailPrefError, setEmailPrefError] = useState(false)
+
+  useEffect(() => {
+    if (!user) return
+    let cancelled = false
+    createClient()
+      .from('profiles')
+      .select('email_notifications')
+      .eq('id', user.id)
+      .single()
+      .then(({ data, error }) => {
+        if (cancelled) return
+        if (error || !data) console.error('Failed to load email preference', error)
+        else setEmailPref(data.email_notifications)
+      })
+    return () => {
+      cancelled = true
+    }
+  }, [user])
+
+  async function handleEmailPrefChange(next: boolean) {
+    if (!user) return
+    // Optimistic, reverted below if the write fails.
+    setEmailPref(next)
+    setEmailPrefError(false)
+    const { error } = await createClient().from('profiles').update({ email_notifications: next }).eq('id', user.id)
+    if (error) {
+      console.error('Failed to save email preference', error)
+      setEmailPref(!next)
+      setEmailPrefError(true)
+    }
+  }
 
   async function handlePasswordSubmit(e: FormEvent) {
     e.preventDefault()
@@ -175,6 +211,26 @@ export default function AccountSettingsForm() {
           {signingOutEverywhere ? t.accountSettings.signingOut : t.accountSettings.signOutEverywhere}
         </button>
       </div>
+
+      {/* Email notifications */}
+      {emailPref !== null && (
+        <div className="pt-8 border-t border-slate-200">
+          <h2 className="text-lg font-bold text-royal-blue font-display mb-1">{t.accountSettings.emailHeading}</h2>
+          <p className="text-sm text-slate-500 mb-4">{t.accountSettings.emailBody}</p>
+          {emailPrefError && (
+            <p className="text-sm text-red-700 bg-red-50 border border-red-200 px-3 py-2 mb-3">{t.accountSettings.emailFailed}</p>
+          )}
+          <label className="flex items-center gap-3 text-sm text-slate-700 cursor-pointer">
+            <input
+              type="checkbox"
+              checked={emailPref}
+              onChange={(e) => handleEmailPrefChange(e.target.checked)}
+              className="w-4 h-4 accent-royal-blue"
+            />
+            {t.accountSettings.emailNewIssue}
+          </label>
+        </div>
+      )}
 
       {/* Danger zone */}
       <div className="pt-8 border-t border-red-200">

@@ -636,6 +636,10 @@ Cada volumen es revisado por un comité editorial dedicado de expertos en la mat
     sessionsBody: 'Cierre sesión en todas partes si cree que otro dispositivo o navegador sigue con su sesión abierta.',
     signingOut: 'Cerrando sesión…',
     signOutEverywhere: 'Cerrar sesión en todas partes',
+    emailHeading: 'Notificaciones por correo',
+    emailBody: 'Correos ocasionales de la revista. Las notificaciones dentro del sitio no se ven afectadas.',
+    emailNewIssue: 'Enviarme un correo cuando se publique un nuevo número',
+    emailFailed: 'No se pudo guardar su preferencia.',
     deleteHeading: 'Eliminar cuenta',
     deleteBody:
       'Elimina de forma permanente su cuenta, perfil, guardados, mensajes y notificaciones. Esta acción no se puede deshacer.',

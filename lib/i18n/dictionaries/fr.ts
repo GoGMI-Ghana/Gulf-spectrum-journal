@@ -642,6 +642,10 @@ Chaque volume est évalué par un comité de rédaction dédié, composé d’ex
       'Déconnectez-vous partout si vous pensez qu’un autre appareil ou navigateur est encore connecté à votre compte.',
     signingOut: 'Déconnexion…',
     signOutEverywhere: 'Se déconnecter partout',
+    emailHeading: 'Notifications par e-mail',
+    emailBody: 'Des e-mails occasionnels de la revue. Les notifications sur le site ne sont pas concernées.',
+    emailNewIssue: 'M’envoyer un e-mail à la publication d’un nouveau numéro',
+    emailFailed: 'Impossible d’enregistrer votre préférence.',
     deleteHeading: 'Supprimer le compte',
     deleteBody:
       'Supprime définitivement votre compte, votre profil, vos favoris, vos messages et vos notifications. Cette action est irréversible.',

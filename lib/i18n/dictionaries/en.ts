@@ -635,6 +635,10 @@ Each volume is reviewed by a dedicated editorial board of subject-matter experts
     sessionsBody: 'Sign out everywhere if you think another device or browser still has you signed in.',
     signingOut: 'Signing out…',
     signOutEverywhere: 'Sign Out Everywhere',
+    emailHeading: 'Email Notifications',
+    emailBody: 'Occasional emails from the journal. Notifications on the site itself are not affected.',
+    emailNewIssue: 'Email me when a new issue is published',
+    emailFailed: 'Could not save your email preference.',
     deleteHeading: 'Delete Account',
     deleteBody:
       'Permanently deletes your account, profile, bookmarks, messages, and notifications. This cannot be undone.',

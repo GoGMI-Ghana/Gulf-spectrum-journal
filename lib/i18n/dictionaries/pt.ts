@@ -640,6 +640,10 @@ Cada volume é revisto por um conselho editorial dedicado, composto por especial
     sessionsBody: 'Termine sessão em todo o lado se achar que outro dispositivo ou navegador ainda tem a sua sessão iniciada.',
     signingOut: 'A terminar sessão…',
     signOutEverywhere: 'Terminar sessão em todo o lado',
+    emailHeading: 'Notificações por e-mail',
+    emailBody: 'E-mails ocasionais da revista. As notificações no próprio site não são afetadas.',
+    emailNewIssue: 'Enviar-me um e-mail quando for publicado um novo número',
+    emailFailed: 'Não foi possível guardar a sua preferência.',
     deleteHeading: 'Eliminar conta',
     deleteBody:
       'Elimina permanentemente a sua conta, perfil, favoritos, mensagens e notificações. Esta ação não pode ser anulada.',

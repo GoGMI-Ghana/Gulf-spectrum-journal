@@ -2,7 +2,7 @@
 
 import { useEffect, useState, type FormEvent } from 'react'
 import Link from 'next/link'
-import { Pencil, Trash2, Plus, X } from 'lucide-react'
+import { Pencil, Trash2, Plus, X, Mail } from 'lucide-react'
 import { createClient } from '@/lib/supabase/client'
 import { refreshPublicSite } from '@/lib/refreshPublicSite'
 import { AdminHeading, ErrorBanner, Field, inputClass, primaryButtonClass, secondaryButtonClass } from './AdminUI'
@@ -25,6 +25,7 @@ interface IssueRow {
   published_date: string | null
   about_this_volume: string | null
   editorial_board: BoardMember[]
+  announcement_sent_at: string | null
 }
 
 const EMPTY = {
@@ -77,12 +78,13 @@ export default function IssuesManager() {
   const [form, setForm] = useState(EMPTY)
   const [saving, setSaving] = useState(false)
   const [error, setError] = useState<string | null>(null)
+  const [announcingId, setAnnouncingId] = useState<string | null>(null)
 
   function load() {
     const supabase = createClient()
     supabase
       .from('issues')
-      .select('id, slug, number, volume, year, cover_image, status, theme, published_date, about_this_volume, editorial_board')
+      .select('id, slug, number, volume, year, cover_image, status, theme, published_date, about_this_volume, editorial_board, announcement_sent_at')
       .order('number', { ascending: false })
       .then(({ data, error: err }) => {
         if (err) console.error('Failed to load issues', err)
@@ -136,18 +138,49 @@ export default function IssuesManager() {
       editorial_board: form.editorial_board.filter((m) => m.name.trim() || m.role.trim()),
     }
 
-    const { error: err } = editingId
-      ? await supabase.from('issues').update(payload).eq('id', editingId)
-      : await supabase.from('issues').insert(payload)
+    const query = editingId
+      ? supabase.from('issues').update(payload).eq('id', editingId)
+      : supabase.from('issues').insert(payload)
+    const { data: saved, error: err } = await query.select('id, announcement_sent_at').single()
 
     setSaving(false)
-    if (err) {
-      setError(err.message)
+    if (err || !saved) {
+      setError(err?.message ?? 'Failed to save the issue.')
       return
     }
     setShowForm(false)
     await refreshPublicSite()
+    // Offered on every save of a published issue that hasn't been
+    // announced yet — so declining now isn't final (there's also the
+    // "Email members" button in the list below).
+    if (payload.status === 'published' && !saved.announcement_sent_at) {
+      await announce(saved.id, payload.theme)
+    }
     load()
+  }
+
+  // The server route is what guarantees this only ever sends once per
+  // issue; the confirm is here because an email can't be taken back.
+  async function announce(id: string, theme: string) {
+    const ok = confirm(
+      `Email all members to announce "${theme}"?\n\n` +
+        `This can only be sent once, so make sure the issue's articles are published first. ` +
+        `Choose Cancel to do it later with the "Email members" button.`
+    )
+    if (!ok) return
+    setAnnouncingId(id)
+    const res = await fetch(`/api/admin/issues/${id}/announce`, { method: 'POST' })
+    const body = await res.json().catch(() => null)
+    setAnnouncingId(null)
+    if (!res.ok || !body) {
+      alert(body?.error ?? 'The announcement email could not be sent.')
+      return
+    }
+    alert(
+      body.failed > 0
+        ? `Announcement sent to ${body.sent} member(s). ${body.failed} could not be delivered — see the server logs.`
+        : `Announcement sent to ${body.sent} member(s).`
+    )
   }
 
   async function handleDelete(iss: IssueRow) {
@@ -259,6 +292,24 @@ export default function IssuesManager() {
                     View live →
                   </Link>
                 )}
+                {iss.status === 'published' &&
+                  (iss.announcement_sent_at ? (
+                    <p className="text-xs text-slate-400 mt-0.5">
+                      Announcement emailed{' '}
+                      {new Date(iss.announcement_sent_at).toLocaleDateString('en-US', { month: 'short', day: 'numeric', year: 'numeric' })}
+                    </p>
+                  ) : (
+                    <button
+                      onClick={async () => {
+                        await announce(iss.id, iss.theme)
+                        load()
+                      }}
+                      disabled={announcingId === iss.id}
+                      className="flex items-center gap-1 text-xs text-ocean-blue hover:underline mt-0.5 disabled:opacity-60"
+                    >
+                      <Mail size={12} /> {announcingId === iss.id ? 'Sending…' : 'Email members'}
+                    </button>
+                  ))}
               </div>
               <div className="flex items-center gap-3 shrink-0">
                 <button onClick={() => startEdit(iss)} className="text-slate-400 hover:text-royal-blue" aria-label="Edit">

@@ -176,6 +176,8 @@ Pushing to `main` on GitHub triggers a Vercel deployment. Content pages are pre-
 
 Author photos and issue covers uploaded in `/admin` are stored in the public `journal-images` Supabase Storage bucket (created by the backend migration `20260930120000_journal_images_bucket.sql`). Only editors and admins can upload, files are limited to 5 MB, and only JPEG, PNG and WebP are accepted. Storage enforces these rules, not just the form. Editors can still paste an image URL instead.
 
+When an editor saves an issue as Published, the admin panel offers to email all members an announcement (also available later through "Email members" on the Issues page). `/api/admin/issues/[id]/announce` sends it through Microsoft Graph, in BCC batches, to members whose `profiles.email_notifications` is true; members switch it off in Account Settings. `issues.announcement_sent_at` ensures each issue is announced at most once. The email is in English only.
+
 ### Backend (VPS)
 The full procedure is in `gulf-spectrum-backend/self-hosting/README.md`. In short:
 
