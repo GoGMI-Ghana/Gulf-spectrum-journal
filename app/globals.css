@@ -76,3 +76,120 @@ html {
 .lucide {
   stroke-width: 1.5;
 }
+
+/* Article rich text — section bodies and the conclusion, as produced by
+   the admin editor (components/admin/RichTextEditor.tsx) and rendered by
+   components/RichText.tsx. The same class is on the editor's own editing
+   area, so what an editor sees while writing matches the published page.
+   Plain CSS rather than utility classes because the markup inside is
+   stored HTML, not JSX we can put class names on. */
+.article-body {
+  color: #334155;
+  line-height: 1.75;
+}
+
+.article-body > * + * {
+  margin-top: 1rem;
+}
+
+.article-body h3 {
+  font-family: var(--font-family-poppins);
+  font-size: 1.125rem;
+  font-weight: 600;
+  line-height: 1.4;
+  color: var(--color-royal-blue);
+  margin-top: 1.75rem;
+}
+
+.article-body a {
+  color: var(--color-ocean-blue);
+  text-decoration: underline;
+  text-underline-offset: 2px;
+}
+
+.article-body ul,
+.article-body ol {
+  padding-left: 1.5rem;
+}
+
+.article-body ul {
+  list-style: disc;
+}
+
+.article-body ol {
+  list-style: decimal;
+}
+
+.article-body li + li {
+  margin-top: 0.35rem;
+}
+
+.article-body blockquote {
+  border-left: 3px solid var(--color-gold);
+  padding-left: 1rem;
+  color: #475569;
+  font-style: italic;
+}
+
+.article-body hr {
+  border: 0;
+  border-top: 1px solid #e2e8f0;
+  margin: 2rem 0;
+}
+
+.article-body img {
+  max-width: 100%;
+  height: auto;
+  display: block;
+  margin-left: auto;
+  margin-right: auto;
+}
+
+.article-body figure {
+  margin: 1.75rem 0;
+}
+
+.article-body figcaption {
+  margin-top: 0.5rem;
+  text-align: center;
+  font-size: 0.8125rem;
+  line-height: 1.5;
+  color: #64748b;
+}
+
+/* Wide tables scroll sideways on small screens rather than overflowing
+   the page (the wrapper is added by lib/sanitizeArticleHtml.ts). */
+.article-body .table-scroll {
+  overflow-x: auto;
+}
+
+.article-body table {
+  width: 100%;
+  border-collapse: collapse;
+  font-size: 0.875rem;
+  line-height: 1.5;
+}
+
+.article-body th,
+.article-body td {
+  border: 1px solid #cbd5e1;
+  padding: 0.5rem 0.75rem;
+  text-align: left;
+  vertical-align: top;
+}
+
+.article-body th {
+  background-color: #f1f5f9;
+  font-weight: 600;
+  color: var(--color-royal-blue);
+}
+
+.article-body th > * + *,
+.article-body td > * + * {
+  margin-top: 0.5rem;
+}
+
+/* Editor-only: the cell selection highlight while editing a table. */
+.article-body .selectedCell {
+  background-color: rgb(245 230 211 / 0.6);
+}

@@ -1,11 +1,7 @@
 'use client'
 
 // Image field for the admin panel: upload a file to the journal-images
-// Storage bucket, or paste a URL. Uploads go straight from the browser
-// with the editor's own session; the bucket's policies (editor-only
-// writes, 5 MB, JPEG/PNG/WebP — see the backend's
-// journal_images_bucket migration) are the real enforcement. The checks
-// here just give a clear message before a doomed upload.
+// Storage bucket (see lib/journalImages.ts), or paste a URL.
 //
 // Stores the file's public URL in the form field, so the rest of the app
 // is unchanged — photo_url / cover_image still hold a plain URL either
@@ -14,12 +10,8 @@
 
 import { useRef, useState } from 'react'
 import { Upload, X } from 'lucide-react'
-import { createClient } from '@/lib/supabase/client'
+import { JOURNAL_IMAGE_ACCEPT, uploadJournalImage } from '@/lib/journalImages'
 import { inputClass } from './AdminUI'
-
-const BUCKET = 'journal-images'
-const MAX_BYTES = 5 * 1024 * 1024
-const EXTENSIONS: Record<string, string> = { 'image/jpeg': 'jpg', 'image/png': 'png', 'image/webp': 'webp' }
 
 export default function ImageUpload({
   value,
@@ -38,31 +30,14 @@ export default function ImageUpload({
 
   async function handleFile(file: File) {
     setError(null)
-    const ext = EXTENSIONS[file.type]
-    if (!ext) {
-      setError('Use a JPEG, PNG or WebP image.')
-      return
-    }
-    if (file.size > MAX_BYTES) {
-      setError(`That image is ${(file.size / 1024 / 1024).toFixed(1)} MB — the limit is 5 MB.`)
-      return
-    }
-
     setUploading(true)
-    const supabase = createClient()
-    // Random names, never overwritten: a changed image gets a new URL,
-    // so browsers and the CDN can cache each one forever.
-    const path = `${folder}/${crypto.randomUUID()}.${ext}`
-    const { error: uploadError } = await supabase.storage
-      .from(BUCKET)
-      .upload(path, file, { contentType: file.type, cacheControl: '31536000' })
+    const result = await uploadJournalImage(file, folder)
     setUploading(false)
-
-    if (uploadError) {
-      setError(`Upload failed: ${uploadError.message}`)
+    if (result.error !== null) {
+      setError(result.error)
       return
     }
-    onChange(supabase.storage.from(BUCKET).getPublicUrl(path).data.publicUrl)
+    onChange(result.url)
   }
 
   return (
@@ -98,7 +73,7 @@ export default function ImageUpload({
         <input
           ref={inputRef}
           type="file"
-          accept="image/jpeg,image/png,image/webp"
+          accept={JOURNAL_IMAGE_ACCEPT}
           className="hidden"
           onChange={(e) => {
             const file = e.target.files?.[0]

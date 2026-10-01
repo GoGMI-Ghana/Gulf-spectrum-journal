@@ -5,7 +5,9 @@ import { useRouter } from 'next/navigation'
 import { ArrowUp, ArrowDown, X, Plus } from 'lucide-react'
 import { createClient } from '@/lib/supabase/client'
 import { refreshPublicSite } from '@/lib/refreshPublicSite'
+import { isEmptyRichText, toEditorHtml } from '@/lib/richText'
 import { AdminHeading, ErrorBanner, Field, StringListEditor, inputClass, primaryButtonClass, secondaryButtonClass } from './AdminUI'
+import RichTextEditor from './RichTextEditor'
 
 interface Section {
   heading: string
@@ -77,12 +79,10 @@ function SectionsEditor({ value, onChange }: { value: Section[]; onChange: (v: S
               </button>
             </div>
           </div>
-          <textarea
-            rows={5}
-            className={inputClass}
+          <RichTextEditor
             placeholder="Section body"
             value={s.body}
-            onChange={(e) => onChange(value.map((x, j) => (j === i ? { ...x, body: e.target.value } : x)))}
+            onChange={(body) => onChange(value.map((x, j) => (j === i ? { ...x, body } : x)))}
           />
         </div>
       ))}
@@ -209,8 +209,10 @@ export default function ArticleForm({ articleId }: { articleId?: string }) {
             status: row.status,
             abstract: row.abstract,
             keywords: row.keywords ?? [],
-            sections: row.sections ?? [],
-            conclusion: row.conclusion ?? '',
+            // Older articles stored these as plain text; the editor works
+            // in HTML, so convert on the way in (see lib/richText.ts).
+            sections: (row.sections ?? []).map((s) => ({ heading: s.heading, body: toEditorHtml(s.body) })),
+            conclusion: toEditorHtml(row.conclusion ?? ''),
             references: row.references ?? [],
             authorIds: (row.article_authors ?? [])
               .slice()
@@ -241,8 +243,8 @@ export default function ArticleForm({ articleId }: { articleId?: string }) {
       status: form.status,
       abstract: form.abstract.trim(),
       keywords: form.keywords.map((k) => k.trim()).filter(Boolean),
-      sections: form.sections.filter((s) => s.heading.trim() || s.body.trim()),
-      conclusion: form.conclusion.trim() || null,
+      sections: form.sections.filter((s) => s.heading.trim() || !isEmptyRichText(s.body)),
+      conclusion: isEmptyRichText(form.conclusion) ? null : form.conclusion,
       references: form.references.map((r) => r.trim()).filter(Boolean),
     }
 
@@ -359,12 +361,12 @@ export default function ArticleForm({ articleId }: { articleId?: string }) {
           <StringListEditor values={form.keywords} onChange={(v) => setForm({ ...form, keywords: v })} placeholder="Keyword" />
         </Field>
 
-        <Field label="Sections">
+        <Field as="div" label="Sections" hint="Each section has a heading and a body. Paste from Word to keep bold, italics, lists and tables.">
           <SectionsEditor value={form.sections} onChange={(v) => setForm({ ...form, sections: v })} />
         </Field>
 
-        <Field label="Conclusion">
-          <textarea rows={4} className={inputClass} value={form.conclusion} onChange={(e) => setForm({ ...form, conclusion: e.target.value })} />
+        <Field as="div" label="Conclusion">
+          <RichTextEditor placeholder="Conclusion" value={form.conclusion} onChange={(conclusion) => setForm({ ...form, conclusion })} />
         </Field>
 
         <Field label="References">

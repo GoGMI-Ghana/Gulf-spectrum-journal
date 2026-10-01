@@ -178,6 +178,8 @@ Author photos and issue covers uploaded in `/admin` are stored in the public `jo
 
 When an editor saves an issue as Published, the admin panel offers to email all members an announcement (also available later through "Email members" on the Issues page). `/api/admin/issues/[id]/announce` sends it through Microsoft Graph, in BCC batches, to members whose `profiles.email_notifications` is true; members switch it off in Account Settings. `issues.announcement_sent_at` ensures each issue is announced at most once. The email is in English only.
 
+Article section bodies and the conclusion are rich text: the admin form uses a Tiptap editor (`components/admin/RichTextEditor.tsx`) for bold, italics, sub-headings, lists, quotes, links, tables and images (uploaded to the `journal-images` bucket). The HTML is stored in `articles.sections[].body` and `articles.conclusion` and is sanitized against an allowlist when a page is generated (`lib/sanitizeArticleHtml.ts`), so nothing but formatting reaches readers. Older plain-text values still render as plain text.
+
 ### Backend (VPS)
 The full procedure is in `gulf-spectrum-backend/self-hosting/README.md`. In short:
 

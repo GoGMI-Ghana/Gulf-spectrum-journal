@@ -10,6 +10,7 @@ import { siteUrl, socialMetadata } from '@/lib/seo'
 import AuthorAvatar from '@/components/AuthorAvatar'
 import BookmarkButton from '@/components/BookmarkButton'
 import ShareBar from '@/components/ShareBar'
+import RichText from '@/components/RichText'
 import CiteBox from '@/components/CiteBox'
 import SupportBox from '@/components/SupportBox'
 import DonationThanksBanner from '@/components/DonationThanksBanner'
@@ -127,17 +128,21 @@ export default async function ArticleDetail({ params }: LocaleSlugParams) {
 
       {/* Body */}
       <div className="prose max-w-none">
-        {article.sections.map((section) => (
-          <div key={section.heading} className="mb-8">
-            <h2 className="text-xl font-bold text-royal-blue font-display mb-3">{section.heading}</h2>
-            <p className="text-slate-700 leading-relaxed whitespace-pre-line">{section.body}</p>
+        {article.sections.map((section, i) => (
+          <div key={i} className="mb-8">
+            {section.heading && (
+              <h2 className="text-xl font-bold text-royal-blue font-display mb-3">{section.heading}</h2>
+            )}
+            <RichText value={section.body} />
           </div>
         ))}
 
-        <div className="mb-8">
-          <h2 className="text-xl font-bold text-royal-blue font-display mb-3">{t.article.conclusion}</h2>
-          <p className="text-slate-700 leading-relaxed whitespace-pre-line">{article.conclusion}</p>
-        </div>
+        {article.conclusion && (
+          <div className="mb-8">
+            <h2 className="text-xl font-bold text-royal-blue font-display mb-3">{t.article.conclusion}</h2>
+            <RichText value={article.conclusion} />
+          </div>
+        )}
       </div>
 
       {/* References */}
