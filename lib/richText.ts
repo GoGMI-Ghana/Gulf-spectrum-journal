@@ -14,7 +14,8 @@ export function looksLikeHtml(value: string): boolean {
 // The editor's empty document is "<p></p>", not "" — this is what
 // "the editor has nothing in it" means for save-time checks.
 export function isEmptyRichText(value: string): boolean {
-  if (/<(img|table|hr)\b/i.test(value)) return false
+  // Content with no text of its own: images, tables, rules, charts.
+  if (/<(img|table|hr)\b|data-chart=/i.test(value)) return false
   return value.replace(/<[^>]*>/g, '').replace(/&nbsp;/g, ' ').trim() === ''
 }
 

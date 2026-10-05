@@ -127,6 +127,7 @@ export const pdfStyles = StyleSheet.create({
   figure: { marginVertical: 10 },
   // Width and height are set per image (see imageSize in htmlToPdf.tsx).
   image: { alignSelf: 'center' },
+  chartTitle: { width: '100%', marginBottom: 6, fontSize: 10, lineHeight: 1.4, fontWeight: 'bold', color: pdfColors.ink, textAlign: 'center' },
   caption: { width: '100%', marginTop: 5, fontSize: 8.5, lineHeight: 1.4, color: pdfColors.muted, textAlign: 'center' },
 
   table: { marginVertical: 8, borderTopWidth: 0.75, borderLeftWidth: 0.75, borderColor: pdfColors.rule },

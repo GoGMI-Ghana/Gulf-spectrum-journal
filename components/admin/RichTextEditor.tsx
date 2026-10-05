@@ -2,7 +2,7 @@
 
 // The article body editor: a toolbar over a WYSIWYG area, for the
 // formatting a journal article needs — emphasis, sub-headings, lists,
-// quotes, links, images and tables — and nothing more. Text pasted from
+// quotes, links, images, tables and charts — and nothing more. Text pasted from
 // Word keeps the formatting this supports and drops the rest (fonts,
 // colours, sizes), so articles stay visually consistent.
 //
@@ -27,11 +27,15 @@ import {
   Link2,
   ImagePlus,
   Table,
+  ChartColumn,
   Undo2,
   Redo2,
 } from 'lucide-react'
 import { JOURNAL_IMAGE_ACCEPT, uploadJournalImage } from '@/lib/journalImages'
 import { isEmptyRichText } from '@/lib/richText'
+import type { ChartSpec } from '@/lib/chart/spec'
+import { ChartNode } from './ChartNode'
+import ChartDialog from './ChartDialog'
 
 // "" and "<p></p>" are the same (empty) document.
 const normalize = (html: string) => (isEmptyRichText(html) ? '' : html)
@@ -95,7 +99,17 @@ function Divider() {
   return <span className="w-px self-stretch bg-slate-300 mx-1" />
 }
 
-function Toolbar({ editor, onPickImage, uploading }: { editor: Editor; onPickImage: () => void; uploading: boolean }) {
+function Toolbar({
+  editor,
+  onPickImage,
+  onInsertChart,
+  uploading,
+}: {
+  editor: Editor
+  onPickImage: () => void
+  onInsertChart: () => void
+  uploading: boolean
+}) {
   function handleLink() {
     const current = editor.getAttributes('link').href as string | undefined
     const url = prompt('Link address (leave empty to remove the link)', current ?? 'https://')
@@ -152,6 +166,9 @@ function Toolbar({ editor, onPickImage, uploading }: { editor: Editor; onPickIma
       >
         <Table size={15} />
       </ToolbarButton>
+      <ToolbarButton label="Insert chart" onClick={onInsertChart}>
+        <ChartColumn size={15} />
+      </ToolbarButton>
       <Divider />
       <ToolbarButton label="Undo" disabled={!editor.can().undo()} onClick={() => editor.chain().focus().undo().run()}>
         <Undo2 size={15} />
@@ -187,6 +204,7 @@ export default function RichTextEditor({
   const fileRef = useRef<HTMLInputElement>(null)
   const [uploading, setUploading] = useState(false)
   const [uploadError, setUploadError] = useState<string | null>(null)
+  const [chartDialogOpen, setChartDialogOpen] = useState(false)
   // The paste/drop handlers below are created once with the editor, but
   // need the current handleFile (which closes over that editor).
   const handleFileRef = useRef<(file: File) => void>(() => {})
@@ -203,6 +221,7 @@ export default function RichTextEditor({
       }),
       Image,
       TableKit.configure({ table: { resizable: false } }),
+      ChartNode,
     ],
     content: value,
     // This component is server-rendered first (the admin pages aren't
@@ -267,10 +286,18 @@ export default function RichTextEditor({
 
   return (
     <div className="border border-slate-300 focus-within:border-royal-blue bg-white">
-      {editor && <Toolbar editor={editor} uploading={uploading} onPickImage={() => fileRef.current?.click()} />}
+      {editor && (
+        <Toolbar
+          editor={editor}
+          uploading={uploading}
+          onPickImage={() => fileRef.current?.click()}
+          onInsertChart={() => setChartDialogOpen(true)}
+        />
+      )}
       <EditorContent editor={editor} />
       <p className="text-[11px] text-slate-400 px-3 py-1.5 border-t border-slate-200">
-        To add a chart from Excel or a picture from Word, copy it on its own and paste it here — or drag an image file in.
+        To make a chart from numbers, use the chart button above. To add a finished chart from Excel or a picture from Word, copy
+        it on its own and paste it here — or drag an image file in.
       </p>
       <input
         ref={fileRef}
@@ -284,6 +311,15 @@ export default function RichTextEditor({
           if (file) handleFile(file)
         }}
       />
+      {chartDialogOpen && editor && (
+        <ChartDialog
+          onClose={() => setChartDialogOpen(false)}
+          onSave={(spec: ChartSpec) => {
+            editor.chain().focus().insertContent({ type: 'chart', attrs: { spec: JSON.stringify(spec) } }).run()
+            setChartDialogOpen(false)
+          }}
+        />
+      )}
       {uploadError && <p className="text-sm text-red-700 px-3 py-2 border-t border-slate-200">{uploadError}</p>}
     </div>
   )

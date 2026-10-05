@@ -14,6 +14,8 @@ import type { Style } from '@react-pdf/types'
 import { parseDocument } from 'htmlparser2'
 import type { ChildNode, Element } from 'domhandler'
 import sharp from 'sharp'
+import { parseChartSpec } from '../chart/spec'
+import { renderChartPdf } from './chartPdf'
 import { PDF_COLUMN_WIDTH, pdfStyles } from './styles'
 
 export interface PdfImage {
@@ -273,10 +275,15 @@ export function renderBlocks(
       case 'table':
         out.push(renderTable(node, images, key))
         break
-      case 'div':
-        // The sanitizer's scroll wrapper around tables.
-        out.push(...renderBlocks(node.children, images, key, textStyle))
+      case 'div': {
+        // A chart made in the editor (left as a placeholder by the
+        // sanitizer's 'keep' mode), drawn here as vectors…
+        const chart = 'data-chart' in node.attribs ? parseChartSpec(node.attribs['data-chart']) : null
+        if (chart) out.push(renderChartPdf(chart, key))
+        // …otherwise the sanitizer's scroll wrapper around a table.
+        else out.push(...renderBlocks(node.children, images, key, textStyle))
         break
+      }
     }
   })
   flushInline()

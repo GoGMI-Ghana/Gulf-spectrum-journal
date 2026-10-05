@@ -193,3 +193,47 @@ html {
 .article-body .selectedCell {
   background-color: rgb(245 230 211 / 0.6);
 }
+
+/* Charts made with the editor's "Insert chart" (markup from
+   lib/chart/svg.ts). The drawing scales with the column but never past
+   its natural size, where its 11px labels would start to look oversized. */
+.article-body .article-chart {
+  margin: 1.75rem 0;
+}
+
+.article-body .article-chart-title {
+  margin-bottom: 0.75rem;
+  text-align: center;
+  font-size: 0.875rem;
+  font-weight: 600;
+  line-height: 1.4;
+  color: var(--color-ink);
+}
+
+.article-body .article-chart svg {
+  display: block;
+  width: 100%;
+  max-width: 640px;
+  height: auto;
+  margin: 0 auto;
+  font-family: var(--font-family-inter), system-ui, sans-serif;
+}
+
+.article-body .article-chart details {
+  max-width: 640px;
+  margin: 0.5rem auto 0;
+  font-size: 0.8125rem;
+}
+
+.article-body .article-chart summary {
+  cursor: pointer;
+  color: #64748b;
+}
+
+.article-body .article-chart summary:hover {
+  color: var(--color-royal-blue);
+}
+
+.article-body .article-chart details table {
+  margin-top: 0.5rem;
+}

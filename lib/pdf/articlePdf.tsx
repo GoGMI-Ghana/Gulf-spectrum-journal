@@ -25,13 +25,17 @@ export interface ArticlePdfInput {
 
 // Sanitized exactly as for the web page, so the PDF can never contain
 // anything the page wouldn't.
+// Charts are kept as placeholders rather than turned into web markup —
+// htmlToPdf draws them itself.
+const sanitizeForPdf = (html: string) => sanitizeArticleHtml(html, { charts: 'keep' })
+
 function richText(value: string, images: Map<string, PdfImage>, key: string) {
-  return looksLikeHtml(value) ? htmlToPdf(sanitizeArticleHtml(value), images, key) : plainTextToPdf(value, key)
+  return looksLikeHtml(value) ? htmlToPdf(sanitizeForPdf(value), images, key) : plainTextToPdf(value, key)
 }
 
 export async function renderArticlePdf({ article, authors, issue, topic, citation, url }: ArticlePdfInput): Promise<Buffer> {
   const bodies = [...article.sections.map((section) => section.body), article.conclusion].filter(looksLikeHtml)
-  const images = await prepareImages(bodies.map(sanitizeArticleHtml))
+  const images = await prepareImages(bodies.map(sanitizeForPdf))
 
   const issueLine = issue ? `Vol. ${issue.volume}, No. ${issue.number} (${issue.year})` : ''
 
