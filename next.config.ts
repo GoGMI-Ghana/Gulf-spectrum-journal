@@ -17,6 +17,13 @@ const nextConfig: NextConfig = {
     // (editor/admin only) — this isn't accepting arbitrary public input.
     remotePatterns: [{ protocol: 'https', hostname: '**' }],
   },
+  // The article PDF route reads its font files from disk at runtime
+  // (lib/pdf/styles.ts). They're loaded by path, not imported, so the
+  // build can't see that the deployed function needs them — say so. The
+  // key is a glob, so the route's literal [slug] brackets are escaped.
+  outputFileTracingIncludes: {
+    '/api/articles/\\[slug\\]/pdf': ['./lib/pdf/fonts/*.ttf'],
+  },
 };
 
 export default nextConfig;

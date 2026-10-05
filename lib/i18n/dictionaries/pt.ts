@@ -205,6 +205,7 @@ Cada volume é revisto por um conselho editorial dedicado, composto por especial
     references: 'Referências',
     aboutAuthors: 'Sobre os autores',
     citeHeading: 'Citar este artigo',
+    downloadPdf: 'Descarregar PDF',
     share: 'Partilhar',
     shareOnX: 'Partilhar no X',
     shareOnFacebook: 'Partilhar no Facebook',
@@ -498,7 +499,7 @@ Cada volume é revisto por um conselho editorial dedicado, composto por especial
     colAuthor: 'Autor',
     colTitle: 'Título',
     footnote:
-      'As visualizações são registadas a partir de visitas reais à página de cada artigo, desde que este acompanhamento foi implementado — os valores anteriores serão baixos ou nulos. As transferências mantêm-se a zero: o site ainda não disponibiliza a transferência de ficheiros por artigo.',
+      "As visualizações e as transferências de PDF são contadas a partir de visitas reais à página de cada artigo, desde que cada acompanhamento foi implementado — os valores anteriores serão baixos ou nulos.",
   },
 
   dashboard: {

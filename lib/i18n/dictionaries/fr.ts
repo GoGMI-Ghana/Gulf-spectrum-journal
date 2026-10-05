@@ -202,6 +202,7 @@ Chaque volume est évalué par un comité de rédaction dédié, composé d’ex
     references: 'Références',
     aboutAuthors: 'À propos des auteurs',
     citeHeading: 'Citer cet article',
+    downloadPdf: 'Télécharger le PDF',
     share: 'Partager',
     shareOnX: 'Partager sur X',
     shareOnFacebook: 'Partager sur Facebook',
@@ -495,7 +496,7 @@ Chaque volume est évalué par un comité de rédaction dédié, composé d’ex
     colAuthor: 'Auteur',
     colTitle: 'Titre',
     footnote:
-      'Les consultations sont enregistrées à partir de visites réelles de chaque page d’article, depuis la mise en place de ce suivi — les chiffres antérieurs seront faibles ou nuls. Les téléchargements restent à zéro : le site ne propose pas encore de téléchargement de fichier par article.',
+      "Les consultations et les téléchargements de PDF sont comptabilisés à partir de visites réelles de chaque page d’article, depuis la mise en place de chaque suivi — les chiffres antérieurs seront faibles ou nuls.",
   },
 
   dashboard: {

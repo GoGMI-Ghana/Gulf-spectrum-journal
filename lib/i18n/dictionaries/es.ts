@@ -202,6 +202,7 @@ Cada volumen es revisado por un comité editorial dedicado de expertos en la mat
     references: 'Referencias',
     aboutAuthors: 'Sobre los autores',
     citeHeading: 'Cómo citar este artículo',
+    downloadPdf: 'Descargar PDF',
     share: 'Compartir',
     shareOnX: 'Compartir en X',
     shareOnFacebook: 'Compartir en Facebook',
@@ -494,7 +495,7 @@ Cada volumen es revisado por un comité editorial dedicado de expertos en la mat
     colAuthor: 'Autor',
     colTitle: 'Título',
     footnote:
-      'Las visitas se registran a partir de visitas reales a la página de cada artículo, desde que se implantó este seguimiento — las cifras anteriores serán bajas o nulas. Las descargas se mantienen en cero: el sitio aún no ofrece descarga de archivos por artículo.',
+      "Las visitas y las descargas de PDF se cuentan a partir de visitas reales a la página de cada artículo, desde que se implantó cada seguimiento — las cifras anteriores serán bajas o nulas.",
   },
 
   dashboard: {

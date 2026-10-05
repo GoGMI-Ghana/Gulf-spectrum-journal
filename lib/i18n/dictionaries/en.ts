@@ -208,6 +208,7 @@ Each volume is reviewed by a dedicated editorial board of subject-matter experts
     references: 'References',
     aboutAuthors: 'About the Authors',
     citeHeading: 'Cite This Article',
+    downloadPdf: 'Download PDF',
     share: 'Share',
     shareOnX: 'Share on X',
     shareOnFacebook: 'Share on Facebook',
@@ -495,7 +496,7 @@ Each volume is reviewed by a dedicated editorial board of subject-matter experts
     colAuthor: 'Author',
     colTitle: 'Title',
     footnote:
-      "Views are logged from real visits to each article page, starting from when this tracking shipped — figures will be low or zero for anything before that. Downloads stay at zero: there's no per-article file download feature on the site yet for that count to reflect.",
+      "Views and PDF downloads are counted from real visits to each article page, starting from when each kind of tracking was added — figures will be low or zero for anything before that.",
   },
 
   dashboard: {

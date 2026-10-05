@@ -9,6 +9,7 @@ import type { LocaleSlugParams } from '@/lib/i18n/page'
 import { siteUrl, socialMetadata } from '@/lib/seo'
 import AuthorAvatar from '@/components/AuthorAvatar'
 import BookmarkButton from '@/components/BookmarkButton'
+import DownloadPdfButton from '@/components/DownloadPdfButton'
 import ShareBar from '@/components/ShareBar'
 import RichText from '@/components/RichText'
 import CiteBox from '@/components/CiteBox'
@@ -80,7 +81,10 @@ export default async function ArticleDetail({ params }: LocaleSlugParams) {
             </Link>
           )}
         </div>
-        <BookmarkButton slug={article.slug} showLabel />
+        <div className="flex items-center gap-5">
+          <DownloadPdfButton articleId={article.id} slug={article.slug} />
+          <BookmarkButton slug={article.slug} showLabel />
+        </div>
       </div>
       <h1 className="font-display text-royal-blue text-2xl sm:text-3xl lg:text-4xl leading-tight mb-6">
         {article.title}

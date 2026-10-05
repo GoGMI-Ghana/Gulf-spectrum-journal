@@ -11,10 +11,8 @@ import { createClient } from '@/lib/supabase/client'
 // Fire-and-forget: a failed log shouldn't affect the reading experience,
 // so errors just go to the console rather than surfacing in the UI.
 //
-// article_events has no 'download' event logged anywhere yet — there's
-// no actual download feature on the site (no per-article file to
-// download), so that count legitimately stays at zero rather than being
-// invented here.
+// The matching 'download' event is logged by DownloadPdfButton, when a
+// reader clicks through to the article's PDF.
 export default function ArticleViewLogger({ articleId }: { articleId: string }) {
   useEffect(() => {
     const supabase = createClient()

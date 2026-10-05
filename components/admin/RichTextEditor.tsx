@@ -36,6 +36,28 @@ import { isEmptyRichText } from '@/lib/richText'
 // "" and "<p></p>" are the same (empty) document.
 const normalize = (html: string) => (isEmptyRichText(html) ? '' : html)
 
+// The picture to upload from a paste, if the paste is "just a picture" —
+// a chart copied in Excel, a picture copied in Word, a screenshot.
+// Excel also puts a picture on the clipboard when CELLS are copied, and
+// Word does when text and a picture are copied together; in both cases
+// the real content is the table or the text, so those are left to the
+// editor's normal paste.
+function pastedPicture(data: DataTransfer | null): File | null {
+  if (!data) return null
+  const picture = [...data.files].find((file) => file.type.startsWith('image/'))
+  if (!picture) return null
+  if (/<table\b/i.test(data.getData('text/html'))) return null
+  if (data.getData('text/plain').trim() !== '') return null
+  return picture
+}
+
+// Pictures inside pasted Word text point at files on the author's own
+// computer (file://…), which nobody else can load. Drop them rather than
+// leave broken images; they're pasted in one at a time instead.
+function dropUnloadableImages(html: string): string {
+  return html.replace(/<img\b[^>]*>/gi, (tag) => (/\ssrc=["']https:\/\//i.test(tag) ? tag : ''))
+}
+
 function ToolbarButton({
   label,
   active = false,
@@ -165,6 +187,9 @@ export default function RichTextEditor({
   const fileRef = useRef<HTMLInputElement>(null)
   const [uploading, setUploading] = useState(false)
   const [uploadError, setUploadError] = useState<string | null>(null)
+  // The paste/drop handlers below are created once with the editor, but
+  // need the current handleFile (which closes over that editor).
+  const handleFileRef = useRef<(file: File) => void>(() => {})
 
   const editor = useEditor({
     extensions: [
@@ -191,6 +216,21 @@ export default function RichTextEditor({
         class: 'article-body min-h-32 px-3 py-2 focus:outline-none',
         ...(placeholder ? { 'aria-label': placeholder } : {}),
       },
+      handlePaste: (_view, event) => {
+        const picture = pastedPicture(event.clipboardData)
+        if (!picture) return false
+        event.preventDefault()
+        handleFileRef.current(picture)
+        return true
+      },
+      handleDrop: (_view, event) => {
+        const picture = [...(event.dataTransfer?.files ?? [])].find((file) => file.type.startsWith('image/'))
+        if (!picture) return false
+        event.preventDefault()
+        handleFileRef.current(picture)
+        return true
+      },
+      transformPastedHTML: dropUnloadableImages,
     },
     onUpdate: ({ editor: current }) => onChange(normalize(current.getHTML())),
   })
@@ -221,10 +261,17 @@ export default function RichTextEditor({
     editor.chain().focus().setImage({ src: result.url, alt: caption, title: caption }).run()
   }
 
+  useEffect(() => {
+    handleFileRef.current = handleFile
+  })
+
   return (
     <div className="border border-slate-300 focus-within:border-royal-blue bg-white">
       {editor && <Toolbar editor={editor} uploading={uploading} onPickImage={() => fileRef.current?.click()} />}
       <EditorContent editor={editor} />
+      <p className="text-[11px] text-slate-400 px-3 py-1.5 border-t border-slate-200">
+        To add a chart from Excel or a picture from Word, copy it on its own and paste it here — or drag an image file in.
+      </p>
       <input
         ref={fileRef}
         type="file"
