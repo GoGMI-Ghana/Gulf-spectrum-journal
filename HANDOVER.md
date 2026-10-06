@@ -20,7 +20,7 @@ This document is the starting point for the next developer. It covers what the s
 - Browse issues, articles, authors and topics, and search the journal
 - Copy citations in several formats and share articles
 - Donate to an article's authors through Paystack
-- Read the editorial board directory, apply to join the board, send a contact message, and submit an article proposal (each contact message and proposal is saved for `/admin` and also emailed to the editorial office, `info@gogmi.org.gh`, by `/api/contact` and `/api/submissions`)
+- Read the editorial board directory, apply to join the board, send a contact message, and submit an article proposal (each contact message and proposal is saved for `/admin` and also emailed to the editorial office, `info@gogmi.org.gh`, by `/api/contact` and `/api/submissions`). A proposal can include a manuscript file (Word, PDF, OpenDocument or RTF, up to 15 MB): it is uploaded from the browser to the **private** `manuscripts` Storage bucket through a one-time signed URL issued by `/api/submissions/upload-url`, and editors download it from `/admin/submissions`
 
 **Signed-in members can:**
 - Sign in with email and password, a one-time email code, or Google

@@ -1,7 +1,9 @@
 'use client'
 
 import { useEffect, useState } from 'react'
+import { Paperclip } from 'lucide-react'
 import { createClient } from '@/lib/supabase/client'
+import { MANUSCRIPT_BUCKET } from '@/lib/manuscripts'
 import { AdminHeading, inputClass } from './AdminUI'
 
 type Status = 'new' | 'in_review' | 'accepted' | 'declined'
@@ -14,6 +16,8 @@ interface SubmissionRow {
   abstract: string | null
   status: Status
   editor_notes: string | null
+  manuscript_path: string | null
+  manuscript_name: string | null
   created_at: string
 }
 
@@ -34,7 +38,7 @@ export default function SubmissionsManager() {
     const supabase = createClient()
     supabase
       .from('submissions')
-      .select('id, name, email, title, abstract, status, editor_notes, created_at')
+      .select('id, name, email, title, abstract, status, editor_notes, manuscript_path, manuscript_name, created_at')
       .order('created_at', { ascending: false })
       .then(({ data, error }) => {
         if (error) console.error('Failed to load submissions', error)
@@ -64,6 +68,22 @@ export default function SubmissionsManager() {
     await supabase.from('submissions').update({ editor_notes: notes }).eq('id', s.id)
   }
 
+  // Manuscripts are in a private bucket: there's no permanent link to
+  // one. This asks Storage (as the signed-in editor — the bucket's policy
+  // allows editors to read) for a link that works for one minute, and
+  // follows it straight away.
+  async function handleDownload(s: SubmissionRow) {
+    if (!s.manuscript_path) return
+    const { data, error } = await createClient()
+      .storage.from(MANUSCRIPT_BUCKET)
+      .createSignedUrl(s.manuscript_path, 60, { download: s.manuscript_name ?? true })
+    if (error || !data) {
+      alert(`Couldn't prepare the download: ${error?.message ?? 'unknown error'}`)
+      return
+    }
+    window.location.assign(data.signedUrl)
+  }
+
   return (
     <div>
       <AdminHeading title="Submissions" description="Article proposals from the Submission Guidelines page." />
@@ -88,6 +108,7 @@ export default function SubmissionsManager() {
                     </p>
                     <p className="text-xs text-slate-500 truncate">
                       {s.name} · {s.email}
+                      {s.manuscript_path && <Paperclip size={12} className="inline ml-1.5 -mt-0.5" aria-label="Manuscript attached" />}
                     </p>
                   </div>
                   <p className="text-xs text-slate-400 shrink-0">
@@ -97,6 +118,11 @@ export default function SubmissionsManager() {
                 {isOpen && (
                   <div className="px-4 pb-4 space-y-3">
                     {s.abstract && <p className="text-sm text-slate-700 whitespace-pre-wrap bg-slate-50 border border-slate-200 p-3">{s.abstract}</p>}
+                    {s.manuscript_path && (
+                      <button onClick={() => handleDownload(s)} className="flex items-center gap-1.5 text-sm text-ocean-blue hover:underline">
+                        <Paperclip size={14} /> Download manuscript{s.manuscript_name ? ` (${s.manuscript_name})` : ''}
+                      </button>
+                    )}
                     <a href={`mailto:${s.email}`} className="inline-block text-sm text-ocean-blue hover:underline">
                       Email {s.name} →
                     </a>
