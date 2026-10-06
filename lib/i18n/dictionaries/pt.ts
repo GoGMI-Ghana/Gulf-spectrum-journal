@@ -40,6 +40,7 @@ Cada volume é revisto por um conselho editorial dedicado, composto por especial
     sending: 'A enviar…',
     submitting: 'A enviar…',
     saving: 'A guardar…',
+    somethingWrong: 'Ocorreu um erro. Tente novamente.',
     copied: 'Copiada',
     copyCitation: 'Copiar citação',
     researchArticle: 'Artigo de investigação',

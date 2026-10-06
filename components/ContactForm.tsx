@@ -1,44 +1,42 @@
 'use client'
 
 import { useState, type FormEvent } from 'react'
-import { createClient } from '@/lib/supabase/client'
 import { useI18n } from '@/context/I18nContext'
+import HoneypotField from './HoneypotField'
 
-// Real insert straight through the browser client — RLS already allows
-// anyone to insert a contact message ("anyone can send a contact
-// message"), so no Route Handler is needed for the write itself, same
-// as every other anon-writable table in this app (donations, bookmarks
-// aside). Reading these back is editor-only; see /admin/messages.
+// Posts to /api/contact, which saves the message for /admin/messages and
+// emails the editorial office that it arrived.
 export default function ContactForm() {
   const { t } = useI18n()
   const [name, setName] = useState('')
   const [email, setEmail] = useState('')
   const [subject, setSubject] = useState('')
   const [message, setMessage] = useState('')
+  const [website, setWebsite] = useState('')
   const [submitting, setSubmitting] = useState(false)
   const [submitted, setSubmitted] = useState(false)
   const [error, setError] = useState<string | null>(null)
 
-  async function handleSubmit(e: FormEvent<HTMLFormElement>) {
+  async function handleSubmit(e: FormEvent) {
     e.preventDefault()
     setSubmitting(true)
     setError(null)
 
-    const supabase = createClient()
-    const { error } = await supabase.from('contact_messages').insert({
-      name: name.trim(),
-      email: email.trim(),
-      subject: subject.trim(),
-      message: message.trim(),
-    })
+    setSubmitted(false)
+
+    const res = await fetch('/api/contact', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({ name, email, subject, message, website }),
+    }).catch(() => null)
 
     setSubmitting(false)
-    if (error) {
-      setError(error.message)
+    if (!res || !res.ok) {
+      const body = res ? await res.json().catch(() => null) : null
+      setError(body?.error || t.common.somethingWrong)
       return
     }
 
-    e.currentTarget.reset()
     setName('')
     setEmail('')
     setSubject('')
@@ -50,6 +48,7 @@ export default function ContactForm() {
     <div>
       <form className="space-y-5" onSubmit={handleSubmit}>
         {error && <p className="text-sm text-red-700 bg-red-50 border border-red-200 px-3 py-2">{error}</p>}
+        <HoneypotField value={website} onChange={setWebsite} />
         <div className="grid sm:grid-cols-2 gap-5">
           <div>
             <label className="block text-xs font-medium text-slate-600 mb-1" htmlFor="c-name">

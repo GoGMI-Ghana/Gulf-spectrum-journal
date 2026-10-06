@@ -46,6 +46,7 @@ Each volume is reviewed by a dedicated editorial board of subject-matter experts
     sending: 'Sending…',
     submitting: 'Submitting…',
     saving: 'Saving…',
+    somethingWrong: 'Something went wrong. Please try again.',
     copied: 'Copied',
     copyCitation: 'Copy citation',
     researchArticle: 'Research Article',

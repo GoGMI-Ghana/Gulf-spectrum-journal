@@ -1,6 +1,7 @@
-// Sends email — auth emails (OTP codes, password recovery, etc.) and
-// the new-issue announcement to members (see the bottom of this file,
-// called from app/api/admin/issues/[id]/announce) — via Microsoft
+// Sends email — auth emails (OTP codes, password recovery, etc.), the
+// new-issue announcement to members (called from
+// app/api/admin/issues/[id]/announce) and alerts to the editorial office
+// about new contact messages and submissions (lib/staffAlerts.ts) — via Microsoft
 // Graph's sendMail API, using an Azure app registration's client
 // credentials (app-only OAuth, not a signed-in user) — the modern
 // replacement for plain SMTP now that Microsoft 365 locks that down by
@@ -110,7 +111,7 @@ const recipients = (addresses: string[]) => addresses.map((address) => ({ emailA
 
 async function sendGraphMail(
   accessToken: string,
-  message: { subject: string; html: string; to: string[]; bcc?: string[] }
+  message: { subject: string; html: string; to: string[]; bcc?: string[]; replyTo?: string }
 ): Promise<void> {
   const sender = process.env.MS_SENDER_EMAIL!
   const res = await fetch(`https://graph.microsoft.com/v1.0/users/${encodeURIComponent(sender)}/sendMail`, {
@@ -122,6 +123,7 @@ async function sendGraphMail(
         body: { contentType: 'HTML', content: message.html },
         toRecipients: recipients(message.to),
         bccRecipients: recipients(message.bcc ?? []),
+        replyTo: recipients(message.replyTo ? [message.replyTo] : []),
       },
       saveToSentItems: false,
     }),
@@ -237,4 +239,69 @@ export async function sendIssueAnnouncement(
     }
   }
   return { sent, failed }
+}
+
+// --- Alerts to the editorial office -----------------------------------
+
+export interface StaffAlert {
+  subject: string
+  heading: string
+  // Shown as a label/value list. Values are visitor-typed text.
+  fields: { label: string; value: string }[]
+  // The visitor's address, so "Reply" in the office's mail client goes
+  // straight to them rather than back to the journal's own mailbox.
+  replyTo: string
+  adminUrl: string
+  adminLabel: string
+}
+
+function buildStaffAlertHtml(alert: StaffAlert): string {
+  const rows = alert.fields
+    .map(
+      (field) => `
+                <p style="font-size:11px; color:#94a3b8; letter-spacing:0.1em; text-transform:uppercase; margin:0 0 3px;">${escapeHtml(field.label)}</p>
+                <p style="font-size:14px; color:#12202e; line-height:1.6; margin:0 0 18px; white-space:pre-wrap;">${escapeHtml(field.value)}</p>`
+    )
+    .join('')
+  return `<!DOCTYPE html>
+<html>
+  <body style="margin:0; padding:0; background-color:#f1f5f9; font-family: Georgia, 'Times New Roman', serif;">
+    <table role="presentation" width="100%" cellpadding="0" cellspacing="0" style="background-color:#f1f5f9; padding:32px 16px;">
+      <tr>
+        <td align="center">
+          <table role="presentation" width="520" cellpadding="0" cellspacing="0" style="background-color:#ffffff; max-width:520px; width:100%;">
+            <tr>
+              <td style="background-color:#003366; padding:24px 32px;">
+                <div style="color:#ffffff; font-size:18px; font-weight:bold;">Gulf Spectrum Journal</div>
+              </td>
+            </tr>
+            <tr>
+              <td style="padding:32px;">
+                <h1 style="font-size:19px; color:#003366; line-height:1.3; margin:0 0 22px;">${escapeHtml(alert.heading)}</h1>${rows}
+                <a href="${escapeHtml(alert.adminUrl)}" style="display:inline-block; background-color:#DAA520; color:#12202e; font-size:14px; font-weight:bold; text-decoration:none; padding:11px 22px;">${escapeHtml(alert.adminLabel)}</a>
+              </td>
+            </tr>
+            <tr>
+              <td style="padding:16px 32px; border-top:1px solid #e2e8f0;">
+                <p style="font-size:11px; color:#94a3b8; line-height:1.6; margin:0;">
+                  Sent automatically by the Gulf Spectrum Journal website. Replying to this email writes to the person who sent it.
+                </p>
+              </td>
+            </tr>
+          </table>
+        </td>
+      </tr>
+    </table>
+  </body>
+</html>`
+}
+
+export async function sendStaffAlertEmail(toEmail: string, alert: StaffAlert): Promise<void> {
+  const accessToken = await getGraphAccessToken()
+  await sendGraphMail(accessToken, {
+    subject: alert.subject,
+    html: buildStaffAlertHtml(alert),
+    to: [toEmail],
+    replyTo: alert.replyTo,
+  })
 }

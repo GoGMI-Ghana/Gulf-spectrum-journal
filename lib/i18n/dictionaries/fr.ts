@@ -37,6 +37,7 @@ Chaque volume est évalué par un comité de rédaction dédié, composé d’ex
     sending: 'Envoi…',
     submitting: 'Envoi…',
     saving: 'Enregistrement…',
+    somethingWrong: 'Une erreur est survenue. Veuillez réessayer.',
     copied: 'Copié',
     copyCitation: 'Copier la citation',
     researchArticle: 'Article de recherche',

@@ -37,6 +37,7 @@ Cada volumen es revisado por un comité editorial dedicado de expertos en la mat
     sending: 'Enviando…',
     submitting: 'Enviando…',
     saving: 'Guardando…',
+    somethingWrong: 'Se produjo un error. Inténtelo de nuevo.',
     copied: 'Copiada',
     copyCitation: 'Copiar cita',
     researchArticle: 'Artículo de investigación',

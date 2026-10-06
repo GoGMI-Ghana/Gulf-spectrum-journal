@@ -20,7 +20,7 @@ This document is the starting point for the next developer. It covers what the s
 - Browse issues, articles, authors and topics, and search the journal
 - Copy citations in several formats and share articles
 - Donate to an article's authors through Paystack
-- Read the editorial board directory, apply to join the board, send a contact message, and submit an article proposal
+- Read the editorial board directory, apply to join the board, send a contact message, and submit an article proposal (each contact message and proposal is saved for `/admin` and also emailed to the editorial office, `info@gogmi.org.gh`, by `/api/contact` and `/api/submissions`)
 
 **Signed-in members can:**
 - Sign in with email and password, a one-time email code, or Google
@@ -239,7 +239,7 @@ Credentials are not stored in the repositories. Before the handover is complete,
 1. **Confirm the donation split.** `lib/staticContent.ts` shows donors a 90% / 10% author/platform split. It is a **placeholder**, and GoGMI has not set an official rate.
 2. **Paystack live mode.** Confirm whether the keys in Vercel are test or live keys, and that the webhook URL is registered in the Paystack dashboard. Then run one real low-value donation end to end.
 3. **Sign-up email confirmation.** The Auth service has `ENABLE_EMAIL_AUTOCONFIRM` turned on, so new accounts are not asked to verify their email. Now that email delivery works, consider turning it off.
-4. **Backups.** Set up scheduled `pg_dump` backups of the VPS database to off-server storage, and test a restore. None are set up at the moment.
+4. **Off-server backups.** Nightly backups run on the VPS (database, uploaded files and the stack's `.env`; set up 6 October 2026, see "Backups" in the backend's `self-hosting/README.md`) and the first one passed its restore check. They are stored **on the same server** only. Still to do: copy them off the server (the backup script supports an encrypted `rclone` copy) and/or enable Hostinger's VPS backups, and rehearse a full-server restore.
 5. **Tests and CI.** There is no automated test suite. At minimum, add `npm run lint` and `npm run build` checks on pull requests.
 6. **Keep the stack updated.** Update the Supabase Docker images (see "Updating later" in the self-hosting README) and the npm dependencies regularly.
 7. **Outdated documentation to be aware of.** The backend `.env.example` and parts of the self-hosting README still mention a Paystack *Edge Function*. That was removed, and the webhook now lives in the frontend.
