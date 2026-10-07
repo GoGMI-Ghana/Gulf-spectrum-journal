@@ -193,6 +193,7 @@ Cada volumen es revisado por un comité editorial dedicado de expertos en la mat
     inThisIssue: 'En este número',
     issueBoard: 'Comité editorial del número',
     allIssues: '← Todos los números',
+    downloadPdf: 'Descargar el número completo (PDF)',
     coverAlt: 'Portada: número {number}, {theme}',
   },
 

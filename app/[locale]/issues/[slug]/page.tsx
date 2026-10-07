@@ -1,4 +1,5 @@
 import Link from 'next/link'
+import { Download } from 'lucide-react'
 import { notFound } from 'next/navigation'
 import type { Metadata } from 'next'
 import { getIssues, getIssueBySlug, getArticlesForIssue } from '@/lib/content'
@@ -52,6 +53,18 @@ export default async function IssueDetail({ params }: LocaleSlugParams) {
             </p>
             <h1 className="font-display text-white text-3xl sm:text-4xl mb-4">{issue.theme}</h1>
             <p className="text-white/75 max-w-3xl leading-relaxed">{issue.aboutThisVolume}</p>
+            {articles.length > 0 && (
+              // Generated on request (app/api/issues/[slug]/pdf). A plain <a>:
+              // /api paths aren't pages for next/link to route to.
+              <a
+                href={`/api/issues/${issue.slug}/pdf`}
+                download
+                className="inline-flex items-center gap-2 mt-5 border border-gold text-gold hover:bg-gold hover:text-ink text-sm font-medium px-4 py-2 transition-colors"
+              >
+                <Download size={16} />
+                {t.issue.downloadPdf}
+              </a>
+            )}
           </div>
         </div>
       </section>

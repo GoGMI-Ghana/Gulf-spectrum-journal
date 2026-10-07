@@ -193,6 +193,7 @@ Chaque volume est évalué par un comité de rédaction dédié, composé d’ex
     inThisIssue: 'Dans ce numéro',
     issueBoard: 'Comité de rédaction du numéro',
     allIssues: '← Tous les numéros',
+    downloadPdf: 'Télécharger le numéro complet (PDF)',
     coverAlt: 'Couverture : numéro {number}, {theme}',
   },
 

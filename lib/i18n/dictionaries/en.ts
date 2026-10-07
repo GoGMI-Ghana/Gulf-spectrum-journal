@@ -199,6 +199,7 @@ Each volume is reviewed by a dedicated editorial board of subject-matter experts
     inThisIssue: 'In This Issue',
     issueBoard: 'Issue Editorial Board',
     allIssues: '← All issues',
+    downloadPdf: 'Download full issue (PDF)',
     coverAlt: 'Cover: Issue {number}, {theme}',
   },
 

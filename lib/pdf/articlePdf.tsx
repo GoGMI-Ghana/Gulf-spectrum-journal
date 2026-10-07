@@ -33,9 +33,117 @@ function richText(value: string, images: Map<string, PdfImage>, key: string) {
   return looksLikeHtml(value) ? htmlToPdf(sanitizeForPdf(value), images, key) : plainTextToPdf(value, key)
 }
 
+// The HTML bodies of an article, sanitized for the PDF — what
+// prepareImages needs to fetch that article's pictures.
+export function articleHtmlBodies(article: Article): string[] {
+  return [...article.sections.map((section) => section.body), article.conclusion].filter(looksLikeHtml).map(sanitizeForPdf)
+}
+
+// One article, from its title to its "cite this article" box. Shared by
+// the single-article PDF and the whole-issue PDF (lib/pdf/issuePdf.tsx).
+export function ArticleContent({
+  article,
+  authors,
+  topic,
+  citation,
+  url,
+  images,
+}: Omit<ArticlePdfInput, 'issue'> & { images: Map<string, PdfImage> }) {
+  return (
+    <>
+      <Text style={s.kicker}>{topic ? `Research Article · ${topic.label}` : 'Research Article'}</Text>
+      <Text style={s.title}>{article.title}</Text>
+
+      {authors.map((author) => (
+        <View key={author.slug}>
+          <Text style={s.authorName}>{author.name}</Text>
+          {author.affiliation ? <Text style={s.authorAffiliation}>{author.affiliation}</Text> : null}
+        </View>
+      ))}
+
+      {article.correctionNote ? (
+        <View style={s.correctionBox}>
+          <Text style={s.label}>Correction</Text>
+          <Text style={s.abstractText}>{article.correctionNote}</Text>
+        </View>
+      ) : null}
+
+      <View style={s.abstractBox}>
+        <Text style={s.label}>Abstract</Text>
+        <Text style={s.abstractText}>{article.abstract}</Text>
+      </View>
+
+      {article.keywords.length > 0 && (
+        <Text style={s.keywords}>
+          <Text style={{ fontWeight: 'bold' }}>Keywords: </Text>
+          {article.keywords.join('; ')}
+        </Text>
+      )}
+
+      {article.sections.map((section, i) => (
+        <View key={i}>
+          {section.heading ? (
+            // Never strand a heading at the foot of a page.
+            <Text style={s.sectionHeading} minPresenceAhead={60}>
+              {section.heading}
+            </Text>
+          ) : null}
+          {richText(section.body, images, `${article.slug}-s${i}`)}
+        </View>
+      ))}
+
+      {article.conclusion ? (
+        <View>
+          <Text style={s.sectionHeading} minPresenceAhead={60}>
+            Conclusion
+          </Text>
+          {richText(article.conclusion, images, `${article.slug}-c`)}
+        </View>
+      ) : null}
+
+      {article.disclosure ? (
+        <View>
+          <Text style={s.sectionHeading} minPresenceAhead={60}>
+            Funding and conflicts of interest
+          </Text>
+          {plainTextToPdf(article.disclosure, `${article.slug}-d`)}
+        </View>
+      ) : null}
+
+      {article.references.length > 0 && (
+        <View>
+          {article.references.map((reference, i) => {
+            const entry = (
+              <View key={i} style={s.reference} wrap={false}>
+                <Text style={s.referenceNumber}>{i + 1}.</Text>
+                <Text style={s.referenceText}>{reference}</Text>
+              </View>
+            )
+            // The heading travels with the first reference, so it is never
+            // left alone at the foot of a page.
+            return i === 0 ? (
+              <View key={i} wrap={false}>
+                <Text style={s.sectionHeading}>References</Text>
+                {entry}
+              </View>
+            ) : (
+              entry
+            )
+          })}
+        </View>
+      )}
+
+      <View style={s.citeBox} wrap={false}>
+        <Text style={s.label}>Cite this article</Text>
+        <Text style={s.citeText}>{citation}</Text>
+        <Text style={s.smallPrint}>{url}</Text>
+      </View>
+    </>
+  )
+}
+
 export async function renderArticlePdf({ article, authors, issue, topic, citation, url }: ArticlePdfInput): Promise<Buffer> {
-  const bodies = [...article.sections.map((section) => section.body), article.conclusion].filter(looksLikeHtml)
-  const images = await prepareImages(bodies.map(sanitizeForPdf))
+  const images = await prepareImages(articleHtmlBodies(article))
 
   const issueLine = issue ? `Vol. ${issue.volume}, No. ${issue.number} (${issue.year})` : ''
 
@@ -53,84 +161,7 @@ export async function renderArticlePdf({ article, authors, issue, topic, citatio
           <Text>{journal.name}</Text>
           <Text>{issueLine}</Text>
         </View>
-        <Text style={s.kicker}>{topic ? `Research Article · ${topic.label}` : 'Research Article'}</Text>
-        <Text style={s.title}>{article.title}</Text>
-
-        {authors.map((author) => (
-          <View key={author.slug}>
-            <Text style={s.authorName}>{author.name}</Text>
-            {author.affiliation ? <Text style={s.authorAffiliation}>{author.affiliation}</Text> : null}
-          </View>
-        ))}
-
-        {article.correctionNote ? (
-          <View style={s.correctionBox}>
-            <Text style={s.label}>Correction</Text>
-            <Text style={s.abstractText}>{article.correctionNote}</Text>
-          </View>
-        ) : null}
-
-        <View style={s.abstractBox}>
-          <Text style={s.label}>Abstract</Text>
-          <Text style={s.abstractText}>{article.abstract}</Text>
-        </View>
-
-        {article.keywords.length > 0 && (
-          <Text style={s.keywords}>
-            <Text style={{ fontWeight: 'bold' }}>Keywords: </Text>
-            {article.keywords.join('; ')}
-          </Text>
-        )}
-
-        {article.sections.map((section, i) => (
-          <View key={i}>
-            {section.heading ? (
-              // Never strand a heading at the foot of a page.
-              <Text style={s.sectionHeading} minPresenceAhead={60}>
-                {section.heading}
-              </Text>
-            ) : null}
-            {richText(section.body, images, `s${i}`)}
-          </View>
-        ))}
-
-        {article.conclusion ? (
-          <View>
-            <Text style={s.sectionHeading} minPresenceAhead={60}>
-              Conclusion
-            </Text>
-            {richText(article.conclusion, images, 'c')}
-          </View>
-        ) : null}
-
-        {article.disclosure ? (
-          <View>
-            <Text style={s.sectionHeading} minPresenceAhead={60}>
-              Funding and conflicts of interest
-            </Text>
-            {plainTextToPdf(article.disclosure, 'd')}
-          </View>
-        ) : null}
-
-        {article.references.length > 0 && (
-          <View>
-            <Text style={s.sectionHeading} minPresenceAhead={60}>
-              References
-            </Text>
-            {article.references.map((reference, i) => (
-              <View key={i} style={s.reference} wrap={false}>
-                <Text style={s.referenceNumber}>{i + 1}.</Text>
-                <Text style={s.referenceText}>{reference}</Text>
-              </View>
-            ))}
-          </View>
-        )}
-
-        <View style={s.citeBox} wrap={false}>
-          <Text style={s.label}>Cite this article</Text>
-          <Text style={s.citeText}>{citation}</Text>
-          <Text style={s.smallPrint}>{url}</Text>
-        </View>
+        <ArticleContent article={article} authors={authors} topic={topic} citation={citation} url={url} images={images} />
 
         <Text style={s.footerLeft} fixed>
           © {issue?.year ?? new Date().getFullYear()} {journal.publisher}

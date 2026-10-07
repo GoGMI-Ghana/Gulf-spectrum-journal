@@ -145,4 +145,19 @@ export const pdfStyles = StyleSheet.create({
   citeBox: { marginTop: 18, padding: 10, borderWidth: 0.75, borderColor: pdfColors.rule },
   citeText: { fontSize: 9.5, lineHeight: 1.45 },
   smallPrint: { marginTop: 10, fontSize: 8, color: pdfColors.muted },
+
+  // Whole-issue PDF (lib/pdf/issuePdf.tsx): cover and contents pages.
+  coverPage: { fontFamily: 'Noto Serif', color: pdfColors.body, paddingVertical: 90, paddingHorizontal: PAGE_MARGIN },
+  coverJournal: { fontSize: 30, lineHeight: 1.2, fontWeight: 'bold', color: pdfColors.royalBlue },
+  coverPublisher: { fontSize: 10, lineHeight: 1.4, color: pdfColors.muted, marginTop: 6 },
+  coverRule: { borderBottomWidth: 2, borderBottomColor: pdfColors.gold, width: 70, marginVertical: 30 },
+  coverIssue: { fontSize: 10, letterSpacing: 1.5, textTransform: 'uppercase', color: pdfColors.gold, marginBottom: 10 },
+  coverTheme: { fontSize: 22, lineHeight: 1.3, fontWeight: 'bold', color: pdfColors.ink, marginBottom: 16 },
+  coverAbout: { fontSize: BODY_FONT_SIZE, lineHeight: BODY_LINE_HEIGHT, textAlign: 'justify' },
+  coverFooter: { position: 'absolute', bottom: 60, left: PAGE_MARGIN, right: PAGE_MARGIN },
+  coverFooterText: { fontSize: 9, lineHeight: 1.5, color: pdfColors.muted },
+  contentsEntry: { marginBottom: 11 },
+  contentsTitle: { fontSize: 11, lineHeight: 1.4, fontWeight: 'bold', color: pdfColors.ink },
+  contentsAuthors: { fontSize: 9.5, lineHeight: 1.4, color: pdfColors.muted },
+  boardMember: { fontSize: 10, lineHeight: 1.5 },
 })

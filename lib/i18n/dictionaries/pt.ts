@@ -196,6 +196,7 @@ Cada volume é revisto por um conselho editorial dedicado, composto por especial
     inThisIssue: 'Neste número',
     issueBoard: 'Conselho editorial do número',
     allIssues: '← Todos os números',
+    downloadPdf: 'Descarregar o número completo (PDF)',
     coverAlt: 'Capa: número {number}, {theme}',
   },
 
