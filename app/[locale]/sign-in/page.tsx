@@ -16,10 +16,10 @@ export default async function SignIn({
   searchParams,
 }: {
   params: Promise<{ locale: string }>
-  searchParams: Promise<{ redirect?: string }>
+  searchParams: Promise<{ redirect?: string; error?: string }>
 }) {
   const t = getDictionary((await params).locale)
-  const { redirect } = await searchParams
+  const { redirect, error } = await searchParams
   // Only ever redirect to a relative path on this site — a query param is
   // attacker-controlled input, and an absolute/protocol-relative URL here
   // would be an open redirect.
@@ -29,6 +29,11 @@ export default async function SignIn({
     <div>
       <PageBanner eyebrow={t.common.accountEyebrow} title={t.signIn.title} description={t.signIn.description} />
       <section className="max-w-md mx-auto px-4 sm:px-6 lg:px-8 py-14">
+        {/* app/auth/callback sends people back here with ?error=oauth
+            when a Google sign-in couldn't be completed. */}
+        {error === 'oauth' && (
+          <p className="text-sm text-red-700 bg-red-50 border border-red-200 px-3 py-2 mb-6">{t.signIn.oauthFailed}</p>
+        )}
         <SignInForm redirectTo={redirectTo} />
       </section>
     </div>

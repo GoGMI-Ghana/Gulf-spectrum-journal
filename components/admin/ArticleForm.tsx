@@ -30,6 +30,8 @@ interface ArticleFormState {
   sections: Section[]
   conclusion: string
   references: string[]
+  disclosure: string
+  correction_note: string
   authorIds: string[] // in display order
 }
 
@@ -44,6 +46,8 @@ const EMPTY: ArticleFormState = {
   sections: [],
   conclusion: '',
   references: [],
+  disclosure: '',
+  correction_note: '',
   authorIds: [],
 }
 
@@ -173,7 +177,7 @@ export default function ArticleForm({ articleId }: { articleId?: string }) {
         ? supabase
             .from('articles')
             .select(
-              'slug, title, issue_id, topic_id, status, abstract, keywords, sections, conclusion, "references", article_authors(position, author_id)'
+              'slug, title, issue_id, topic_id, status, abstract, keywords, sections, conclusion, "references", disclosure, correction_note, article_authors(position, author_id)'
             )
             .eq('id', articleId)
             .single()
@@ -199,6 +203,8 @@ export default function ArticleForm({ articleId }: { articleId?: string }) {
             sections: Section[] | null
             conclusion: string | null
             references: string[] | null
+            disclosure: string | null
+            correction_note: string | null
             article_authors: { position: number; author_id: string }[] | null
           }
           setForm({
@@ -214,6 +220,8 @@ export default function ArticleForm({ articleId }: { articleId?: string }) {
             sections: (row.sections ?? []).map((s) => ({ heading: s.heading, body: toEditorHtml(s.body) })),
             conclusion: toEditorHtml(row.conclusion ?? ''),
             references: row.references ?? [],
+            disclosure: row.disclosure ?? '',
+            correction_note: row.correction_note ?? '',
             authorIds: (row.article_authors ?? [])
               .slice()
               .sort((a, b) => a.position - b.position)
@@ -246,6 +254,8 @@ export default function ArticleForm({ articleId }: { articleId?: string }) {
       sections: form.sections.filter((s) => s.heading.trim() || !isEmptyRichText(s.body)),
       conclusion: isEmptyRichText(form.conclusion) ? null : form.conclusion,
       references: form.references.map((r) => r.trim()).filter(Boolean),
+      disclosure: form.disclosure.trim() || null,
+      correction_note: form.correction_note.trim() || null,
     }
 
     if (!payload.issue_id) {
@@ -371,6 +381,20 @@ export default function ArticleForm({ articleId }: { articleId?: string }) {
 
         <Field label="References">
           <StringListEditor values={form.references} onChange={(v) => setForm({ ...form, references: v })} placeholder="Citation" />
+        </Field>
+
+        <Field
+          label="Funding and conflicts of interest (optional)"
+          hint="Shown at the end of the article. For example: who funded the research, or a statement that the authors declare no conflict of interest."
+        >
+          <textarea rows={3} className={inputClass} value={form.disclosure} onChange={(e) => setForm({ ...form, disclosure: e.target.value })} />
+        </Field>
+
+        <Field
+          label="Correction notice (only after publication)"
+          hint="Leave empty unless the published article has been corrected. Shown prominently at the top of the article. Start with the date and say what changed, e.g. “Corrected 3 November 2026: the figure for 2022 in Table 1 was changed from 19 to 91.”"
+        >
+          <textarea rows={3} className={inputClass} value={form.correction_note} onChange={(e) => setForm({ ...form, correction_note: e.target.value })} />
         </Field>
 
         <div className="flex gap-3 pt-2">

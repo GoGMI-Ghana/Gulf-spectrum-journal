@@ -90,6 +90,18 @@ export default async function ArticleDetail({ params }: LocaleSlugParams) {
         {article.title}
       </h1>
 
+      {/* Shown before anything else in the article: a reader must not be
+          able to miss that what follows was changed after publication. */}
+      {article.correctionNote && (
+        <div className="border-l-4 border-amber-400 bg-amber-50 p-4 mb-6">
+          <p className="kicker text-amber-800 mb-1.5">{t.article.correction}</p>
+          <p className="text-sm text-slate-700 leading-relaxed whitespace-pre-line">{article.correctionNote}</p>
+          <Link href="/correction-policy" className="inline-block mt-2 text-xs text-ocean-blue hover:underline">
+            {t.article.correctionPolicyLink}
+          </Link>
+        </div>
+      )}
+
       {/* Authors */}
       <div className="flex flex-wrap gap-5 mb-6">
         {authors.map((author) => (
@@ -145,6 +157,13 @@ export default async function ArticleDetail({ params }: LocaleSlugParams) {
           <div className="mb-8">
             <h2 className="text-xl font-bold text-royal-blue font-display mb-3">{t.article.conclusion}</h2>
             <RichText value={article.conclusion} />
+          </div>
+        )}
+
+        {article.disclosure && (
+          <div className="mb-8">
+            <h2 className="text-xl font-bold text-royal-blue font-display mb-3">{t.article.disclosure}</h2>
+            <p className="text-slate-700 leading-relaxed whitespace-pre-line">{article.disclosure}</p>
           </div>
         )}
       </div>

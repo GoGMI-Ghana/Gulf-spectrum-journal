@@ -87,6 +87,7 @@ Cada volume é revisto por um conselho editorial dedicado, composto por especial
     journalHeading: 'A revista',
     moreHeading: 'Mais',
     contactOffice: 'Contactar a redação',
+    correctionPolicy: 'Política de correções',
     rights: '© {year} Gulf of Guinea Maritime Institute. Todos os direitos reservados.',
   },
 
@@ -174,6 +175,7 @@ Cada volume é revisto por um conselho editorial dedicado, composto por especial
     board: 'Conselho editorial',
     noBoard: 'Ainda não há membros do conselho editorial listados.',
     viewFullBoard: 'Ver o conselho editorial completo →',
+    readCorrectionPolicy: 'Ler a política de correções →',
   },
 
   issues: {
@@ -207,6 +209,9 @@ Cada volume é revisto por um conselho editorial dedicado, composto por especial
     aboutAuthors: 'Sobre os autores',
     citeHeading: 'Citar este artigo',
     downloadPdf: 'Descarregar PDF',
+    correction: 'Correção',
+    correctionPolicyLink: 'Leia a nossa política de correções →',
+    disclosure: 'Financiamento e conflitos de interesses',
     share: 'Partilhar',
     shareOnX: 'Partilhar no X',
     shareOnFacebook: 'Partilhar no Facebook',
@@ -543,6 +548,7 @@ Cada volume é revisto por um conselho editorial dedicado, composto por especial
     newHere: 'É novo por cá? {link}',
     createAccount: 'Crie uma conta',
     google: 'Continuar com o Google',
+    oauthFailed: 'Não foi possível concluir o início de sessão com o Google. Tente novamente ou inicie sessão com o seu e-mail abaixo.',
   },
 
   signUp: {
@@ -667,6 +673,37 @@ Cada volume é revisto por um conselho editorial dedicado, composto por especial
     deleteFailed: 'Não foi possível eliminar a conta.',
     deleting: 'A eliminar…',
     deleteButton: 'Eliminar permanentemente a minha conta',
+  },
+
+  correctionPolicy: {
+    metaTitle: 'Política de correções',
+    metaDescription: 'Como o Gulf Spectrum Journal corrige erros em artigos publicados e como comunicar um erro.',
+    eyebrow: 'Normas editoriais',
+    title: 'Política de correções',
+    description: 'Como tratamos os erros em artigos publicados e como comunicar um erro.',
+    // {email} is the editorial office's address (lib/staticContent.ts).
+    sections: [
+      {
+        heading: 'O nosso compromisso',
+        body: 'O Gulf Spectrum Journal corrige os erros em artigos publicados com rapidez e transparência. O que é publicado deve ser exato, e os leitores devem poder sempre saber quando um artigo foi alterado e porquê.',
+      },
+      {
+        heading: 'Correções menores',
+        body: 'Os erros de ortografia, pontuação e formatação que não afetam o sentido de um artigo são corrigidos sem aviso.',
+      },
+      {
+        heading: 'Correções que afetam o sentido',
+        body: 'Quando um erro afeta o sentido, os dados, a atribuição ou as conclusões de um artigo, este é corrigido e é apresentado, no início do artigo e no respetivo PDF, um aviso de correção datado que descreve a alteração.',
+      },
+      {
+        heading: 'Retratações',
+        body: 'Se os resultados de um artigo se revelarem fundamentalmente pouco fiáveis, ou se houver provas de plágio, dados fabricados ou outra falta grave, o conselho editorial pode retratá-lo. Um artigo retratado permanece no site com um aviso que explica a retratação, para que o registo fique completo.',
+      },
+      {
+        heading: 'Comunicar um erro',
+        body: 'Os leitores e os autores podem comunicar um possível erro à redação através de {email} ou da página de Contacto. Indique o título do artigo e descreva o erro. O conselho editorial analisa todas as comunicações e, sempre que possível, consulta os autores antes de decidir o que fazer.',
+      },
+    ],
   },
 
   notFound: {

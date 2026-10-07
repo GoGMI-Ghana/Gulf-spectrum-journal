@@ -104,6 +104,7 @@ export const pdfStyles = StyleSheet.create({
     borderLeftWidth: 2.5,
     borderLeftColor: pdfColors.royalBlue,
   },
+  correctionBox: { marginTop: 10, padding: 10, backgroundColor: '#fffbeb', borderLeftWidth: 2.5, borderLeftColor: '#fbbf24' },
   label: { fontSize: 8.5, letterSpacing: 1.2, textTransform: 'uppercase', fontWeight: 'bold', color: pdfColors.royalBlue, marginBottom: 5 },
   abstractText: { fontSize: BODY_FONT_SIZE, lineHeight: BODY_LINE_HEIGHT, textAlign: 'justify' },
   keywords: { fontSize: 9.5, lineHeight: 1.45, marginBottom: 6 },

@@ -84,6 +84,7 @@ Cada volumen es revisado por un comité editorial dedicado de expertos en la mat
     journalHeading: 'La revista',
     moreHeading: 'Más',
     contactOffice: 'Contactar con la redacción',
+    correctionPolicy: 'Política de correcciones',
     rights: '© {year} Gulf of Guinea Maritime Institute. Todos los derechos reservados.',
   },
 
@@ -171,6 +172,7 @@ Cada volumen es revisado por un comité editorial dedicado de expertos en la mat
     board: 'Comité editorial',
     noBoard: 'Aún no figura ningún miembro del comité editorial.',
     viewFullBoard: 'Ver el comité editorial completo →',
+    readCorrectionPolicy: 'Leer la política de correcciones →',
   },
 
   issues: {
@@ -204,6 +206,9 @@ Cada volumen es revisado por un comité editorial dedicado de expertos en la mat
     aboutAuthors: 'Sobre los autores',
     citeHeading: 'Cómo citar este artículo',
     downloadPdf: 'Descargar PDF',
+    correction: 'Corrección',
+    correctionPolicyLink: 'Lea nuestra política de correcciones →',
+    disclosure: 'Financiación y conflictos de intereses',
     share: 'Compartir',
     shareOnX: 'Compartir en X',
     shareOnFacebook: 'Compartir en Facebook',
@@ -539,6 +544,7 @@ Cada volumen es revisado por un comité editorial dedicado de expertos en la mat
     newHere: '¿Es nuevo? {link}',
     createAccount: 'Cree una cuenta',
     google: 'Continuar con Google',
+    oauthFailed: 'No se pudo completar el inicio de sesión con Google. Inténtelo de nuevo o inicie sesión con su correo a continuación.',
   },
 
   signUp: {
@@ -663,6 +669,37 @@ Cada volumen es revisado por un comité editorial dedicado de expertos en la mat
     deleteFailed: 'No se pudo eliminar la cuenta.',
     deleting: 'Eliminando…',
     deleteButton: 'Eliminar mi cuenta de forma permanente',
+  },
+
+  correctionPolicy: {
+    metaTitle: 'Política de correcciones',
+    metaDescription: 'Cómo corrige Gulf Spectrum Journal los errores en los artículos publicados y cómo comunicar uno.',
+    eyebrow: 'Normas editoriales',
+    title: 'Política de correcciones',
+    description: 'Cómo tratamos los errores en los artículos publicados y cómo comunicar uno.',
+    // {email} is the editorial office's address (lib/staticContent.ts).
+    sections: [
+      {
+        heading: 'Nuestro compromiso',
+        body: 'Gulf Spectrum Journal corrige los errores de los artículos publicados con prontitud y transparencia. Lo publicado debe ser exacto, y los lectores deben poder saber siempre cuándo se ha modificado un artículo y por qué.',
+      },
+      {
+        heading: 'Correcciones menores',
+        body: 'Los errores de ortografía, puntuación y formato que no afectan al sentido de un artículo se corrigen sin aviso.',
+      },
+      {
+        heading: 'Correcciones que afectan al sentido',
+        body: 'Cuando un error afecta al sentido, los datos, la atribución o las conclusiones de un artículo, este se corrige y se muestra, al inicio del artículo y en su PDF, un aviso de corrección fechado que describe el cambio.',
+      },
+      {
+        heading: 'Retractaciones',
+        body: 'Si se comprueba que los resultados de un artículo son fundamentalmente poco fiables, o hay pruebas de plagio, datos inventados u otra falta grave, el comité editorial puede retractarlo. Un artículo retractado permanece en el sitio con un aviso que explica la retractación, para que el registro quede completo.',
+      },
+      {
+        heading: 'Comunicar un error',
+        body: 'Los lectores y los autores pueden comunicar un posible error a la redacción en {email} o a través de la página de Contacto. Indique el título del artículo y describa el error. El comité editorial revisa cada comunicación y, siempre que es posible, consulta a los autores antes de decidir qué medida tomar.',
+      },
+    ],
   },
 
   notFound: {

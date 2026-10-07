@@ -93,6 +93,7 @@ Each volume is reviewed by a dedicated editorial board of subject-matter experts
     journalHeading: 'Journal',
     moreHeading: 'More',
     contactOffice: 'Contact the editorial office',
+    correctionPolicy: 'Correction policy',
     rights: '© {year} Gulf of Guinea Maritime Institute. All rights reserved.',
   },
 
@@ -177,6 +178,7 @@ Each volume is reviewed by a dedicated editorial board of subject-matter experts
     board: 'Editorial Board',
     noBoard: 'No editorial board members are listed yet.',
     viewFullBoard: 'View the full editorial board →',
+    readCorrectionPolicy: 'Read the correction policy →',
   },
 
   issues: {
@@ -210,6 +212,9 @@ Each volume is reviewed by a dedicated editorial board of subject-matter experts
     aboutAuthors: 'About the Authors',
     citeHeading: 'Cite This Article',
     downloadPdf: 'Download PDF',
+    correction: 'Correction',
+    correctionPolicyLink: 'Read our correction policy →',
+    disclosure: 'Funding and conflicts of interest',
     share: 'Share',
     shareOnX: 'Share on X',
     shareOnFacebook: 'Share on Facebook',
@@ -539,6 +544,7 @@ Each volume is reviewed by a dedicated editorial board of subject-matter experts
     newHere: 'New here? {link}',
     createAccount: 'Create an account',
     google: 'Continue with Google',
+    oauthFailed: 'Signing in with Google didn’t complete. Please try again, or sign in with your email below.',
   },
 
   signUp: {
@@ -662,6 +668,37 @@ Each volume is reviewed by a dedicated editorial board of subject-matter experts
     deleteFailed: 'Failed to delete account.',
     deleting: 'Deleting…',
     deleteButton: 'Permanently Delete My Account',
+  },
+
+  correctionPolicy: {
+    metaTitle: 'Correction Policy',
+    metaDescription: 'How Gulf Spectrum Journal corrects errors in published articles, and how to report one.',
+    eyebrow: 'Editorial Standards',
+    title: 'Correction Policy',
+    description: 'How we handle errors in published articles, and how to report one.',
+    // {email} is the editorial office's address (lib/staticContent.ts).
+    sections: [
+      {
+        heading: 'Our commitment',
+        body: 'Gulf Spectrum Journal corrects errors in published articles promptly and openly. The published record should be accurate, and readers should always be able to see when an article has been changed and why.',
+      },
+      {
+        heading: 'Minor corrections',
+        body: 'Spelling, punctuation and formatting errors that do not affect the meaning of an article are corrected without a notice.',
+      },
+      {
+        heading: 'Corrections that affect meaning',
+        body: 'When an error affects an article’s meaning, data, attribution or conclusions, the article is corrected and a dated correction notice describing the change is displayed at the top of the article and in its PDF.',
+      },
+      {
+        heading: 'Retractions',
+        body: 'If an article’s findings are found to be fundamentally unreliable, or there is evidence of plagiarism, fabricated data or other serious misconduct, the editorial board may retract it. A retracted article remains on the site with a notice explaining the retraction, so the record stays complete.',
+      },
+      {
+        heading: 'Reporting an error',
+        body: 'Readers and authors can report a suspected error to the editorial office at {email}, or through the Contact page. Please include the article’s title and a description of the error. The editorial board reviews every report and, wherever possible, consults the authors before deciding what action to take.',
+      },
+    ],
   },
 
   notFound: {

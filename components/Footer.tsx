@@ -46,6 +46,9 @@ export default function Footer() {
             <li>
               <Link href="/contact" className="hover:text-gold">{t.footer.contactOffice}</Link>
             </li>
+            <li>
+              <Link href="/correction-policy" className="hover:text-gold">{t.footer.correctionPolicy}</Link>
+            </li>
             <li>{journal.contactEmail}</li>
             <li>{journal.issn ?? t.journal.issnPending}</li>
           </ul>

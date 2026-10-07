@@ -69,6 +69,11 @@ export interface Article {
   sections: ArticleSection[]
   conclusion: string
   references: string[]
+  // Funding / conflict-of-interest statement; '' when none was given.
+  disclosure: string
+  // Dated notice of a post-publication correction (or retraction); ''
+  // when the article has never been corrected.
+  correctionNote: string
 }
 
 export interface DonationSplit {

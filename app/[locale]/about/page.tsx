@@ -70,6 +70,13 @@ export default async function About({ params }: LocaleParams) {
                 <div>
                   <h3 className="font-semibold text-royal-blue mb-1">{signal.title}</h3>
                   <p className="text-sm text-slate-600 leading-relaxed">{signal.body}</p>
+                  {/* The third signal is the correction policy — its text says
+                      "see our correction policy", so give it the link. */}
+                  {i === 2 && (
+                    <Link href="/correction-policy" className="inline-block mt-1.5 text-sm text-ocean-blue font-medium hover:underline">
+                      {t.about.readCorrectionPolicy}
+                    </Link>
+                  )}
                 </div>
               </div>
             ))}

@@ -62,6 +62,8 @@ type ArticleRow = {
   sections: ArticleSection[] | null
   conclusion: string | null
   references: string[] | null
+  disclosure: string | null
+  correction_note: string | null
   issue: { slug: string } | null
   topic: { slug: string } | null
   article_authors: { position: number; author: { slug: string } | null }[] | null
@@ -147,6 +149,8 @@ function mapArticleRow(row: ArticleRow): Article {
     sections: row.sections ?? [],
     conclusion: row.conclusion ?? '',
     references: row.references ?? [],
+    disclosure: row.disclosure ?? '',
+    correctionNote: row.correction_note ?? '',
   }
 }
 
@@ -166,6 +170,8 @@ const ARTICLE_SELECT = `
   sections,
   conclusion,
   "references",
+  disclosure,
+  correction_note,
   issue:issues(slug),
   topic:topics(slug),
   article_authors(position, author:authors(slug))

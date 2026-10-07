@@ -16,4 +16,6 @@ import { revalidatePath } from 'next/cache'
 
 export function revalidateContent() {
   revalidatePath('/[locale]', 'layout')
+  // Lives outside the [locale] tree, so it isn't covered by the line above.
+  revalidatePath('/sitemap.xml')
 }

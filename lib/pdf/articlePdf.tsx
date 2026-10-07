@@ -63,6 +63,13 @@ export async function renderArticlePdf({ article, authors, issue, topic, citatio
           </View>
         ))}
 
+        {article.correctionNote ? (
+          <View style={s.correctionBox}>
+            <Text style={s.label}>Correction</Text>
+            <Text style={s.abstractText}>{article.correctionNote}</Text>
+          </View>
+        ) : null}
+
         <View style={s.abstractBox}>
           <Text style={s.label}>Abstract</Text>
           <Text style={s.abstractText}>{article.abstract}</Text>
@@ -93,6 +100,15 @@ export async function renderArticlePdf({ article, authors, issue, topic, citatio
               Conclusion
             </Text>
             {richText(article.conclusion, images, 'c')}
+          </View>
+        ) : null}
+
+        {article.disclosure ? (
+          <View>
+            <Text style={s.sectionHeading} minPresenceAhead={60}>
+              Funding and conflicts of interest
+            </Text>
+            {plainTextToPdf(article.disclosure, 'd')}
           </View>
         ) : null}
 
