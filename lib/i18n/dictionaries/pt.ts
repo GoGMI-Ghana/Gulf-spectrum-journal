@@ -208,6 +208,8 @@ Cada volume é revisto por um conselho editorial dedicado, composto por especial
     references: 'Referências',
     aboutAuthors: 'Sobre os autores',
     citeHeading: 'Citar este artigo',
+    citeStyle: 'Estilo de citação',
+    citeExport: 'Exportar para gestores de referências:',
     downloadPdf: 'Descarregar PDF',
     correction: 'Correção',
     correctionPolicyLink: 'Leia a nossa política de correções →',

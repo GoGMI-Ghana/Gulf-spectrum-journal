@@ -205,6 +205,8 @@ Cada volumen es revisado por un comité editorial dedicado de expertos en la mat
     references: 'Referencias',
     aboutAuthors: 'Sobre los autores',
     citeHeading: 'Cómo citar este artículo',
+    citeStyle: 'Estilo de cita',
+    citeExport: 'Exportar para gestores de referencias:',
     downloadPdf: 'Descargar PDF',
     correction: 'Corrección',
     correctionPolicyLink: 'Lea nuestra política de correcciones →',

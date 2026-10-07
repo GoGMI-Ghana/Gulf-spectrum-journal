@@ -205,6 +205,8 @@ Chaque volume est évalué par un comité de rédaction dédié, composé d’ex
     references: 'Références',
     aboutAuthors: 'À propos des auteurs',
     citeHeading: 'Citer cet article',
+    citeStyle: 'Style de citation',
+    citeExport: 'Exporter pour les gestionnaires de références :',
     downloadPdf: 'Télécharger le PDF',
     correction: 'Correction',
     correctionPolicyLink: 'Lire notre politique de correction →',

@@ -2,11 +2,12 @@ import Link from 'next/link'
 import { notFound } from 'next/navigation'
 import type { Metadata } from 'next'
 import { getArticles, getArticleBySlug, getAuthorsForArticle, getIssueForArticle, getTopicForArticle } from '@/lib/content'
-import { formatApaCitation } from '@/lib/citation'
+import { formatCitations } from '@/lib/citation'
 import { getDictionary } from '@/lib/i18n'
 import { fmt } from '@/lib/i18n/format'
 import type { LocaleSlugParams } from '@/lib/i18n/page'
 import { siteUrl, socialMetadata } from '@/lib/seo'
+import { journal } from '@/lib/staticContent'
 import AuthorAvatar from '@/components/AuthorAvatar'
 import BookmarkButton from '@/components/BookmarkButton'
 import DownloadPdfButton from '@/components/DownloadPdfButton'
@@ -27,9 +28,26 @@ export async function generateMetadata({ params }: LocaleSlugParams): Promise<Me
   const t = getDictionary(locale)
   const article = await getArticleBySlug(slug)
   if (!article) return { title: t.article.notFound }
+  const [authors, issue] = await Promise.all([getAuthorsForArticle(article), getIssueForArticle(article)])
   return {
     title: article.title,
     description: article.abstract,
+    // The tags Google Scholar reads to index an article and cite it correctly.
+    other: {
+      citation_title: article.title,
+      citation_author: authors.map((a) => a.name),
+      citation_journal_title: journal.name,
+      citation_publisher: journal.publisher,
+      ...(issue && {
+        citation_publication_date: /^\d{4}-\d{2}-\d{2}/.test(issue.publishedDate)
+          ? issue.publishedDate.slice(0, 10).replace(/-/g, '/')
+          : String(issue.year),
+        citation_volume: issue.volume,
+        citation_issue: issue.number,
+      }),
+      citation_abstract_html_url: `${siteUrl}/articles/${article.slug}`,
+      citation_pdf_url: `${siteUrl}/api/articles/${article.slug}/pdf`,
+    },
     ...socialMetadata({
       title: article.title,
       description: article.abstract,
@@ -49,7 +67,7 @@ export default async function ArticleDetail({ params }: LocaleSlugParams) {
   const authors = await getAuthorsForArticle(article)
   const issue = await getIssueForArticle(article)
   const topic = await getTopicForArticle(article)
-  const citation = formatApaCitation(article, authors, issue)
+  const citations = formatCitations(article, authors, issue, `${siteUrl}/articles/${article.slug}`)
   const authorNames = authors.map((a) => a.name).join(t.common.and)
 
   return (
@@ -138,7 +156,7 @@ export default async function ArticleDetail({ params }: LocaleSlugParams) {
         ))}
       </div>
 
-      <CiteBox citation={citation} />
+      <CiteBox citations={citations} slug={article.slug} />
       <DonationThanksBanner />
       <SupportBox authorNames={authorNames} articleSlug={article.slug} />
 

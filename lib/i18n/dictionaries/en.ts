@@ -211,6 +211,8 @@ Each volume is reviewed by a dedicated editorial board of subject-matter experts
     references: 'References',
     aboutAuthors: 'About the Authors',
     citeHeading: 'Cite This Article',
+    citeStyle: 'Citation style',
+    citeExport: 'Export for reference managers:',
     downloadPdf: 'Download PDF',
     correction: 'Correction',
     correctionPolicyLink: 'Read our correction policy →',
