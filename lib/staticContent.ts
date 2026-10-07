@@ -17,9 +17,9 @@ export const journal: Journal = {
   domain: 'www.gulfspectrumjournal.com',
   contactEmail: 'info@gogmi.org.gh',
   founded: 2025,
-  // null until one is assigned — the UI shows the translated "ISSN
-  // pending" text meanwhile.
-  issn: null,
+  // Assigned by the Ghana Library Authority (online edition). The UI
+  // falls back to the translated "ISSN pending" text if this is null.
+  issn: '3057-3521',
 }
 
 // Placeholder split — GoGMI has not set an official rate. Shown to donors

@@ -95,6 +95,7 @@ function formatBibtex(article: Article, names: CitedName[], issue: Issue | undef
     ['year', issue?.year],
     ['volume', issue?.volume],
     ['number', issue?.number],
+    ['issn', journal.issn ?? undefined],
     ['url', url],
   ]
   const lines = fields
@@ -112,6 +113,7 @@ function formatRis(article: Article, names: CitedName[], issue: Issue | undefine
     ...names.map((n) => `AU  - ${surnameFirst(n)}`),
     `TI  - ${oneLine(article.title)}`,
     `JO  - ${journal.name}`,
+    ...(journal.issn ? [`SN  - ${journal.issn}`] : []),
     ...(issue ? [`PY  - ${issue.year}`, `VL  - ${issue.volume}`, `IS  - ${issue.number}`] : []),
     ...(article.abstract ? [`AB  - ${oneLine(article.abstract)}`] : []),
     ...article.keywords.map((k) => `KW  - ${oneLine(k)}`),

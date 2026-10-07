@@ -50,7 +50,7 @@ export default function Footer() {
               <Link href="/correction-policy" className="hover:text-gold">{t.footer.correctionPolicy}</Link>
             </li>
             <li>{journal.contactEmail}</li>
-            <li>{journal.issn ?? t.journal.issnPending}</li>
+            <li>{journal.issn ? `ISSN ${journal.issn}` : t.journal.issnPending}</li>
           </ul>
         </div>
       </div>

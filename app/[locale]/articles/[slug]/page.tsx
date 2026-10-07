@@ -38,6 +38,7 @@ export async function generateMetadata({ params }: LocaleSlugParams): Promise<Me
       citation_author: authors.map((a) => a.name),
       citation_journal_title: journal.name,
       citation_publisher: journal.publisher,
+      ...(journal.issn && { citation_issn: journal.issn }),
       ...(issue && {
         citation_publication_date: /^\d{4}-\d{2}-\d{2}/.test(issue.publishedDate)
           ? issue.publishedDate.slice(0, 10).replace(/-/g, '/')
