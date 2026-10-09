@@ -74,6 +74,8 @@ export interface Article {
   // Dated notice of a post-publication correction (or retraction); ''
   // when the article has never been corrected.
   correctionNote: string
+  // Bare DOI ("10.12345/gsj.2023.1.1"), or '' until one is registered.
+  doi: string
 }
 
 export interface DonationSplit {

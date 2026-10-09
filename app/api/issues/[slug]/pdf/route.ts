@@ -6,6 +6,7 @@
 import { getArticlesForIssue, getAuthorsForArticle, getIssueBySlug, getTopicForArticle } from '@/lib/content'
 import { formatApaCitation } from '@/lib/citation'
 import { renderIssuePdf } from '@/lib/pdf/issuePdf'
+import { doiUrl } from '@/lib/doi'
 import { siteUrl } from '@/lib/seo'
 
 // Every picture in every article is fetched and re-encoded, which can
@@ -28,7 +29,7 @@ export async function GET(_request: Request, { params }: { params: Promise<{ slu
         authors,
         topic,
         citation: formatApaCitation(article, authors, issue),
-        url: `${siteUrl}/articles/${article.slug}`,
+        url: article.doi ? doiUrl(article.doi) : `${siteUrl}/articles/${article.slug}`,
       }
     })
   )

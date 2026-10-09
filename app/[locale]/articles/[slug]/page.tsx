@@ -12,6 +12,7 @@ import {
 } from '@/lib/content'
 import { getArticleStatsById } from '@/lib/analytics'
 import { formatCitations } from '@/lib/citation'
+import { doiUrl } from '@/lib/doi'
 import { getDictionary, toLocale } from '@/lib/i18n'
 import { fmt, formatNumber } from '@/lib/i18n/format'
 import type { LocaleSlugParams } from '@/lib/i18n/page'
@@ -48,6 +49,7 @@ export async function generateMetadata({ params }: LocaleSlugParams): Promise<Me
       citation_journal_title: journal.name,
       citation_publisher: journal.publisher,
       ...(journal.issn && { citation_issn: journal.issn }),
+      ...(article.doi && { citation_doi: article.doi }),
       ...(issue && {
         citation_publication_date: /^\d{4}-\d{2}-\d{2}/.test(issue.publishedDate)
           ? issue.publishedDate.slice(0, 10).replace(/-/g, '/')
@@ -85,7 +87,9 @@ export default async function ArticleDetail({ params }: LocaleSlugParams) {
     getArticleStatsById(),
   ])
   const url = `${siteUrl}/articles/${article.slug}`
-  const citations = formatCitations(article, authors, issue, url)
+  // Once an article has a DOI, that is the address to cite: it keeps
+  // working even if the site's own addresses change.
+  const citations = formatCitations(article, authors, issue, article.doi ? doiUrl(article.doi) : url)
   const authorNames = authors.map((a) => a.name).join(t.common.and)
   const stats = statsById[article.id] ?? { views: 0, downloads: 0 }
   const issueLabel = issue ? fmt(t.article.volumeIssue, { volume: issue.volume, number: issue.number }) : ''
@@ -192,14 +196,21 @@ export default async function ArticleDetail({ params }: LocaleSlugParams) {
                 <Quote size={15} />
                 {t.article.citeLink}
               </a>
-              {/* Placeholder until the journal's DOIs are registered: plain
-                  text, not a link, and deliberately absent from the
-                  citations and the Google Scholar tags — a made-up DOI
-                  there would be copied into other people's reference lists. */}
-              <span className="inline-flex items-center gap-1.5 text-slate-500">
-                <Fingerprint size={15} />
-                {t.article.doiPending}
-              </span>
+              {article.doi ? (
+                // Shown as the full link, as Crossref requires of its members.
+                <a href={doiUrl(article.doi)} className="inline-flex items-center gap-1.5 text-ocean-blue hover:underline break-all">
+                  <Fingerprint size={15} />
+                  {doiUrl(article.doi)}
+                </a>
+              ) : (
+                // No DOI registered yet: plain text, not a link, and absent
+                // from the citations and the Google Scholar tags — a made-up
+                // DOI there would be copied into other people's reference lists.
+                <span className="inline-flex items-center gap-1.5 text-slate-500">
+                  <Fingerprint size={15} />
+                  {t.article.doiPending}
+                </span>
+              )}
               <a href={url} className="inline-flex items-center gap-1.5 text-ocean-blue hover:underline break-all">
                 <Link2 size={15} />
                 {url}

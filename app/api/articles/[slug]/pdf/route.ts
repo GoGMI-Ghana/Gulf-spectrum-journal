@@ -5,6 +5,7 @@
 import { getArticleBySlug, getAuthorsForArticle, getIssueForArticle, getTopicForArticle } from '@/lib/content'
 import { formatApaCitation } from '@/lib/citation'
 import { renderArticlePdf } from '@/lib/pdf/articlePdf'
+import { doiUrl } from '@/lib/doi'
 import { siteUrl } from '@/lib/seo'
 
 // Fetching and re-encoding an image-heavy article's pictures can outlast
@@ -31,7 +32,7 @@ export async function GET(_request: Request, { params }: { params: Promise<{ slu
       issue,
       topic,
       citation: formatApaCitation(article, authors, issue),
-      url: `${siteUrl}/articles/${article.slug}`,
+      url: article.doi ? doiUrl(article.doi) : `${siteUrl}/articles/${article.slug}`,
     })
   } catch (err) {
     console.error('Failed to generate article PDF', slug, err)

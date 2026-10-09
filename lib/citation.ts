@@ -96,12 +96,13 @@ function formatBibtex(article: Article, names: CitedName[], issue: Issue | undef
     ['volume', issue?.volume],
     ['number', issue?.number],
     ['issn', journal.issn ?? undefined],
+    ['doi', article.doi || undefined],
     ['url', url],
   ]
   const lines = fields
     .filter(([, value]) => value !== undefined && value !== '')
-    // The URL is left as typed: escaping its _ and % would break the link.
-    .map(([name, value]) => `  ${name} = {${name === 'url' ? value : bibValue(String(value))}}`)
+    // The URL and DOI are left as typed: escaping their _ and % would break them.
+    .map(([name, value]) => `  ${name} = {${name === 'url' || name === 'doi' ? value : bibValue(String(value))}}`)
   return `@article{${key},\n${lines.join(',\n')}\n}`
 }
 
@@ -117,6 +118,7 @@ function formatRis(article: Article, names: CitedName[], issue: Issue | undefine
     ...(issue ? [`PY  - ${issue.year}`, `VL  - ${issue.volume}`, `IS  - ${issue.number}`] : []),
     ...(article.abstract ? [`AB  - ${oneLine(article.abstract)}`] : []),
     ...article.keywords.map((k) => `KW  - ${oneLine(k)}`),
+    ...(article.doi ? [`DO  - ${article.doi}`] : []),
     `UR  - ${url}`,
     'ER  - ',
   ]

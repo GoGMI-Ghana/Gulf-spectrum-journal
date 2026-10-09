@@ -1,5 +1,6 @@
 'use client'
 
+import { normalizeDoi } from '@/lib/doi'
 import { useEffect, useState, type FormEvent } from 'react'
 import { useRouter } from 'next/navigation'
 import { ArrowUp, ArrowDown, X, Plus } from 'lucide-react'
@@ -32,6 +33,7 @@ interface ArticleFormState {
   references: string[]
   disclosure: string
   correction_note: string
+  doi: string
   authorIds: string[] // in display order
 }
 
@@ -48,6 +50,7 @@ const EMPTY: ArticleFormState = {
   references: [],
   disclosure: '',
   correction_note: '',
+  doi: '',
   authorIds: [],
 }
 
@@ -177,7 +180,7 @@ export default function ArticleForm({ articleId }: { articleId?: string }) {
         ? supabase
             .from('articles')
             .select(
-              'slug, title, issue_id, topic_id, status, abstract, keywords, sections, conclusion, "references", disclosure, correction_note, article_authors(position, author_id)'
+              'slug, title, issue_id, topic_id, status, abstract, keywords, sections, conclusion, "references", disclosure, correction_note, doi, article_authors(position, author_id)'
             )
             .eq('id', articleId)
             .single()
@@ -205,6 +208,7 @@ export default function ArticleForm({ articleId }: { articleId?: string }) {
             references: string[] | null
             disclosure: string | null
             correction_note: string | null
+            doi: string | null
             article_authors: { position: number; author_id: string }[] | null
           }
           setForm({
@@ -222,6 +226,7 @@ export default function ArticleForm({ articleId }: { articleId?: string }) {
             references: row.references ?? [],
             disclosure: row.disclosure ?? '',
             correction_note: row.correction_note ?? '',
+            doi: row.doi ?? '',
             authorIds: (row.article_authors ?? [])
               .slice()
               .sort((a, b) => a.position - b.position)
@@ -256,6 +261,13 @@ export default function ArticleForm({ articleId }: { articleId?: string }) {
       references: form.references.map((r) => r.trim()).filter(Boolean),
       disclosure: form.disclosure.trim() || null,
       correction_note: form.correction_note.trim() || null,
+      doi: normalizeDoi(form.doi) || null,
+    }
+
+    if (form.doi.trim() && !payload.doi) {
+      setSaving(false)
+      setError('That DOI is not in the expected form. It should look like 10.12345/gsj.2023.1.1 (a doi.org link also works).')
+      return
     }
 
     if (!payload.issue_id) {
@@ -381,6 +393,13 @@ export default function ArticleForm({ articleId }: { articleId?: string }) {
 
         <Field label="References">
           <StringListEditor values={form.references} onChange={(v) => setForm({ ...form, references: v })} placeholder="Citation" />
+        </Field>
+
+        <Field
+          label="DOI (once registered with Crossref)"
+          hint="Leave empty until the DOI has been registered; the article shows “DOI: pending” meanwhile. Paste the DOI itself (10.12345/…) or its doi.org link."
+        >
+          <input type="text" className={inputClass} value={form.doi} onChange={(e) => setForm({ ...form, doi: e.target.value })} placeholder="10.12345/gsj.2023.1.1" />
         </Field>
 
         <Field
