@@ -26,7 +26,7 @@ export default async function CorrectionPolicy({ params }: LocaleParams) {
 
   return (
     <div>
-      <PageBanner eyebrow={t.correctionPolicy.eyebrow} title={t.correctionPolicy.title} description={t.correctionPolicy.description} />
+      <PageBanner title={t.correctionPolicy.title} description={t.correctionPolicy.description} />
 
       <section className="max-w-3xl mx-auto px-4 sm:px-6 lg:px-8 py-14">
         {t.correctionPolicy.sections.map((section) => (

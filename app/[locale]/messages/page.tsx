@@ -14,7 +14,6 @@ export default async function Messages({ params }: LocaleParams) {
   return (
     <div>
       <PageBanner
-        eyebrow={t.messages.eyebrow}
         title={t.messages.title}
         description={t.messages.description}
       />

@@ -22,7 +22,7 @@ export default async function ClaimAuthorPage({ params }: LocaleSlugParams) {
 
   return (
     <div>
-      <PageBanner eyebrow={t.claim.eyebrow} title={fmt(t.claim.title, { name: author.name })} description={t.claim.description} />
+      <PageBanner title={fmt(t.claim.title, { name: author.name })} description={t.claim.description} />
       <section className="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8 py-14">
         <ClaimAuthorForm authorId={author.id} authorSlug={author.slug} authorName={author.name} claimed={author.claimed} />
       </section>

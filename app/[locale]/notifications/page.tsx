@@ -14,7 +14,6 @@ export default async function Notifications({ params }: LocaleParams) {
   return (
     <div>
       <PageBanner
-        eyebrow={t.notifications.eyebrow}
         title={t.notifications.title}
         description={t.notifications.description}
       />

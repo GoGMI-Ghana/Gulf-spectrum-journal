@@ -19,7 +19,7 @@ export default async function Topics({ params }: LocaleParams) {
 
   return (
     <div>
-      <PageBanner eyebrow={t.topics.eyebrow} title={t.topics.title} description={t.topics.description} />
+      <PageBanner title={t.topics.title} description={t.topics.description} />
 
       <section className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-14">
         <div className="grid grid-cols-1 sm:grid-cols-2 gap-px bg-slate-200">

@@ -13,7 +13,7 @@ export default async function ResetPasswordPage({ params }: LocaleParams) {
   const t = getDictionary((await params).locale)
   return (
     <div>
-      <PageBanner eyebrow={t.common.accountEyebrow} title={t.resetPassword.title} description={t.resetPassword.description} />
+      <PageBanner title={t.resetPassword.title} description={t.resetPassword.description} />
       <section className="max-w-md mx-auto px-4 sm:px-6 lg:px-8 py-14">
         <ResetPasswordForm />
       </section>

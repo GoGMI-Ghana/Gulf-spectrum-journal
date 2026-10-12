@@ -3,11 +3,10 @@ import type { Metadata } from 'next'
 import { getDictionary } from '@/lib/i18n'
 import { fmt } from '@/lib/i18n/format'
 import type { LocaleParams } from '@/lib/i18n/page'
-import { getIssues, getTopics, getArticlesForIssue, getArticlesForTopic } from '@/lib/content'
+import { getIssues, getTopics, getArticlesForIssue } from '@/lib/content'
 import ArticleCard from '@/components/ArticleCard'
 import IssueCover from '@/components/IssueCover'
 import JournalSubNav from '@/components/JournalSubNav'
-import WaveDivider from '@/components/WaveDivider'
 
 export async function generateMetadata({ params }: LocaleParams): Promise<Metadata> {
   const t = getDictionary((await params).locale)
@@ -22,7 +21,6 @@ export default async function Home({ params }: LocaleParams) {
   // that depends on it has an empty state rather than assuming it exists.
   const latestIssue = issues.at(0)
   const latestArticles = latestIssue ? await getArticlesForIssue(latestIssue.slug) : []
-  const topicCounts = await Promise.all(topics.map((t) => getArticlesForTopic(t.slug)))
 
   return (
     <div>
@@ -147,29 +145,6 @@ export default async function Home({ params }: LocaleParams) {
               </ul>
             </div>
           </aside>
-        </div>
-      </section>
-
-      <WaveDivider className="text-royal-blue/20" />
-
-      {/* Topics */}
-      <section className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-14">
-        <div className="flex items-end justify-between mb-6 border-b-2 border-royal-blue pb-3">
-          <h2 className="text-2xl font-bold text-royal-blue font-display">{t.home.browseByTopic}</h2>
-          <Link href="/topics" className="text-ocean-blue text-sm font-medium hover:underline">
-            {t.home.allTopics}
-          </Link>
-        </div>
-        <div className="flex flex-wrap gap-2.5">
-          {topics.map((topic, i) => (
-            <Link
-              key={topic.slug}
-              href={`/topics/${topic.slug}`}
-              className="border border-slate-300 hover:border-royal-blue hover:bg-soft-gold/40 px-4 py-2 text-sm text-slate-700 hover:text-royal-blue transition-colors"
-            >
-              {topic.label} <span className="text-slate-400">({topicCounts[i].length})</span>
-            </Link>
-          ))}
         </div>
       </section>
 

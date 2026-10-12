@@ -14,7 +14,6 @@ export default async function ApplyEditorialBoardPage({ params }: LocaleParams) 
   return (
     <div>
       <PageBanner
-        eyebrow={t.boardApply.eyebrow}
         title={t.boardApply.title}
         description={t.boardApply.description}
       />

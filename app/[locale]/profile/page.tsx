@@ -14,7 +14,6 @@ export default async function Profile({ params }: LocaleParams) {
   return (
     <div>
       <PageBanner
-        eyebrow={t.common.accountEyebrow}
         title={t.profile.title}
         description={t.profile.description}
       />

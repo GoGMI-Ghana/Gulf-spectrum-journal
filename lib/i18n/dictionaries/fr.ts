@@ -3,8 +3,7 @@ import type { Dictionary } from './en'
 const fr: Dictionary = {
   meta: {
     siteTitle: 'Gulf Spectrum Journal — Une publication du Gulf of Guinea Maritime Institute',
-    siteDescription:
-      'Gulf Spectrum Journal est la revue de recherche du Gulf of Guinea Maritime Institute (GoGMI). Elle publie des recherches produites localement et évaluées par un comité de rédaction sur la sécurité et la gouvernance maritimes dans le golfe de Guinée.',
+    siteDescription: 'Gulf Spectrum Journal est la revue de recherche du Gulf of Guinea Maritime Institute (GoGMI). Elle publie des travaux évalués par un comité de rédaction sur la sécurité et la gouvernance maritimes dans le golfe de Guinée.',
   },
 
   journal: {
@@ -79,8 +78,7 @@ Chaque volume est évalué avant publication par un comité de rédaction compos
   },
 
   footer: {
-    blurb:
-      '{subtitle}, publiée par le Gulf of Guinea Maritime Institute (GoGMI). Des recherches produites localement et évaluées par un comité de rédaction sur la gouvernance, la sûreté et la sécurité maritimes dans le golfe de Guinée.',
+    blurb: '{subtitle}. Des travaux sur la gouvernance, la sûreté et la sécurité maritimes dans le golfe de Guinée.',
     journalHeading: 'La revue',
     moreHeading: 'Plus',
     contactOffice: 'Contacter la rédaction',
@@ -106,24 +104,20 @@ Chaque volume est évalué avant publication par un comité de rédaction compos
   },
 
   home: {
-    metaDescription:
-      'Gulf Spectrum Journal est la revue de recherche du Gulf of Guinea Maritime Institute (GoGMI). Elle publie des recherches produites localement et évaluées par un comité de rédaction sur la sécurité maritime, l’économie bleue, la gouvernance et le renforcement des capacités.',
-    intro:
-      'Des recherches produites localement et évaluées par un comité de rédaction sur la gouvernance, la sûreté et la sécurité maritimes dans le golfe de Guinée — écrites par les officiers de marine, chercheurs et praticiens qui travaillent directement sur ces questions.',
+    metaDescription: 'Gulf Spectrum Journal est la revue de recherche du Gulf of Guinea Maritime Institute (GoGMI). Elle publie des travaux évalués par un comité de rédaction sur la sécurité maritime, l’économie bleue, la gouvernance et le renforcement des capacités dans le golfe de Guinée.',
+    intro: 'Des travaux sur la gouvernance, la sûreté et la sécurité maritimes dans le golfe de Guinée, rédigés par les officiers de marine, chercheurs et praticiens qui travaillent sur ces questions dans la région.',
     readLatest: 'Lire le dernier numéro',
     aboutJournal: 'À propos de la revue',
     issueHeading: 'Numéro {number} : {theme}',
     viewIssue: 'Voir le numéro →',
-    aboutBody:
-      'Gulf Spectrum Journal donne aux acteurs du golfe de Guinée et d’ailleurs accès à des regards de l’intérieur, produits localement, sur la gouvernance, la sûreté et la sécurité maritimes dans la région.',
+    aboutBody: 'Gulf Spectrum Journal publie des travaux sur la gouvernance, la sûreté et la sécurité maritimes dans le golfe de Guinée. Chaque volume est évalué par un comité de rédaction avant publication.',
     learnMore: 'En savoir plus →',
     submitHeading: 'Soumettez vos recherches',
     submitBody:
       'Gulf Spectrum Journal accueille les soumissions des chercheurs, officiers et praticiens qui travaillent sur les affaires maritimes du golfe de Guinée.',
     viewGuidelines: 'Voir les consignes de soumission →',
     boardHeading: 'Comité de rédaction',
-    boardBody:
-      'Découvrez les rédacteurs qui évaluent et publient les recherches de Gulf Spectrum Journal — ou posez votre candidature pour les rejoindre.',
+    boardBody: 'Découvrez les rédacteurs qui évaluent et publient les travaux de la revue, ou posez votre candidature pour les rejoindre.',
     applyBoard: 'Rejoindre le comité de rédaction →',
     browseByTopic: 'Parcourir par thématique',
     allTopics: 'Toutes les thématiques →',
@@ -136,8 +130,7 @@ Chaque volume est évalué avant publication par un comité de rédaction compos
 
   about: {
     metaTitle: 'À propos de la revue',
-    metaDescription:
-      'La mission de Gulf Spectrum Journal : des recherches produites localement sur la sécurité et la gouvernance maritimes dans le golfe de Guinée, évaluées par un comité de rédaction dédié.',
+    metaDescription: 'À propos de Gulf Spectrum Journal : des travaux sur la sécurité et la gouvernance maritimes dans le golfe de Guinée, évalués par un comité de rédaction avant publication.',
     eyebrow: 'À propos',
     title: 'À propos de la revue',
     heroAlt:
@@ -182,7 +175,7 @@ Chaque volume est évalué avant publication par un comité de rédaction compos
     description:
       'Parcourez Gulf Spectrum Journal par volume. Chaque numéro est un recueil thématique d’articles de recherche évalués par un comité de rédaction. Vous préférez parcourir par sujet ? {link}',
     seeTopics: 'Voir les thématiques →',
-    empty: 'Aucun numéro n’a encore été publié — le premier est en préparation.',
+    empty: 'Aucun numéro n’a encore été publié.',
   },
 
   issue: {
@@ -259,12 +252,10 @@ Chaque volume est évalué avant publication par un comité de rédaction compos
 
   topics: {
     metaTitle: 'Thématiques',
-    metaDescription:
-      'Parcourez Gulf Spectrum Journal par thématique — sécurité maritime, économie bleue, gouvernance, renforcement des capacités, et plus encore.',
+    metaDescription: 'Parcourez Gulf Spectrum Journal par thématique : sécurité maritime, économie bleue, gouvernance, renforcement des capacités, etc.',
     eyebrow: 'Parcourir par sujet',
     title: 'Thématiques',
-    description:
-      'Gulf Spectrum Journal couvre l’ensemble des activités du GoGMI, et pas seulement la sécurité maritime. Parcourez les articles par thématique ci-dessous.',
+    description: 'Parcourez les articles par thématique.',
   },
 
   topic: {
@@ -384,7 +375,7 @@ Chaque volume est évalué avant publication par un comité de rédaction compos
     subject: 'Objet',
     message: 'Message',
     send: 'Envoyer le message',
-    thanks: 'Merci — votre message a été transmis à la rédaction.',
+    thanks: 'Merci. Votre message a été transmis à la rédaction.',
   },
 
   submissions: {
@@ -430,7 +421,7 @@ Chaque volume est évalué avant publication par un comité de rédaction compos
     manuscriptUploading: 'Envoi du manuscrit…',
     manuscriptUploadFailed: 'Le manuscrit n’a pas pu être envoyé. Veuillez réessayer.',
     submit: 'Soumettre pour évaluation',
-    thanks: 'Merci — votre proposition a été transmise à la rédaction pour évaluation.',
+    thanks: 'Merci. Votre proposition a été transmise à la rédaction pour évaluation.',
   },
 
   board: {

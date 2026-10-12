@@ -27,7 +27,7 @@ export default async function SignIn({
 
   return (
     <div>
-      <PageBanner eyebrow={t.common.accountEyebrow} title={t.signIn.title} description={t.signIn.description} />
+      <PageBanner title={t.signIn.title} description={t.signIn.description} />
       <section className="max-w-md mx-auto px-4 sm:px-6 lg:px-8 py-14">
         {/* app/auth/callback sends people back here with ?error=oauth
             when a Google sign-in couldn't be completed. */}

@@ -12,8 +12,7 @@
 const en = {
   meta: {
     siteTitle: 'Gulf Spectrum Journal — A Publication of the Gulf of Guinea Maritime Institute',
-    siteDescription:
-      'Gulf Spectrum Journal is the research journal of the Gulf of Guinea Maritime Institute (GoGMI), publishing locally produced, editorially reviewed research on maritime security and governance in the Gulf of Guinea.',
+    siteDescription: 'Gulf Spectrum Journal is the research journal of the Gulf of Guinea Maritime Institute (GoGMI). It publishes editorially reviewed research on maritime security and governance in the Gulf of Guinea.',
   },
 
   journal: {
@@ -88,8 +87,7 @@ Each volume is reviewed by an editorial board of subject-matter experts before p
   },
 
   footer: {
-    blurb:
-      '{subtitle}, published by the Gulf of Guinea Maritime Institute (GoGMI). Locally produced, editorially reviewed research on maritime governance, safety, and security in the Gulf of Guinea.',
+    blurb: '{subtitle}. Research on maritime governance, safety and security in the Gulf of Guinea.',
     journalHeading: 'Journal',
     moreHeading: 'More',
     contactOffice: 'Contact the editorial office',
@@ -115,23 +113,20 @@ Each volume is reviewed by an editorial board of subject-matter experts before p
   },
 
   home: {
-    metaDescription:
-      'Gulf Spectrum Journal is the research journal of the Gulf of Guinea Maritime Institute (GoGMI), publishing locally produced, editorially reviewed research across maritime security, blue economy, governance, and capacity building.',
-    intro:
-      'Locally produced, editorially reviewed research on maritime governance, safety, and security in the Gulf of Guinea — written by the naval officers, researchers, and practitioners who work on these issues directly.',
+    metaDescription: 'Gulf Spectrum Journal is the research journal of the Gulf of Guinea Maritime Institute (GoGMI). It publishes editorially reviewed research on maritime security, the blue economy, governance and capacity building in the Gulf of Guinea.',
+    intro: 'Research on maritime governance, safety and security in the Gulf of Guinea, written by the naval officers, researchers and practitioners who work on these issues in the region.',
     readLatest: 'Read the Latest Issue',
     aboutJournal: 'About the Journal',
     issueHeading: 'Issue {number}: {theme}',
     viewIssue: 'View issue →',
-    aboutBody:
-      'Gulf Spectrum Journal gives stakeholders across the Gulf of Guinea and beyond access to locally produced, insider perspectives on maritime governance, safety, and security in the region.',
+    aboutBody: 'Gulf Spectrum Journal publishes research on maritime governance, safety and security in the Gulf of Guinea. Every volume is reviewed by an editorial board before publication.',
     learnMore: 'Learn more →',
     submitHeading: 'Submit Your Research',
     submitBody:
       'Gulf Spectrum Journal welcomes submissions from researchers, officers, and practitioners working on Gulf of Guinea maritime affairs.',
     viewGuidelines: 'View submission guidelines →',
     boardHeading: 'Editorial Board',
-    boardBody: "Meet the editors who review and publish Gulf Spectrum Journal's research — or apply to join them.",
+    boardBody: 'Meet the editors who review and publish the journal\'s research, or apply to join them.',
     applyBoard: 'Apply for the editorial board →',
     browseByTopic: 'Browse by Topic',
     allTopics: 'All topics →',
@@ -144,8 +139,7 @@ Each volume is reviewed by an editorial board of subject-matter experts before p
 
   about: {
     metaTitle: 'About the Journal',
-    metaDescription:
-      "Gulf Spectrum Journal's ongoing mission: locally produced research on maritime security and governance in the Gulf of Guinea, reviewed by a dedicated editorial board.",
+    metaDescription: 'About Gulf Spectrum Journal: research on maritime security and governance in the Gulf of Guinea, reviewed by an editorial board before publication.',
     eyebrow: 'About',
     title: 'About the Journal',
     heroAlt: "Naval officers, researchers, and policymakers at GoGMI's Maritime Security Conference 2025 in Accra",
@@ -189,7 +183,7 @@ Each volume is reviewed by an editorial board of subject-matter experts before p
     description:
       'Browse Gulf Spectrum Journal by volume. Each issue is a themed, editorially reviewed collection of research articles. Prefer to browse by subject? {link}',
     seeTopics: 'See Topics →',
-    empty: 'No issues have been published yet — the first one is on its way.',
+    empty: 'No issues have been published yet.',
   },
 
   issue: {
@@ -265,12 +259,10 @@ Each volume is reviewed by an editorial board of subject-matter experts before p
 
   topics: {
     metaTitle: 'Topics',
-    metaDescription:
-      'Browse Gulf Spectrum Journal by topic — maritime security, blue economy, governance, capacity building, and more.',
+    metaDescription: 'Browse Gulf Spectrum Journal by topic: maritime security, blue economy, governance, capacity building and more.',
     eyebrow: 'Browse by Subject',
     title: 'Topics',
-    description:
-      "Gulf Spectrum Journal covers the full scope of GoGMI's work, not maritime security alone. Browse articles by topic below.",
+    description: 'Browse articles by topic.',
   },
 
   topic: {
@@ -390,7 +382,7 @@ Each volume is reviewed by an editorial board of subject-matter experts before p
     subject: 'Subject',
     message: 'Message',
     send: 'Send Message',
-    thanks: 'Thank you — your message has been sent to the editorial office.',
+    thanks: 'Thank you. Your message has been sent to the editorial office.',
   },
 
   submissions: {
@@ -435,7 +427,7 @@ Each volume is reviewed by an editorial board of subject-matter experts before p
     manuscriptUploading: 'Uploading manuscript…',
     manuscriptUploadFailed: 'The manuscript could not be uploaded. Please try again.',
     submit: 'Submit for Review',
-    thanks: 'Thank you — your proposal has been sent to the editorial office for review.',
+    thanks: 'Thank you. Your proposal has been sent to the editorial office for review.',
   },
 
   board: {

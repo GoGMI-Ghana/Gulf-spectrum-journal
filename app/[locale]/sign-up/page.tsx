@@ -14,7 +14,6 @@ export default async function SignUp({ params }: LocaleParams) {
   return (
     <div>
       <PageBanner
-        eyebrow={t.common.accountEyebrow}
         title={t.signUp.title}
         description={t.signUp.description}
       />

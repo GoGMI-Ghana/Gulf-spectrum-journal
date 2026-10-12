@@ -25,7 +25,6 @@ export default async function Bookmarks({ params }: LocaleParams) {
   return (
     <div>
       <PageBanner
-        eyebrow={t.bookmarks.eyebrow}
         title={t.bookmarks.title}
         description={t.bookmarks.description}
       />

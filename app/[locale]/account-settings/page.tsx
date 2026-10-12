@@ -13,7 +13,7 @@ export default async function AccountSettings({ params }: LocaleParams) {
   const t = getDictionary((await params).locale)
   return (
     <div>
-      <PageBanner eyebrow={t.common.accountEyebrow} title={t.accountSettings.title} description={t.accountSettings.description} />
+      <PageBanner title={t.accountSettings.title} description={t.accountSettings.description} />
 
       <section className="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8 py-14">
         <AccountSettingsForm />

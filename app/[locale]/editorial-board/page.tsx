@@ -18,7 +18,6 @@ export default async function EditorialBoardPage({ params }: LocaleParams) {
   return (
     <div>
       <PageBanner
-        eyebrow="Gulf Spectrum Journal"
         title={t.board.title}
         description={t.board.description}
       />

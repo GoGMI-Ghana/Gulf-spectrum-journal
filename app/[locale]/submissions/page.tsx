@@ -22,7 +22,6 @@ export default async function Submissions({ params }: LocaleParams) {
   return (
     <div>
       <PageBanner
-        eyebrow={t.submissions.eyebrow}
         title={t.submissions.title}
         description={t.submissions.description}
       />
@@ -35,9 +34,8 @@ export default async function Submissions({ params }: LocaleParams) {
               {t.submissions.prepareIntro}
             </p>
             <ul>
-              {t.submissions.fields.map((f, i) => (
-                <li key={f} className="text-sm text-slate-700 py-2.5 border-b border-slate-200 last:border-0 flex gap-3">
-                  <span className="numeral text-gold font-semibold shrink-0">{String(i + 1).padStart(2, '0')}</span>
+              {t.submissions.fields.map((f) => (
+                <li key={f} className="text-sm text-slate-700 py-2.5 border-b border-slate-200 last:border-0">
                   {f}
                 </li>
               ))}
@@ -46,17 +44,15 @@ export default async function Submissions({ params }: LocaleParams) {
 
           <div>
             <SectionHeading>{t.submissions.workflowHeading}</SectionHeading>
-            <div className="grid sm:grid-cols-2 gap-x-8 gap-y-8">
-              {t.submissions.workflow.map((w, i) => (
-                <div key={w.title} className="flex gap-4">
-                  <span className="numeral text-gold text-3xl font-bold leading-none shrink-0">{String(i + 1).padStart(2, '0')}</span>
-                  <div>
-                    <h3 className="font-semibold text-royal-blue mb-1">{w.title}</h3>
-                    <p className="text-sm text-slate-600 leading-relaxed">{w.body}</p>
-                  </div>
-                </div>
+            {/* These are steps in order, so they keep a number — an ordinary one. */}
+            <ol className="list-decimal pl-5 space-y-4 marker:text-slate-500 marker:font-semibold">
+              {t.submissions.workflow.map((w) => (
+                <li key={w.title} className="pl-1">
+                  <h3 className="font-semibold text-royal-blue">{w.title}</h3>
+                  <p className="text-sm text-slate-600 leading-relaxed">{w.body}</p>
+                </li>
               ))}
-            </div>
+            </ol>
           </div>
 
           <div>

@@ -30,7 +30,6 @@ export default async function Issues({ params }: LocaleParams) {
   return (
     <div>
       <PageBanner
-        eyebrow={t.issues.eyebrow}
         title={t.issues.title}
         description={rich(t.issues.description, {
           link: (

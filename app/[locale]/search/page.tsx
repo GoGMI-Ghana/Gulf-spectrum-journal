@@ -32,7 +32,6 @@ export default async function Search({ params, searchParams }: SearchProps) {
   return (
     <div>
       <PageBanner
-        eyebrow={t.search.eyebrow}
         title={query ? fmt(t.search.resultsFor, { query }) : t.search.title}
         description={query ? plural(locale, t.search.found, results.length) : t.search.prompt}
       />

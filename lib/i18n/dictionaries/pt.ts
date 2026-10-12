@@ -6,8 +6,7 @@ import type { Dictionary } from './en'
 const pt: Dictionary = {
   meta: {
     siteTitle: 'Gulf Spectrum Journal — Uma publicação do Gulf of Guinea Maritime Institute',
-    siteDescription:
-      'O Gulf Spectrum Journal é a revista de investigação do Gulf of Guinea Maritime Institute (GoGMI). Publica investigação produzida localmente e revista por um conselho editorial sobre segurança e governação marítimas no golfo da Guiné.',
+    siteDescription: 'O Gulf Spectrum Journal é a revista de investigação do Gulf of Guinea Maritime Institute (GoGMI). Publica investigação com revisão editorial sobre segurança e governação marítimas no golfo da Guiné.',
   },
 
   journal: {
@@ -82,8 +81,7 @@ Cada volume é revisto antes da publicação por um conselho editorial de especi
   },
 
   footer: {
-    blurb:
-      '{subtitle}, publicada pelo Gulf of Guinea Maritime Institute (GoGMI). Investigação produzida localmente e revista por um conselho editorial sobre a governação, a segurança e a proteção marítimas no golfo da Guiné.',
+    blurb: '{subtitle}. Investigação sobre a governação, a segurança e a proteção marítimas no golfo da Guiné.',
     journalHeading: 'A revista',
     moreHeading: 'Mais',
     contactOffice: 'Contactar a redação',
@@ -109,24 +107,20 @@ Cada volume é revisto antes da publicação por um conselho editorial de especi
   },
 
   home: {
-    metaDescription:
-      'O Gulf Spectrum Journal é a revista de investigação do Gulf of Guinea Maritime Institute (GoGMI). Publica investigação produzida localmente e revista por um conselho editorial sobre segurança marítima, economia azul, governação e reforço de capacidades.',
-    intro:
-      'Investigação produzida localmente e revista por um conselho editorial sobre a governação, a segurança e a proteção marítimas no golfo da Guiné — escrita pelos oficiais de marinha, investigadores e profissionais que trabalham diretamente nestas questões.',
+    metaDescription: 'O Gulf Spectrum Journal é a revista de investigação do Gulf of Guinea Maritime Institute (GoGMI). Publica investigação com revisão editorial sobre segurança marítima, economia azul, governação e reforço de capacidades no golfo da Guiné.',
+    intro: 'Investigação sobre a governação, a segurança e a proteção marítimas no golfo da Guiné, escrita pelos oficiais da marinha, investigadores e profissionais que trabalham nestas questões na região.',
     readLatest: 'Ler o último número',
     aboutJournal: 'Sobre a revista',
     issueHeading: 'Número {number}: {theme}',
     viewIssue: 'Ver número →',
-    aboutBody:
-      'O Gulf Spectrum Journal dá aos intervenientes do golfo da Guiné e de fora dele acesso a perspetivas de dentro, produzidas localmente, sobre a governação, a segurança e a proteção marítimas na região.',
+    aboutBody: 'O Gulf Spectrum Journal publica investigação sobre a governação, a segurança e a proteção marítimas no golfo da Guiné. Cada volume é revisto por um conselho editorial antes da publicação.',
     learnMore: 'Saber mais →',
     submitHeading: 'Submeta a sua investigação',
     submitBody:
       'O Gulf Spectrum Journal aceita submissões de investigadores, oficiais e profissionais que trabalham em assuntos marítimos do golfo da Guiné.',
     viewGuidelines: 'Ver as normas de submissão →',
     boardHeading: 'Conselho editorial',
-    boardBody:
-      'Conheça os editores que revêem e publicam a investigação do Gulf Spectrum Journal — ou candidate-se para se juntar a eles.',
+    boardBody: 'Conheça os editores que reveem e publicam a investigação da revista, ou candidate-se a juntar-se a eles.',
     applyBoard: 'Candidatar-se ao conselho editorial →',
     browseByTopic: 'Explorar por tema',
     allTopics: 'Todos os temas →',
@@ -139,8 +133,7 @@ Cada volume é revisto antes da publicação por um conselho editorial de especi
 
   about: {
     metaTitle: 'Sobre a revista',
-    metaDescription:
-      'A missão do Gulf Spectrum Journal: investigação produzida localmente sobre segurança e governação marítimas no golfo da Guiné, revista por um conselho editorial dedicado.',
+    metaDescription: 'Sobre o Gulf Spectrum Journal: investigação sobre segurança e governação marítimas no golfo da Guiné, revista por um conselho editorial antes da publicação.',
     eyebrow: 'Sobre',
     title: 'Sobre a revista',
     heroAlt:
@@ -185,7 +178,7 @@ Cada volume é revisto antes da publicação por um conselho editorial de especi
     description:
       'Explore o Gulf Spectrum Journal por volume. Cada número é uma coleção temática de artigos de investigação revistos por um conselho editorial. Prefere explorar por assunto? {link}',
     seeTopics: 'Ver temas →',
-    empty: 'Ainda não foi publicado nenhum número — o primeiro está a caminho.',
+    empty: 'Ainda não foi publicado nenhum número.',
   },
 
   issue: {
@@ -262,12 +255,10 @@ Cada volume é revisto antes da publicação por um conselho editorial de especi
 
   topics: {
     metaTitle: 'Temas',
-    metaDescription:
-      'Explore o Gulf Spectrum Journal por tema — segurança marítima, economia azul, governação, reforço de capacidades e muito mais.',
+    metaDescription: 'Explore o Gulf Spectrum Journal por tema: segurança marítima, economia azul, governação, reforço de capacidades e mais.',
     eyebrow: 'Explorar por assunto',
     title: 'Temas',
-    description:
-      'O Gulf Spectrum Journal abrange todo o âmbito do trabalho do GoGMI, e não apenas a segurança marítima. Explore os artigos por tema abaixo.',
+    description: 'Explore os artigos por tema.',
   },
 
   topic: {
@@ -387,7 +378,7 @@ Cada volume é revisto antes da publicação por um conselho editorial de especi
     subject: 'Assunto',
     message: 'Mensagem',
     send: 'Enviar mensagem',
-    thanks: 'Obrigado — a sua mensagem foi enviada à redação.',
+    thanks: 'Obrigado. A sua mensagem foi enviada à redação.',
   },
 
   submissions: {
@@ -433,7 +424,7 @@ Cada volume é revisto antes da publicação por um conselho editorial de especi
     manuscriptUploading: 'A carregar o manuscrito…',
     manuscriptUploadFailed: 'Não foi possível carregar o manuscrito. Tente novamente.',
     submit: 'Submeter para revisão',
-    thanks: 'Obrigado — a sua proposta foi enviada à redação para revisão.',
+    thanks: 'Obrigado. A sua proposta foi enviada à redação para avaliação.',
   },
 
   board: {
