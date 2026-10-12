@@ -11,9 +11,9 @@ const fr: Dictionary = {
     subtitle: 'Une publication du Gulf of Guinea Maritime Institute',
     frequency: 'Parution annuelle, en volumes thématiques',
     issnPending: 'ISSN en cours d’attribution',
-    aboutText: `Gulf Spectrum Journal est la revue de recherche du Gulf of Guinea Maritime Institute (GoGMI). Elle publie des regards de l’intérieur, produits localement, sur la gouvernance, la sûreté et la sécurité maritimes dans le golfe de Guinée. Sa mission est d’offrir aux acteurs de la région et d’ailleurs une plateforme crédible et unifiée pour les travaux des officiers, chercheurs et praticiens qui traitent directement de ces questions — en alternative aux recherches sur la région produites ailleurs.
+    aboutText: `Gulf Spectrum Journal est la revue de recherche du Gulf of Guinea Maritime Institute (GoGMI). Elle publie des travaux sur la gouvernance, la sûreté et la sécurité maritimes dans le golfe de Guinée, rédigés par les officiers, chercheurs et praticiens qui travaillent sur ces questions dans la région.
 
-Chaque volume est évalué par un comité de rédaction dédié, composé d’experts du domaine, qui fixe le style de citation et les consignes de longueur du volume et veille à la qualité et à la rigueur de son contenu avant publication. La revue soutient le travail plus large de plaidoyer et de renforcement des capacités du GoGMI dans ses quatre domaines principaux : Recherche, Plaidoyer, Renforcement des capacités et Conseil — y compris des initiatives phares telles que l’International Maritime Security Working Group (IMSWG) et le programme WYTEC Blue pour les femmes et les jeunes dans l’économie bleue.`,
+Chaque volume est évalué avant publication par un comité de rédaction composé d’experts du domaine, qui fixe également le style de citation et les consignes de longueur du volume. La revue s’inscrit dans le travail plus large du GoGMI en matière de recherche, de plaidoyer, de renforcement des capacités et de conseil, qui comprend l’International Maritime Security Working Group (IMSWG) et le programme WYTEC Blue pour les femmes et les jeunes dans l’économie bleue.`,
     scopeAreas: [
       'Sécurité maritime',
       'Développement de l’économie bleue',
@@ -142,10 +142,9 @@ Chaque volume est évalué par un comité de rédaction dédié, composé d’ex
     title: 'À propos de la revue',
     heroAlt:
       'Officiers de marine, chercheurs et décideurs lors de la Conférence sur la sécurité maritime 2025 du GoGMI à Accra',
-    heroCaption:
-      'Conférence sur la sécurité maritime 2025 du GoGMI, Accra — le réseau de contributeurs sur lequel s’appuie la revue.',
+    heroCaption: 'Conférence sur la sécurité maritime 2025 du GoGMI, Accra.',
     scope: 'Champ couvert',
-    standards: 'Normes éditoriales et gages de confiance',
+    standards: 'Normes éditoriales',
     trustSignals: [
       {
         title: 'Évaluation éditoriale',
@@ -153,7 +152,7 @@ Chaque volume est évalué par un comité de rédaction dédié, composé d’ex
       },
       {
         title: 'Auteurs identifiés',
-        body: 'Chaque article indique le nom, la photo et l’affiliation institutionnelle de chaque auteur, ainsi qu’une bibliographie complète et mise en forme.',
+        body: 'Chaque article indique le nom de ses auteurs et leur affiliation institutionnelle, et comporte une bibliographie complète.',
       },
       {
         title: 'Politique de correction',

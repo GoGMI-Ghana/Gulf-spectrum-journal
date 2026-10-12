@@ -14,9 +14,9 @@ const pt: Dictionary = {
     subtitle: 'Uma publicação do Gulf of Guinea Maritime Institute',
     frequency: 'Publicação anual, em volumes temáticos',
     issnPending: 'ISSN em atribuição',
-    aboutText: `O Gulf Spectrum Journal é a revista de investigação do Gulf of Guinea Maritime Institute (GoGMI). Publica perspetivas de dentro, produzidas localmente, sobre a governação, a segurança e a proteção marítimas no golfo da Guiné. A sua missão é oferecer aos intervenientes da região e de fora dela uma plataforma credível e consolidada para a investigação dos oficiais, investigadores e profissionais que trabalham diretamente nestas questões — como alternativa à investigação sobre a região produzida noutros lugares.
+    aboutText: `O Gulf Spectrum Journal é a revista de investigação do Gulf of Guinea Maritime Institute (GoGMI). Publica investigação sobre a governação, a segurança e a proteção marítimas no golfo da Guiné, escrita pelos oficiais, investigadores e profissionais que trabalham nestas questões na região.
 
-Cada volume é revisto por um conselho editorial dedicado, composto por especialistas na matéria, que define o estilo de citação e as orientações de extensão do volume e supervisiona a qualidade e o rigor do seu conteúdo antes da publicação. A revista apoia o trabalho mais amplo de advocacia e reforço de capacidades do GoGMI nas suas quatro áreas principais: Investigação, Advocacia, Reforço de Capacidades e Consultoria — incluindo iniciativas emblemáticas como o International Maritime Security Working Group (IMSWG) e o programa WYTEC Blue para mulheres e jovens na economia azul.`,
+Cada volume é revisto antes da publicação por um conselho editorial de especialistas na matéria, que define também o estilo de citação e as orientações de extensão do volume. A revista faz parte do trabalho mais amplo do GoGMI em investigação, advocacia, reforço de capacidades e consultoria, que inclui o International Maritime Security Working Group (IMSWG) e o programa WYTEC Blue para mulheres e jovens na economia azul.`,
     scopeAreas: [
       'Segurança marítima',
       'Desenvolvimento da economia azul',
@@ -145,10 +145,9 @@ Cada volume é revisto por um conselho editorial dedicado, composto por especial
     title: 'Sobre a revista',
     heroAlt:
       'Oficiais de marinha, investigadores e decisores políticos na Conferência de Segurança Marítima 2025 do GoGMI, em Acra',
-    heroCaption:
-      'Conferência de Segurança Marítima 2025 do GoGMI, Acra — a rede de colaboradores em que esta revista se apoia.',
+    heroCaption: 'Conferência de Segurança Marítima 2025 do GoGMI, Acra.',
     scope: 'Âmbito',
-    standards: 'Normas de conteúdo e garantias de confiança',
+    standards: 'Normas editoriais',
     trustSignals: [
       {
         title: 'Revisão editorial',
@@ -156,7 +155,7 @@ Cada volume é revisto por um conselho editorial dedicado, composto por especial
       },
       {
         title: 'Autoria identificada',
-        body: 'Cada artigo apresenta o nome, a fotografia e a afiliação institucional de cada autor, juntamente com uma lista completa de referências formatada.',
+        body: 'Cada artigo indica o nome dos seus autores e a respetiva afiliação institucional, e inclui uma lista completa de referências.',
       },
       {
         title: 'Política de correções',

@@ -20,9 +20,9 @@ const en = {
     subtitle: 'A Publication of the Gulf of Guinea Maritime Institute',
     frequency: 'Published annually, in themed volumes',
     issnPending: 'ISSN pending',
-    aboutText: `Gulf Spectrum Journal is the research journal of the Gulf of Guinea Maritime Institute (GoGMI), publishing locally produced, insider perspectives on maritime governance, safety, and security in the Gulf of Guinea. Its mission is to give stakeholders across the region and beyond a credible, consolidated platform for research produced by the officers, researchers, and practitioners who work on these issues directly — as an alternative to research about the region produced elsewhere.
+    aboutText: `Gulf Spectrum Journal is the research journal of the Gulf of Guinea Maritime Institute (GoGMI). It publishes research on maritime governance, safety and security in the Gulf of Guinea, written by the officers, researchers and practitioners who work on these issues in the region.
 
-Each volume is reviewed by a dedicated editorial board of subject-matter experts, who set that volume's citation style and word-count guidance and oversee the quality and rigor of its content before publication. The journal supports GoGMI's wider advocacy and capacity-building work across its four core areas: Research, Advocacy, Capacity Building, and Consultancy — including flagship initiatives such as the International Maritime Security Working Group (IMSWG) and the WYTEC Blue programme for women and youth in the blue economy.`,
+Each volume is reviewed by an editorial board of subject-matter experts before publication. The board also sets that volume's citation style and word-count guidance. The journal is part of GoGMI's wider work in research, advocacy, capacity building and consultancy, which includes the International Maritime Security Working Group (IMSWG) and the WYTEC Blue programme for women and youth in the blue economy.`,
     scopeAreas: [
       'Maritime security',
       'Blue economy development',
@@ -149,9 +149,9 @@ Each volume is reviewed by a dedicated editorial board of subject-matter experts
     eyebrow: 'About',
     title: 'About the Journal',
     heroAlt: "Naval officers, researchers, and policymakers at GoGMI's Maritime Security Conference 2025 in Accra",
-    heroCaption: "GoGMI's Maritime Security Conference 2025, Accra — the network of contributors this journal draws on.",
+    heroCaption: 'GoGMI\'s Maritime Security Conference 2025, Accra.',
     scope: 'Scope',
-    standards: 'Content Standards & Trust Signals',
+    standards: 'Editorial Standards',
     trustSignals: [
       {
         title: 'Editorial Review',
@@ -159,7 +159,7 @@ Each volume is reviewed by a dedicated editorial board of subject-matter experts
       },
       {
         title: 'Named Authorship',
-        body: 'Every article displays each author’s name, photograph, and institutional affiliation, alongside a full formatted reference list.',
+        body: 'Every article names its authors and their institutional affiliations, and carries a full reference list.',
       },
       {
         title: 'Correction Policy',

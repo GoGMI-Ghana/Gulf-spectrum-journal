@@ -20,7 +20,7 @@ export default async function About({ params }: LocaleParams) {
   const board = await getEditorialBoard()
   return (
     <div>
-      <PageBanner eyebrow={t.about.eyebrow} title={t.about.title} />
+      <PageBanner title={t.about.title} />
 
       <figure className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 mt-10">
         <div className="relative w-full h-56 sm:h-72">
@@ -63,24 +63,23 @@ export default async function About({ params }: LocaleParams) {
           <h2 className="text-xl font-bold text-royal-blue font-display mt-12 mb-6 pb-2 border-b-2 border-royal-blue">
             {t.about.standards}
           </h2>
-          <div className="grid sm:grid-cols-2 gap-x-8 gap-y-8">
+          <dl className="grid sm:grid-cols-2 gap-x-10 gap-y-7">
             {t.about.trustSignals.map((signal, i) => (
-              <div key={signal.title} className="flex gap-4">
-                <span className="numeral text-gold text-3xl font-bold leading-none shrink-0">{String(i + 1).padStart(2, '0')}</span>
-                <div>
-                  <h3 className="font-semibold text-royal-blue mb-1">{signal.title}</h3>
-                  <p className="text-sm text-slate-600 leading-relaxed">{signal.body}</p>
+              <div key={signal.title}>
+                <dt className="font-semibold text-royal-blue mb-1">{signal.title}</dt>
+                <dd className="text-sm text-slate-600 leading-relaxed">
+                  {signal.body}
                   {/* The third signal is the correction policy — its text says
                       "see our correction policy", so give it the link. */}
                   {i === 2 && (
-                    <Link href="/correction-policy" className="inline-block mt-1.5 text-sm text-ocean-blue font-medium hover:underline">
+                    <Link href="/correction-policy" className="block mt-1.5 text-ocean-blue font-medium hover:underline">
                       {t.about.readCorrectionPolicy}
                     </Link>
                   )}
-                </div>
+                </dd>
               </div>
             ))}
-          </div>
+          </dl>
         </div>
 
         <aside className="space-y-8">

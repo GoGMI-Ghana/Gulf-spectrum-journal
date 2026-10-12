@@ -16,7 +16,7 @@ export const journal: Journal = {
   publisher: 'Gulf of Guinea Maritime Institute (GoGMI)',
   domain: 'www.gulfspectrumjournal.com',
   contactEmail: 'info@gogmi.org.gh',
-  founded: 2025,
+  founded: 2023,
   // Assigned by the Ghana Library Authority (online edition). The UI
   // falls back to the translated "ISSN pending" text if this is null.
   issn: '3057-3521',
