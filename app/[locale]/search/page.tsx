@@ -1,5 +1,6 @@
 import Link from 'next/link'
 import type { Metadata } from 'next'
+import { Search as SearchIcon } from 'lucide-react'
 import { searchArticles, getIssueForArticle } from '@/lib/content'
 import { getDictionary, toLocale } from '@/lib/i18n'
 import { fmt, plural, rich } from '@/lib/i18n/format'
@@ -37,6 +38,28 @@ export default async function Search({ params, searchParams }: SearchProps) {
       />
 
       <section className="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8 py-14">
+        {/* A plain form that reloads this page with ?q=… — it works without
+            JavaScript, and the box keeps what was searched for. */}
+        <form action="/search" method="get" role="search" className="flex items-stretch border border-slate-300 focus-within:border-royal-blue mb-10">
+          <input
+            type="search"
+            name="q"
+            defaultValue={query}
+            required
+            autoFocus={!query}
+            placeholder={t.subNav.searchPlaceholder}
+            aria-label={t.subNav.searchPlaceholder}
+            className="w-full px-4 py-3 text-base focus:outline-none"
+          />
+          <button
+            type="submit"
+            className="inline-flex items-center gap-2 bg-royal-blue text-white px-5 font-medium text-sm shrink-0 hover:bg-ocean-blue transition-colors"
+          >
+            <SearchIcon size={16} />
+            {t.subNav.search}
+          </button>
+        </form>
+
         {query && results.length === 0 && (
           <p className="text-slate-600">
             {rich(t.search.noResults, {
