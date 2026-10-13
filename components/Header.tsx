@@ -4,7 +4,7 @@ import { useState, type ComponentType } from 'react'
 import Link from 'next/link'
 import Image from 'next/image'
 import { usePathname } from 'next/navigation'
-import { Menu, X, House, TextQuote, ChartNoAxesCombined, FileUp, LayoutGrid } from 'lucide-react'
+import { Menu, X, House, ChartNoAxesCombined, FileUp, LayoutGrid } from 'lucide-react'
 import { useI18n } from '@/context/I18nContext'
 import type { Dictionary } from '@/lib/i18n/dictionaries/en'
 import AccountMenu from './AccountMenu'
@@ -24,7 +24,6 @@ const navLinks: { href: string; label: NavKey; end?: boolean }[] = [
 
 const iconNav: { href: string; label: NavKey; icon: ComponentType<{ size?: number }>; end?: boolean }[] = [
   { href: '/', label: 'home', icon: House, end: true },
-  { href: '/citations', label: 'citations', icon: TextQuote },
   { href: '/analytics', label: 'analytics', icon: ChartNoAxesCombined },
   { href: '/submissions', label: 'upload', icon: FileUp },
   { href: '/tools', label: 'tools', icon: LayoutGrid },
