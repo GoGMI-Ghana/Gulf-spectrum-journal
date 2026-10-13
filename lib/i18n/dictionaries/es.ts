@@ -356,6 +356,8 @@ Cada volumen es revisado antes de su publicación por un comité editorial de ex
     issueLabel: 'Número {number} · {year}',
     viewArticle: 'Ver artículo →',
     empty: 'Las citas aparecerán aquí cuando se publiquen los primeros artículos.',
+    searchPlaceholder: 'Buscar por título, autor o tema',
+    noMatches: 'Ninguna cita coincide con «{query}».',
   },
 
   contact: {

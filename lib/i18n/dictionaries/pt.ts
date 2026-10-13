@@ -359,6 +359,8 @@ Cada volume é revisto antes da publicação por um conselho editorial de especi
     issueLabel: 'Número {number} · {year}',
     viewArticle: 'Ver artigo →',
     empty: 'As citações aparecerão aqui assim que os primeiros artigos forem publicados.',
+    searchPlaceholder: 'Pesquisar por título, autor ou tema',
+    noMatches: 'Nenhuma citação corresponde a «{query}».',
   },
 
   contact: {

@@ -356,6 +356,8 @@ Chaque volume est évalué avant publication par un comité de rédaction compos
     issueLabel: 'Numéro {number} · {year}',
     viewArticle: 'Voir l’article →',
     empty: 'Les citations apparaîtront ici dès la publication des premiers articles.',
+    searchPlaceholder: 'Rechercher par titre, auteur ou thématique',
+    noMatches: 'Aucune citation ne correspond à « {query} ».',
   },
 
   contact: {

@@ -363,6 +363,8 @@ Each volume is reviewed by an editorial board of subject-matter experts before p
     issueLabel: 'Issue {number} · {year}',
     viewArticle: 'View article →',
     empty: 'Citations will appear here once the first articles are published.',
+    searchPlaceholder: 'Search by title, author or topic',
+    noMatches: 'No citations match “{query}”.',
   },
 
   contact: {

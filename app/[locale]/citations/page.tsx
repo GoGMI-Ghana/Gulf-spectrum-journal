@@ -4,7 +4,7 @@ import { formatApaCitation } from '@/lib/citation'
 import { getDictionary } from '@/lib/i18n'
 import { fmt } from '@/lib/i18n/format'
 import type { LocaleParams } from '@/lib/i18n/page'
-import CitationRow from '@/components/CitationRow'
+import CitationList from '@/components/CitationList'
 import PageBanner from '@/components/PageBanner'
 
 export async function generateMetadata({ params }: LocaleParams): Promise<Metadata> {
@@ -38,12 +38,7 @@ export default async function Citations({ params }: LocaleParams) {
       <PageBanner title={t.citations.metaTitle} description={t.citations.metaDescription} />
 
       <section className="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8 py-14">
-        {rows.length === 0 && <p className="text-slate-600">{t.citations.empty}</p>}
-        <div className="space-y-5">
-          {rows.map((row) => (
-            <CitationRow key={row.slug} {...row} />
-          ))}
-        </div>
+        {rows.length === 0 ? <p className="text-slate-600">{t.citations.empty}</p> : <CitationList rows={rows} />}
       </section>
     </div>
   )
