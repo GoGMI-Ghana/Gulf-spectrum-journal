@@ -517,6 +517,11 @@ Each volume is reviewed by an editorial board of subject-matter experts before p
     colTitle: 'Title',
     footnote:
       "Views and PDF downloads are counted from real visits to each article page, starting from when each kind of tracking was added — figures will be low or zero for anything before that.",
+    scopeAll: 'Figures for every published article.',
+    scopeMine: 'Figures for the articles you have published in the journal.',
+    noArticles:
+      "Analytics show how your published articles are being read. None of the journal's published articles is linked to your account yet. If you are an author, find your author profile and claim it; once the editorial office approves the claim, your articles' figures appear here.",
+    findProfile: 'Find your author profile →',
   },
 
   dashboard: {

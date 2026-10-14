@@ -7,6 +7,7 @@ import { usePathname } from 'next/navigation'
 import { Menu, X, House, ChartNoAxesCombined, FileUp, LayoutGrid } from 'lucide-react'
 import { useI18n } from '@/context/I18nContext'
 import type { Dictionary } from '@/lib/i18n/dictionaries/en'
+import { useAccount } from '@/context/AccountContext'
 import AccountMenu from './AccountMenu'
 import LanguageSwitcher from './LanguageSwitcher'
 
@@ -87,6 +88,9 @@ function IconNavItem({
 export default function Header() {
   const [open, setOpen] = useState(false)
   const { t } = useI18n()
+  const { user } = useAccount()
+  // Analytics is for signed-in readers only (see app/[locale]/analytics).
+  const icons = iconNav.filter((item) => user || item.href !== '/analytics')
 
   return (
     <header className="sticky top-0 z-50">
@@ -133,7 +137,7 @@ export default function Header() {
           </Link>
 
           <div className="hidden md:flex items-center gap-1">
-            {iconNav.map((item) => (
+            {icons.map((item) => (
               <IconNavItem key={item.href} {...item} label={t.nav[item.label]} />
             ))}
           </div>
@@ -170,7 +174,7 @@ export default function Header() {
             {navLinks.map((l) => (
               <NavItem key={l.href} {...l} label={t.nav[l.label]} onClick={() => setOpen(false)} />
             ))}
-            {iconNav
+            {icons
               .filter((i) => i.href !== '/')
               .map((item) => (
                 <NavItem key={item.href} href={item.href} label={t.nav[item.label]} onClick={() => setOpen(false)} />

@@ -174,7 +174,7 @@ export default function AccountMenu() {
           <div className="pb-2">
             <MenuLink href="/dashboard" icon={LayoutDashboard} label={t.nav.dashboard} onNavigate={close} />
             <MenuLink href="/bookmarks" icon={Bookmark} label={t.nav.bookmarks} badge={bookmarks.length} onNavigate={close} />
-            <MenuLink href="/analytics" icon={ChartNoAxesCombined} label={t.nav.analytics} onNavigate={close} />
+            {user && <MenuLink href="/analytics" icon={ChartNoAxesCombined} label={t.nav.analytics} onNavigate={close} />}
           </div>
 
           <SectionLabel>Gulf Spectrum Journal</SectionLabel>

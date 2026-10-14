@@ -515,6 +515,10 @@ Chaque volume est évalué avant publication par un comité de rédaction compos
     colTitle: 'Titre',
     footnote:
       "Les consultations et les téléchargements de PDF sont comptabilisés à partir de visites réelles de chaque page d’article, depuis la mise en place de chaque suivi — les chiffres antérieurs seront faibles ou nuls.",
+    scopeAll: 'Chiffres de tous les articles publiés.',
+    scopeMine: 'Chiffres des articles que vous avez publiés dans la revue.',
+    noArticles: 'Les statistiques montrent comment vos articles publiés sont lus. Aucun article publié de la revue n’est encore lié à votre compte. Si vous êtes auteur, trouvez votre profil d’auteur et revendiquez-le ; une fois la demande approuvée par la rédaction, les chiffres de vos articles apparaîtront ici.',
+    findProfile: 'Trouver votre profil d’auteur →',
   },
 
   dashboard: {

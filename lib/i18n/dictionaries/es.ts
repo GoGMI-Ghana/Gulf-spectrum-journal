@@ -514,6 +514,10 @@ Cada volumen es revisado antes de su publicación por un comité editorial de ex
     colTitle: 'Título',
     footnote:
       "Las visitas y las descargas de PDF se cuentan a partir de visitas reales a la página de cada artículo, desde que se implantó cada seguimiento — las cifras anteriores serán bajas o nulas.",
+    scopeAll: 'Cifras de todos los artículos publicados.',
+    scopeMine: 'Cifras de los artículos que ha publicado en la revista.',
+    noArticles: 'Las estadísticas muestran cómo se leen sus artículos publicados. Todavía no hay ningún artículo publicado de la revista vinculado a su cuenta. Si es autor, busque su perfil de autor y reclámelo; cuando la oficina editorial apruebe la solicitud, las cifras de sus artículos aparecerán aquí.',
+    findProfile: 'Buscar su perfil de autor →',
   },
 
   dashboard: {

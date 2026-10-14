@@ -518,6 +518,10 @@ Cada volume é revisto antes da publicação por um conselho editorial de especi
     colTitle: 'Título',
     footnote:
       "As visualizações e as transferências de PDF são contadas a partir de visitas reais à página de cada artigo, desde que cada acompanhamento foi implementado — os valores anteriores serão baixos ou nulos.",
+    scopeAll: 'Números de todos os artigos publicados.',
+    scopeMine: 'Números dos artigos que publicou na revista.',
+    noArticles: 'As estatísticas mostram como os seus artigos publicados estão a ser lidos. Ainda não há nenhum artigo publicado da revista associado à sua conta. Se é autor, encontre o seu perfil de autor e reivindique-o; depois de a redação aprovar o pedido, os números dos seus artigos aparecem aqui.',
+    findProfile: 'Encontrar o seu perfil de autor →',
   },
 
   dashboard: {

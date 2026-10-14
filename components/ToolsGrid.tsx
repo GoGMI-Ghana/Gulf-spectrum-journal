@@ -7,7 +7,7 @@ import { useI18n } from '@/context/I18nContext'
 import { plural } from '@/lib/i18n/format'
 
 export default function ToolsGrid() {
-  const { bookmarks } = useAccount()
+  const { user, bookmarks } = useAccount()
   const { locale, t } = useI18n()
 
   const tools = [
@@ -15,7 +15,8 @@ export default function ToolsGrid() {
     { href: '/citations', icon: TextQuote, title: t.tools.citationsTitle, body: t.tools.citationsBody },
     { href: '/bookmarks', icon: Bookmark, title: t.tools.bookmarksTitle, body: plural(locale, t.tools.bookmarksBody, bookmarks.length) },
     { href: '/submissions', icon: FileUp, title: t.tools.uploadTitle, body: t.tools.uploadBody },
-    { href: '/analytics', icon: ChartNoAxesCombined, title: t.tools.analyticsTitle, body: t.tools.analyticsBody },
+    // Signed-in readers only (see app/[locale]/analytics).
+    ...(user ? [{ href: '/analytics', icon: ChartNoAxesCombined, title: t.tools.analyticsTitle, body: t.tools.analyticsBody }] : []),
   ]
 
   return (
