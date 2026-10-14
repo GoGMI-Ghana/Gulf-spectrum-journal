@@ -609,6 +609,19 @@ Chaque volume est évalué avant publication par un comité de rédaction compos
     memberSince: 'Membre depuis',
     viewAuthor: 'Voir votre profil d’auteur et vos articles publiés →',
     roles: { reader: 'Lecteur', author: 'Auteur', editor: 'Rédacteur', admin: 'Administrateur' },
+    pictureHeading: "Photo de profil",
+    pictureUpload: "Ajouter une photo",
+    pictureChange: "Changer de photo",
+    pictureRemove: "Supprimer",
+    pictureUploading: "Envoi…",
+    pictureHint: "Une photo nette de votre visage est idéale. JPEG, PNG ou WebP ; elle est recadrée en carré.",
+    pictureAuthorNote: "Elle apparaît aussi sur votre profil d’auteur et vos articles.",
+    pictureErrors: {
+      wrongType: "Choisissez une image JPEG, PNG ou WebP.",
+      tooLarge: "Cette image est trop lourde. Choisissez-en une de moins de 15 Mo.",
+      unreadable: "Cette image n’a pas pu être lue. Essayez un autre fichier.",
+      uploadFailed: "La photo n’a pas pu être enregistrée. Veuillez réessayer.",
+    },
   },
 
   messages: {

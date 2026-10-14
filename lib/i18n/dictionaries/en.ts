@@ -607,6 +607,19 @@ Each volume is reviewed by an editorial board of subject-matter experts before p
     memberSince: 'Member since',
     viewAuthor: 'View your author profile and published articles →',
     roles: { reader: 'Reader', author: 'Author', editor: 'Editor', admin: 'Admin' },
+    pictureHeading: "Profile picture",
+    pictureUpload: "Upload a picture",
+    pictureChange: "Change picture",
+    pictureRemove: "Remove",
+    pictureUploading: "Uploading…",
+    pictureHint: "A clear photo of your face works best. JPEG, PNG or WebP; it is cropped to a square.",
+    pictureAuthorNote: "It also appears on your author profile and articles.",
+    pictureErrors: {
+      wrongType: "Choose a JPEG, PNG or WebP image.",
+      tooLarge: "That image is too large. Choose one under 15 MB.",
+      unreadable: "That image could not be read. Try a different file.",
+      uploadFailed: "The picture could not be saved. Please try again.",
+    },
   },
 
   messages: {

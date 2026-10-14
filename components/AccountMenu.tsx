@@ -27,7 +27,7 @@ import {
 import { useAccount } from '@/context/AccountContext'
 import { useI18n } from '@/context/I18nContext'
 import { createClient } from '@/lib/supabase/client'
-import Initials from './Initials'
+import AuthorAvatar from './AuthorAvatar'
 import BoardBadge from './BoardBadge'
 
 function SectionLabel({ children }: { children: string }) {
@@ -88,7 +88,7 @@ export default function AccountMenu() {
   const [open, setOpen] = useState(false)
   const ref = useRef<HTMLDivElement>(null)
   const router = useRouter()
-  const { user, isEditor, boardTitle, bookmarks, unreadNotifications, unreadMessages } = useAccount()
+  const { user, isEditor, boardTitle, avatarUrl, bookmarks, unreadNotifications, unreadMessages } = useAccount()
   const { t } = useI18n()
 
   useEffect(() => {
@@ -122,14 +122,19 @@ export default function AccountMenu() {
         aria-expanded={open}
         className="flex items-center gap-1.5 text-white/85 hover:text-gold transition-colors text-sm"
       >
-        <CircleUserRound size={18} />
+        {avatarUrl ? (
+          // eslint-disable-next-line @next/next/no-img-element
+          <img src={avatarUrl} alt="" className="w-7 h-7 rounded-full object-cover ring-1 ring-white/40" />
+        ) : (
+          <CircleUserRound size={18} />
+        )}
       </button>
 
       {open && (
         <div className="absolute right-0 top-full mt-2 w-72 bg-white border border-slate-200 shadow-lg z-50 text-ink max-h-[80vh] overflow-y-auto">
           {/* Identity header */}
           <div className="flex items-center gap-3 p-4 border-b border-slate-200">
-            <Initials name={displayName} size="sm" />
+            <AuthorAvatar name={displayName} photo={avatarUrl} size="sm" className="rounded-full" />
             <div>
               <p className="text-sm font-semibold text-royal-blue flex items-center gap-1.5">
                 {displayName}

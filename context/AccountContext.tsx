@@ -10,6 +10,9 @@ interface AccountContextValue {
   role: UserRole | null
   isEditor: boolean
   boardTitle: string | null
+  // Profile picture (profiles.avatar_url), or null.
+  avatarUrl: string | null
+  setAvatarUrl: (url: string | null) => void
   bookmarks: string[]
   bookmarksLoading: boolean
   toggleBookmark: (slug: string) => void
@@ -59,6 +62,7 @@ export function AccountProvider({ children }: { children: ReactNode }) {
   const [unreadMessagesForUserId, setUnreadMessagesForUserId] = useState<string | null>(null)
   const [role, setRole] = useState<UserRole | null>(null)
   const [boardTitle, setBoardTitle] = useState<string | null>(null)
+  const [avatarUrl, setAvatarUrl] = useState<string | null>(null)
   const [roleForUserId, setRoleForUserId] = useState<string | null>(null)
 
   // Auth state: initial check, then stay in sync with sign-in/out
@@ -192,7 +196,7 @@ export function AccountProvider({ children }: { children: ReactNode }) {
     const supabase = createClient()
     supabase
       .from('profiles')
-      .select('role, board_title')
+      .select('role, board_title, avatar_url')
       .eq('id', user.id)
       .single()
       .then(({ data, error }) => {
@@ -201,9 +205,11 @@ export function AccountProvider({ children }: { children: ReactNode }) {
           console.error('Failed to load account role', error)
           setRole(null)
           setBoardTitle(null)
+          setAvatarUrl(null)
         } else {
           setRole((data?.role as UserRole | undefined) ?? null)
           setBoardTitle(data?.board_title ?? null)
+          setAvatarUrl(data?.avatar_url ?? null)
         }
         setRoleForUserId(user.id)
       })
@@ -283,6 +289,7 @@ export function AccountProvider({ children }: { children: ReactNode }) {
   const visibleRole = user && roleForUserId === user.id ? role : null
   const isEditor = visibleRole === 'editor' || visibleRole === 'admin'
   const visibleBoardTitle = user && roleForUserId === user.id ? boardTitle : null
+  const visibleAvatarUrl = user && roleForUserId === user.id ? avatarUrl : null
 
   function isBookmarked(slug: string) {
     return visibleBookmarks.includes(slug)
@@ -296,6 +303,8 @@ export function AccountProvider({ children }: { children: ReactNode }) {
         role: visibleRole,
         isEditor,
         boardTitle: visibleBoardTitle,
+        avatarUrl: visibleAvatarUrl,
+        setAvatarUrl,
         bookmarks: visibleBookmarks,
         bookmarksLoading,
         toggleBookmark,

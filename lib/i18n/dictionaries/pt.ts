@@ -608,6 +608,19 @@ Cada volume é revisto antes da publicação por um conselho editorial de especi
     memberSince: 'Membro desde',
     viewAuthor: 'Ver o seu perfil de autor e artigos publicados →',
     roles: { reader: 'Leitor', author: 'Autor', editor: 'Editor', admin: 'Administrador' },
+    pictureHeading: "Fotografia de perfil",
+    pictureUpload: "Carregar uma fotografia",
+    pictureChange: "Mudar fotografia",
+    pictureRemove: "Remover",
+    pictureUploading: "A carregar…",
+    pictureHint: "O ideal é uma fotografia nítida do seu rosto. JPEG, PNG ou WebP; é recortada em quadrado.",
+    pictureAuthorNote: "Aparece também no seu perfil de autor e nos seus artigos.",
+    pictureErrors: {
+      wrongType: "Escolha uma imagem JPEG, PNG ou WebP.",
+      tooLarge: "A imagem é demasiado grande. Escolha uma com menos de 15 MB.",
+      unreadable: "Não foi possível ler a imagem. Experimente outro ficheiro.",
+      uploadFailed: "Não foi possível guardar a fotografia. Tente novamente.",
+    },
   },
 
   messages: {

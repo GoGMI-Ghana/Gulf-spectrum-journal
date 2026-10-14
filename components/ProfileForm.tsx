@@ -6,6 +6,7 @@ import { createClient } from '@/lib/supabase/client'
 import { useAccount } from '@/context/AccountContext'
 import { useI18n } from '@/context/I18nContext'
 import { formatDate, rich } from '@/lib/i18n/format'
+import ProfilePicture from './ProfilePicture'
 
 interface ProfileRow {
   full_name: string | null
@@ -19,6 +20,9 @@ export default function ProfileForm() {
   const { locale, t } = useI18n()
   const [profile, setProfile] = useState<ProfileRow | null>(null)
   const [authorSlug, setAuthorSlug] = useState<string | null>(null)
+  // Whether an author profile is linked to this account the way that lets
+  // the member edit it (authors.user_id), so their picture can go there too.
+  const [linkedToAuthor, setLinkedToAuthor] = useState(false)
   // Whose profile `profile` holds, compared against the current user below
   // to derive a loading flag — same reasoning as AccountContext: every
   // setState here happens inside the fetch's callback, never synchronously
@@ -54,7 +58,12 @@ export default function ProfileForm() {
           const { data: author } = await supabase.from('authors').select('slug').eq('id', row.author_id).maybeSingle()
           if (!cancelled && author) setAuthorSlug(author.slug)
         }
-        if (!cancelled) setProfileForUserId(user.id)
+        const { data: claimed } = await supabase.from('authors').select('slug').eq('user_id', user.id)
+        if (!cancelled) {
+          setLinkedToAuthor((claimed ?? []).length > 0)
+          if (!row.author_id && claimed?.[0]) setAuthorSlug(claimed[0].slug)
+          setProfileForUserId(user.id)
+        }
       })
 
     return () => {
@@ -122,6 +131,7 @@ export default function ProfileForm() {
 
   return (
     <div className="max-w-lg">
+      <ProfilePicture linkedToAuthor={linkedToAuthor} />
       <form onSubmit={handleSubmit} className="space-y-4 mb-10">
         {error && <p className="text-sm text-red-700 bg-red-50 border border-red-200 px-3 py-2">{error}</p>}
         {saved && !error && (

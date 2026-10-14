@@ -604,6 +604,19 @@ Cada volumen es revisado antes de su publicación por un comité editorial de ex
     memberSince: 'Miembro desde',
     viewAuthor: 'Ver su perfil de autor y sus artículos publicados →',
     roles: { reader: 'Lector', author: 'Autor', editor: 'Editor', admin: 'Administrador' },
+    pictureHeading: "Foto de perfil",
+    pictureUpload: "Subir una foto",
+    pictureChange: "Cambiar foto",
+    pictureRemove: "Quitar",
+    pictureUploading: "Subiendo…",
+    pictureHint: "Lo mejor es una foto nítida de su cara. JPEG, PNG o WebP; se recorta en forma cuadrada.",
+    pictureAuthorNote: "También aparece en su perfil de autor y en sus artículos.",
+    pictureErrors: {
+      wrongType: "Elija una imagen JPEG, PNG o WebP.",
+      tooLarge: "La imagen es demasiado grande. Elija una de menos de 15 MB.",
+      unreadable: "No se pudo leer la imagen. Pruebe con otro archivo.",
+      uploadFailed: "No se pudo guardar la foto. Inténtelo de nuevo.",
+    },
   },
 
   messages: {
