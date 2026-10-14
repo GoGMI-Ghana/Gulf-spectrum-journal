@@ -326,6 +326,7 @@ type BoardProfileRow = {
   id: string
   full_name: string | null
   board_title: string
+  avatar_url: string | null
   author: { slug: string; photo_url: string | null; bio: string | null } | { slug: string; photo_url: string | null; bio: string | null }[] | null
 }
 
@@ -344,7 +345,7 @@ export const getEditorialBoard = cache(async (): Promise<BoardMember[]> => {
   // PostgREST needs telling which one this embed means.
   const { data, error } = await supabase
     .from('profiles')
-    .select('id, full_name, board_title, author:authors!profiles_author_id_fkey(slug, photo_url, bio)')
+    .select('id, full_name, board_title, avatar_url, author:authors!profiles_author_id_fkey(slug, photo_url, bio)')
     .not('board_title', 'is', null)
     .order('full_name')
   if (error) throw error
@@ -355,7 +356,9 @@ export const getEditorialBoard = cache(async (): Promise<BoardMember[]> => {
       name: row.full_name ?? 'Unnamed',
       title: row.board_title,
       authorSlug: author?.slug ?? null,
-      photo: author?.photo_url ?? null,
+      // The member's own profile picture first; an author photo an editor
+      // added is the fallback for members who haven't uploaded one.
+      photo: row.avatar_url ?? author?.photo_url ?? null,
       bio: author?.bio ?? null,
     }
   })

@@ -6,7 +6,7 @@ import { getDictionary } from '@/lib/i18n'
 import type { LocaleParams } from '@/lib/i18n/page'
 import { getTopics, getEditorialBoard } from '@/lib/content'
 import PageBanner from '@/components/PageBanner'
-import Initials from '@/components/Initials'
+import AuthorAvatar from '@/components/AuthorAvatar'
 
 export async function generateMetadata({ params }: LocaleParams): Promise<Metadata> {
   const t = getDictionary((await params).locale)
@@ -113,7 +113,7 @@ export default async function About({ params }: LocaleParams) {
               <ul className="space-y-4">
                 {board.slice(0, 4).map((m) => (
                   <li key={m.id} className="flex gap-3 pb-4 border-b border-white/10 last:border-0 last:pb-0">
-                    <Initials name={m.name} size="sm" className="!bg-gold !text-royal-blue" />
+                    <AuthorAvatar name={m.name} photo={m.photo} size="sm" className="rounded-full !bg-gold !text-royal-blue" />
                     <div>
                       <p className="font-medium text-white text-sm">{m.name}</p>
                       <p className="text-white/60 text-xs">{m.title}</p>
