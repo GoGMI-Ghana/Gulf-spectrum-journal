@@ -7,7 +7,7 @@ import { ArrowUp, ArrowDown, X, Plus } from 'lucide-react'
 import { createClient } from '@/lib/supabase/client'
 import { refreshPublicSite } from '@/lib/refreshPublicSite'
 import { isEmptyRichText, toEditorHtml } from '@/lib/richText'
-import { AdminHeading, ErrorBanner, Field, StringListEditor, inputClass, primaryButtonClass, secondaryButtonClass } from './AdminUI'
+import { AdminHeading, ErrorBanner, Field, StringListEditor, inputClass, primaryButtonClass, secondaryButtonClass, saveErrorMessage } from './AdminUI'
 import RichTextEditor from './RichTextEditor'
 
 interface Section {
@@ -278,17 +278,17 @@ export default function ArticleForm({ articleId }: { articleId?: string }) {
 
     let id = articleId
     if (id) {
-      const { error: err } = await supabase.from('articles').update(payload).eq('id', id)
-      if (err) {
+      const { data: updated, error: err } = await supabase.from('articles').update(payload).eq('id', id).select('id')
+      if (err || !updated || updated.length === 0) {
         setSaving(false)
-        setError(err.message)
+        setError(saveErrorMessage(err))
         return
       }
     } else {
       const { data, error: err } = await supabase.from('articles').insert(payload).select('id').single()
       if (err || !data) {
         setSaving(false)
-        setError(err?.message ?? 'Failed to create article.')
+        setError(saveErrorMessage(err))
         return
       }
       id = data.id
@@ -416,6 +416,9 @@ export default function ArticleForm({ articleId }: { articleId?: string }) {
           <textarea rows={3} className={inputClass} value={form.correction_note} onChange={(e) => setForm({ ...form, correction_note: e.target.value })} />
         </Field>
 
+        {/* Repeated here: the form is long, and the banner at its top is
+            off-screen when Save is pressed. */}
+        <ErrorBanner message={error} />
         <div className="flex gap-3 pt-2">
           <button type="submit" disabled={saving} className={primaryButtonClass}>
             {saving ? 'Saving…' : articleId ? 'Save changes' : 'Create article'}

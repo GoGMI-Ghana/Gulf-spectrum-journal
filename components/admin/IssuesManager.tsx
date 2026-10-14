@@ -5,7 +5,7 @@ import Link from 'next/link'
 import { Pencil, Trash2, Plus, X, Mail } from 'lucide-react'
 import { createClient } from '@/lib/supabase/client'
 import { refreshPublicSite } from '@/lib/refreshPublicSite'
-import { AdminHeading, ErrorBanner, Field, inputClass, primaryButtonClass, secondaryButtonClass } from './AdminUI'
+import { AdminHeading, ErrorBanner, Field, inputClass, primaryButtonClass, secondaryButtonClass, saveErrorMessage } from './AdminUI'
 import ImageUpload from './ImageUpload'
 
 interface BoardMember {
@@ -145,7 +145,7 @@ export default function IssuesManager() {
 
     setSaving(false)
     if (err || !saved) {
-      setError(err?.message ?? 'Failed to save the issue.')
+      setError(saveErrorMessage(err))
       return
     }
     setShowForm(false)
@@ -256,6 +256,7 @@ export default function IssuesManager() {
           <Field label="Editorial board for this issue">
             <EditorialBoardEditor value={form.editorial_board} onChange={(v) => setForm({ ...form, editorial_board: v })} />
           </Field>
+          <ErrorBanner message={error} />
           <div className="flex gap-3">
             <button type="submit" disabled={saving} className={primaryButtonClass}>
               {saving ? 'Saving…' : editingId ? 'Save changes' : 'Create issue'}

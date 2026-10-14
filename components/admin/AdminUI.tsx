@@ -59,6 +59,20 @@ export function AdminHeading({
   )
 }
 
+// Row-level security doesn't reject a change it doesn't allow: the update
+// simply matches no rows. So every admin save asks for the saved row back,
+// and treats "nothing came back" as this failure rather than as success.
+export const NOT_SAVED_MESSAGE =
+  'Not saved. You may have been signed out, or this account does not have editor access. Sign in again in another tab, then press Save once more — what you typed is still here.'
+
+// Turns a failed save into a message an editor can act on.
+export function saveErrorMessage(err: { message: string } | null | undefined): string {
+  if (!err) return NOT_SAVED_MESSAGE
+  // PostgREST's wording when .single() finds no row — the same situation.
+  if (/coerce the result to a single JSON object|JSON object requested/i.test(err.message)) return NOT_SAVED_MESSAGE
+  return `Not saved: ${err.message}`
+}
+
 export function ErrorBanner({ message }: { message: string | null }) {
   if (!message) return null
   return <p className="text-sm text-red-700 bg-red-50 border border-red-200 px-3 py-2 mb-4">{message}</p>

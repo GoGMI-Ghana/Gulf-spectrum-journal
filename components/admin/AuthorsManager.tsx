@@ -4,7 +4,7 @@ import { useEffect, useState, type FormEvent } from 'react'
 import { Pencil, Trash2, Check, X } from 'lucide-react'
 import { createClient } from '@/lib/supabase/client'
 import { refreshPublicSite } from '@/lib/refreshPublicSite'
-import { AdminHeading, ErrorBanner, Field, inputClass, primaryButtonClass, secondaryButtonClass } from './AdminUI'
+import { AdminHeading, ErrorBanner, Field, inputClass, primaryButtonClass, secondaryButtonClass, saveErrorMessage } from './AdminUI'
 import ImageUpload from './ImageUpload'
 
 interface AuthorRow {
@@ -131,13 +131,13 @@ export default function AuthorsManager() {
       user_id: form.user_id.trim() || null,
     }
 
-    const { error: err } = editingId
-      ? await supabase.from('authors').update(payload).eq('id', editingId)
-      : await supabase.from('authors').insert(payload)
+    const { data: saved, error: err } = editingId
+      ? await supabase.from('authors').update(payload).eq('id', editingId).select('id')
+      : await supabase.from('authors').insert(payload).select('id')
 
     setSaving(false)
-    if (err) {
-      setError(err.message)
+    if (err || !saved || saved.length === 0) {
+      setError(saveErrorMessage(err))
       return
     }
     setShowForm(false)
