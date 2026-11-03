@@ -17,6 +17,9 @@ function parseName(name: string): CitedName {
   return { given: parts.slice(0, -1).join(' '), surname: parts[parts.length - 1] }
 }
 
+// Shared with the Crossref deposit (lib/crossref.ts), which needs the same split.
+export const splitName = parseName
+
 function initials(given: string): string {
   return given.split(' ').map((p) => `${p[0].toUpperCase()}.`).join(' ')
 }

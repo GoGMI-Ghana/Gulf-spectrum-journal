@@ -217,6 +217,9 @@ export const getArticles = cache(async (): Promise<Article[]> => {
     .from('articles')
     .select(ARTICLE_SELECT)
     .eq('status', 'published')
+    // A stable order: the order articles were added, which is how an issue
+    // lists them (and how their DOIs are numbered — see lib/crossref.ts).
+    .order('created_at')
   if (error) throw error
   return (data as unknown as ArticleRow[]).map(mapArticleRow)
 })

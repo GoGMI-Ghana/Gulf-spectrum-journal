@@ -2,7 +2,7 @@
 
 import { useEffect, useState, type FormEvent } from 'react'
 import Link from 'next/link'
-import { Pencil, Trash2, Plus, X, Mail } from 'lucide-react'
+import { Pencil, Trash2, Plus, X, Mail, FileDown, Fingerprint } from 'lucide-react'
 import { createClient } from '@/lib/supabase/client'
 import { refreshPublicSite } from '@/lib/refreshPublicSite'
 import { AdminHeading, ErrorBanner, Field, inputClass, primaryButtonClass, secondaryButtonClass, saveErrorMessage } from './AdminUI'
@@ -183,6 +183,30 @@ export default function IssuesManager() {
     )
   }
 
+  // Step 2 of DOI registration: after Crossref has accepted the uploaded
+  // file (see app/api/admin/issues/[id]/crossref), put the DOIs on the
+  // articles so the site links them.
+  async function saveDois(iss: IssueRow) {
+    const plan = await fetch(`/api/admin/issues/${iss.id}/crossref`).then((r) => r.json()).catch(() => null)
+    const pending = (plan?.articles ?? []).filter((a: { saved: boolean }) => !a.saved)
+    if (!plan || plan.error) {
+      alert(plan?.error ?? 'Could not load the DOIs for this issue.')
+      return
+    }
+    if (pending.length === 0) {
+      alert('Every article in this issue already has its DOI saved.')
+      return
+    }
+    const list = pending.map((a: { title: string; doi: string }) => `${a.doi}  —  ${a.title}`).join('\n')
+    const ok = confirm(
+      `Only do this after Crossref has confirmed the upload was successful.\n\nThese DOIs will be saved and shown on the articles:\n\n${list}`
+    )
+    if (!ok) return
+    const res = await fetch(`/api/admin/issues/${iss.id}/crossref`, { method: 'POST' })
+    const body = await res.json().catch(() => null)
+    alert(res.ok ? `Saved ${body?.saved ?? 0} DOI(s).` : body?.error ?? 'The DOIs could not be saved.')
+  }
+
   async function handleDelete(iss: IssueRow) {
     if (!confirm(`Delete issue "${iss.theme}"? This fails if it still has articles — reassign or delete those first.`)) return
     const supabase = createClient()
@@ -311,6 +335,20 @@ export default function IssuesManager() {
                       <Mail size={12} /> {announcingId === iss.id ? 'Sending…' : 'Email members'}
                     </button>
                   ))}
+                {iss.status === 'published' && (
+                  <div className="flex flex-wrap items-center gap-x-4 gap-y-1 mt-1">
+                    {/* DOI registration, step 1: the file to upload at Crossref. */}
+                    <a
+                      href={`/api/admin/issues/${iss.id}/crossref?format=xml`}
+                      className="flex items-center gap-1 text-xs text-ocean-blue hover:underline"
+                    >
+                      <FileDown size={12} /> Crossref file
+                    </a>
+                    <button onClick={() => saveDois(iss)} className="flex items-center gap-1 text-xs text-ocean-blue hover:underline">
+                      <Fingerprint size={12} /> Save DOIs (after Crossref accepts)
+                    </button>
+                  </div>
+                )}
               </div>
               <div className="flex items-center gap-3 shrink-0">
                 <button onClick={() => startEdit(iss)} className="text-slate-400 hover:text-royal-blue" aria-label="Edit">
