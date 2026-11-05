@@ -9,6 +9,7 @@
 import type { Article, Author, Issue } from './types'
 import { journal } from './staticContent'
 import { splitName } from './citation'
+import { referenceDoi } from './references'
 
 export const CROSSREF = {
   prefix: '10.68864',
@@ -104,9 +105,16 @@ export function buildDepositXml({ issue, entries, siteUrl }: { issue: Issue; ent
         '        </person_name>',
       ].join('\n')
     })
-    const references = article.references.map(
-      (ref, i) => `        <citation key="ref${i + 1}">\n          <unstructured_citation>${esc(ref)}</unstructured_citation>\n        </citation>`
-    )
+    const references = article.references.map((ref, i) => {
+      // A DOI in the reference tells Crossref exactly which work it cites.
+      const citedDoi = referenceDoi(ref)
+      return [
+        `        <citation key="ref${i + 1}">`,
+        ...(citedDoi ? [`          <doi>${esc(citedDoi)}</doi>`] : []),
+        `          <unstructured_citation>${esc(ref)}</unstructured_citation>`,
+        '        </citation>',
+      ].join('\n')
+    })
     return [
       '    <journal_article publication_type="full_text" language="en">',
       '      <titles>',

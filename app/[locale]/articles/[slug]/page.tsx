@@ -13,6 +13,7 @@ import {
 import { getArticleStatsById } from '@/lib/analytics'
 import { formatCitations } from '@/lib/citation'
 import { doiUrl } from '@/lib/doi'
+import { referenceParts } from '@/lib/references'
 import { getDictionary, toLocale } from '@/lib/i18n'
 import { fmt, formatNumber } from '@/lib/i18n/format'
 import type { LocaleSlugParams } from '@/lib/i18n/page'
@@ -334,7 +335,17 @@ export default async function ArticleDetail({ params }: LocaleSlugParams) {
               <h2 className="kicker text-royal-blue mb-4">{t.article.references}</h2>
               <ol className="space-y-2 text-sm text-slate-600 list-decimal list-inside">
                 {article.references.map((ref, i) => (
-                  <li key={i} className="leading-relaxed break-words">{ref}</li>
+                  <li key={i} className="leading-relaxed break-words">
+                    {referenceParts(ref).map((part, j) =>
+                      part.href ? (
+                        <a key={j} href={part.href} target="_blank" rel="noopener noreferrer" className="text-ocean-blue hover:underline">
+                          {part.text}
+                        </a>
+                      ) : (
+                        part.text
+                      )
+                    )}
+                  </li>
                 ))}
               </ol>
             </section>

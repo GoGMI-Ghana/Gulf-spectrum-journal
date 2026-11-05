@@ -6,8 +6,9 @@
 // Server-only. Labels are English: the article text itself is, and one
 // PDF per article (rather than per reader language) can be cached.
 
-import { Document, Page, Text, View, renderToBuffer } from '@react-pdf/renderer'
+import { Document, Link, Page, Text, View, renderToBuffer } from '@react-pdf/renderer'
 import type { Article, Author, Issue, Topic } from '../types'
+import { referenceParts } from '../references'
 import { looksLikeHtml } from '../richText'
 import { sanitizeArticleHtml } from '../sanitizeArticleHtml'
 import { journal } from '../staticContent'
@@ -116,7 +117,17 @@ export function ArticleContent({
             const entry = (
               <View key={i} style={s.reference} wrap={false}>
                 <Text style={s.referenceNumber}>{i + 1}.</Text>
-                <Text style={s.referenceText}>{reference}</Text>
+                <Text style={s.referenceText}>
+                  {referenceParts(reference).map((part, j) =>
+                    part.href ? (
+                      <Link key={j} src={part.href} style={s.link}>
+                        {part.text}
+                      </Link>
+                    ) : (
+                      part.text
+                    )
+                  )}
+                </Text>
               </View>
             )
             // The heading travels with the first reference, so it is never
