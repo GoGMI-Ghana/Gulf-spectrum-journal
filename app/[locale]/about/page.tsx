@@ -8,6 +8,8 @@ import { getTopics, getEditorialBoard } from '@/lib/content'
 import PageBanner from '@/components/PageBanner'
 import AuthorAvatar from '@/components/AuthorAvatar'
 import SideSection from '@/components/SideSection'
+import Photo from '@/components/Photo'
+import { photos } from '@/lib/photos'
 
 export async function generateMetadata({ params }: LocaleParams): Promise<Metadata> {
   const t = getDictionary((await params).locale)
@@ -47,6 +49,8 @@ export default async function About({ params }: LocaleParams) {
               </p>
             ))}
           </div>
+
+          <Photo slot={photos.aboutInstitute} sizes="(max-width: 1024px) 100vw, 800px" className="mt-8" />
 
           <h2 className="font-display text-2xl text-royal-blue mt-10 mb-4">
             {t.about.scope}

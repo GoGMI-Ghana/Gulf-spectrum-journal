@@ -5,6 +5,8 @@ import type { LocaleParams } from '@/lib/i18n/page'
 import PageBanner from '@/components/PageBanner'
 import SideSection from '@/components/SideSection'
 import ContactForm from '@/components/ContactForm'
+import Photo from '@/components/Photo'
+import { photos } from '@/lib/photos'
 
 export async function generateMetadata({ params }: LocaleParams): Promise<Metadata> {
   const t = getDictionary((await params).locale)
@@ -24,6 +26,7 @@ export default async function Contact({ params }: LocaleParams) {
 
         <aside className="space-y-10">
           <SideSection title={t.contact.office}>
+            <Photo slot={photos.contactOffice} sizes="(max-width: 1024px) 100vw, 400px" className="mb-4" />
             <dl className="space-y-3">
               <div>
                 <dt className="text-sm text-slate-600">{t.common.email}</dt>

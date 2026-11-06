@@ -8,6 +8,8 @@ import { getIssues, getTopics, getArticlesForIssue } from '@/lib/content'
 import { journal } from '@/lib/staticContent'
 import IssueContents from '@/components/IssueContents'
 import IssueCover from '@/components/IssueCover'
+import Photo from '@/components/Photo'
+import { photos } from '@/lib/photos'
 
 export async function generateMetadata({ params }: LocaleParams): Promise<Metadata> {
   const t = getDictionary((await params).locale)
@@ -147,6 +149,7 @@ export default async function Home({ params }: LocaleParams) {
         <aside className="space-y-10 text-[0.9375rem]">
           <section>
             <h2 className="font-display text-lg text-royal-blue pb-2 border-b border-slate-300">{t.home.aboutJournal}</h2>
+            <Photo slot={photos.homeAbout} sizes="(max-width: 1024px) 100vw, 288px" className="mt-4" />
             <p className="text-slate-700 leading-relaxed mt-3">{t.home.aboutBody}</p>
             <dl className="mt-4 grid grid-cols-[auto_1fr] gap-x-4 gap-y-1.5 text-sm">
               {journal.issn && (
