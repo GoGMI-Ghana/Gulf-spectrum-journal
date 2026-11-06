@@ -8,7 +8,7 @@
 /* Shared with the main GoGMI site palette, so the journal reads as
    connected to GoGMI while keeping its own masthead identity. */
 @theme {
-  --color-royal-blue: #003366;
+  --color-royal-blue: #132552;
   --color-ocean-blue: #0066cc;
   /* Bright gold is for dark backgrounds only (2.2:1 on white). Text on
      white or light backgrounds uses gold-ink, which passes WCAG AA. */

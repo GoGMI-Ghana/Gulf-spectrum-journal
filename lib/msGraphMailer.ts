@@ -77,7 +77,7 @@ function buildEmailHtml(actionType: EmailActionType, token: string): string {
         <td align="center">
           <table role="presentation" width="480" cellpadding="0" cellspacing="0" style="background-color:#ffffff; max-width:480px; width:100%;">
             <tr>
-              <td style="background-color:#003366; padding:24px 32px;">
+              <td style="background-color:#132552; padding:24px 32px;">
                 <div style="color:#ffffff; font-size:18px; font-weight:bold;">Gulf Spectrum Journal</div>
               </td>
             </tr>
@@ -85,7 +85,7 @@ function buildEmailHtml(actionType: EmailActionType, token: string): string {
               <td style="padding:32px;">
                 <p style="font-size:15px; color:#12202e; line-height:1.6; margin:0 0 24px;">${copy.intro} It expires shortly, so enter it soon.</p>
                 <div style="background-color:#f5e6d3; text-align:center; padding:20px; margin-bottom:24px;">
-                  <span style="font-size:32px; font-weight:bold; letter-spacing:0.3em; color:#003366; font-family: 'Courier New', monospace;">${token}</span>
+                  <span style="font-size:32px; font-weight:bold; letter-spacing:0.3em; color:#132552; font-family: 'Courier New', monospace;">${token}</span>
                 </div>
                 <p style="font-size:13px; color:#94a3b8; line-height:1.6; margin:0;">
                   Didn&apos;t request this? You can safely ignore this email.
@@ -179,14 +179,14 @@ function buildAnnouncementHtml(issue: IssueAnnouncement): string {
         <td align="center">
           <table role="presentation" width="480" cellpadding="0" cellspacing="0" style="background-color:#ffffff; max-width:480px; width:100%;">
             <tr>
-              <td style="background-color:#003366; padding:24px 32px;">
+              <td style="background-color:#132552; padding:24px 32px;">
                 <div style="color:#ffffff; font-size:18px; font-weight:bold;">Gulf Spectrum Journal</div>
               </td>
             </tr>
             <tr>
               <td style="padding:32px;">
                 <p style="font-size:12px; color:#b8860b; letter-spacing:0.15em; text-transform:uppercase; margin:0 0 8px;">New issue &middot; No. ${issue.number}</p>
-                <h1 style="font-size:22px; color:#003366; line-height:1.3; margin:0 0 20px;">${escapeHtml(issue.theme)}</h1>
+                <h1 style="font-size:22px; color:#132552; line-height:1.3; margin:0 0 20px;">${escapeHtml(issue.theme)}</h1>
                 ${about}
                 <a href="${escapeHtml(issue.issueUrl)}" style="display:inline-block; background-color:#DAA520; color:#12202e; font-size:15px; font-weight:bold; text-decoration:none; padding:12px 24px;">Read the issue</a>
               </td>
@@ -271,13 +271,13 @@ function buildStaffAlertHtml(alert: StaffAlert): string {
         <td align="center">
           <table role="presentation" width="520" cellpadding="0" cellspacing="0" style="background-color:#ffffff; max-width:520px; width:100%;">
             <tr>
-              <td style="background-color:#003366; padding:24px 32px;">
+              <td style="background-color:#132552; padding:24px 32px;">
                 <div style="color:#ffffff; font-size:18px; font-weight:bold;">Gulf Spectrum Journal</div>
               </td>
             </tr>
             <tr>
               <td style="padding:32px;">
-                <h1 style="font-size:19px; color:#003366; line-height:1.3; margin:0 0 22px;">${escapeHtml(alert.heading)}</h1>${rows}
+                <h1 style="font-size:19px; color:#132552; line-height:1.3; margin:0 0 22px;">${escapeHtml(alert.heading)}</h1>${rows}
                 <a href="${escapeHtml(alert.adminUrl)}" style="display:inline-block; background-color:#DAA520; color:#12202e; font-size:14px; font-weight:bold; text-decoration:none; padding:11px 22px;">${escapeHtml(alert.adminLabel)}</a>
               </td>
             </tr>

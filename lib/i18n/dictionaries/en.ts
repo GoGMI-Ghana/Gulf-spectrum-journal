@@ -277,7 +277,7 @@ Each volume is reviewed by an editorial board of subject-matter experts before p
     empty: 'No articles published under this topic yet. Browse {topicsLink} or {issuesLink}.',
     allTopicsLink: 'all topics',
     allIssuesLink: 'all issues',
-    back: '← All topics',
+    back: 'All topics',
   },
 
   authors: {
@@ -295,7 +295,7 @@ Each volume is reviewed by an editorial board of subject-matter experts before p
     notFound: 'Author not found',
     articles: 'Articles',
     biography: 'Biography',
-    back: '← All authors',
+    back: 'All authors',
     isThisYou: 'Is this you? {link}.',
     signInToClaim: 'Sign in to claim this profile',
     claimProfile: 'Claim this profile',
@@ -596,7 +596,7 @@ Each volume is reviewed by an editorial board of subject-matter experts before p
     description: "We'll email you a link to get back in.",
     sent: 'If an account exists for {email}, a password reset link is on its way. Check your inbox — the link signs you in and takes you straight to where you can set a new password.',
     submit: 'Send Reset Link',
-    back: '← Back to sign in',
+    back: 'Back to sign in',
   },
 
   profile: {
@@ -643,7 +643,7 @@ Each volume is reviewed by an editorial board of subject-matter experts before p
     newMessage: 'New Message',
     empty: 'No conversations yet. Use “New Message” to find another member.',
     selectPrompt: 'Select a conversation, or start a new one.',
-    back: '← Back',
+    back: 'Back',
     typePlaceholder: 'Type a message…',
     send: 'Send message',
   },

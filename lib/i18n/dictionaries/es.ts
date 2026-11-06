@@ -270,7 +270,7 @@ Cada volumen es revisado antes de su publicación por un comité editorial de ex
     empty: 'Todavía no se han publicado artículos sobre este tema. Explore {topicsLink} o {issuesLink}.',
     allTopicsLink: 'todos los temas',
     allIssuesLink: 'todos los números',
-    back: '← Todos los temas',
+    back: 'Todos los temas',
   },
 
   authors: {
@@ -288,7 +288,7 @@ Cada volumen es revisado antes de su publicación por un comité editorial de ex
     notFound: 'Autor no encontrado',
     articles: 'Artículos',
     biography: 'Biografía',
-    back: '← Todos los autores',
+    back: 'Todos los autores',
     isThisYou: '¿Es usted? {link}.',
     signInToClaim: 'Inicie sesión para reclamar este perfil',
     claimProfile: 'Reclamar este perfil',
@@ -593,7 +593,7 @@ Cada volumen es revisado antes de su publicación por un comité editorial de ex
     description: 'Le enviaremos un enlace por correo para volver a entrar.',
     sent: 'Si existe una cuenta para {email}, el enlace para restablecer la contraseña va en camino. Revise su bandeja de entrada — el enlace inicia su sesión y le lleva directamente a donde puede definir una nueva contraseña.',
     submit: 'Enviar enlace',
-    back: '← Volver a iniciar sesión',
+    back: 'Volver a iniciar sesión',
   },
 
   profile: {
@@ -640,7 +640,7 @@ Cada volumen es revisado antes de su publicación por un comité editorial de ex
     newMessage: 'Nuevo mensaje',
     empty: 'Aún no hay conversaciones. Use «Nuevo mensaje» para buscar a otro miembro.',
     selectPrompt: 'Seleccione una conversación o inicie una nueva.',
-    back: '← Volver',
+    back: 'Volver',
     typePlaceholder: 'Escriba un mensaje…',
     send: 'Enviar mensaje',
   },

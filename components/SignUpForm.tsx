@@ -45,7 +45,7 @@ export default function SignUpForm() {
 
       <div className="flex items-center gap-3">
         <div className="flex-1 h-px bg-slate-200" />
-        <span className="text-xs text-slate-500 uppercase tracking-wide">{t.common.or}</span>
+        <span className="text-sm text-slate-600">{t.common.or}</span>
         <div className="flex-1 h-px bg-slate-200" />
       </div>
 

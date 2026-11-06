@@ -404,7 +404,7 @@ export default function MessagesApp() {
                       }`}
                     >
                       <p className="whitespace-pre-line break-words">{m.body}</p>
-                      <p className={`text-[10px] mt-1 ${mine ? 'text-white/60' : 'text-slate-500'}`}>
+                      <p className={`text-xs mt-1 ${mine ? 'text-white/60' : 'text-slate-500'}`}>
                         {new Date(m.createdAt).toLocaleTimeString(intlLocales[locale], { hour: 'numeric', minute: '2-digit' })}
                       </p>
                     </div>

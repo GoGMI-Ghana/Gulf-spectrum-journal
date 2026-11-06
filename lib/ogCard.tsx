@@ -10,7 +10,7 @@
 import { ImageResponse } from 'next/og'
 import { journal } from './staticContent'
 
-const ROYAL_BLUE = '#003366'
+const ROYAL_BLUE = '#132552'
 const GOLD = '#daa520'
 const SOFT_GOLD = '#f5e6d3'
 

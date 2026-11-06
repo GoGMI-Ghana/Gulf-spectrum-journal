@@ -273,7 +273,7 @@ Cada volume é revisto antes da publicação por um conselho editorial de especi
     empty: 'Ainda não foram publicados artigos neste tema. Explore {topicsLink} ou {issuesLink}.',
     allTopicsLink: 'todos os temas',
     allIssuesLink: 'todos os números',
-    back: '← Todos os temas',
+    back: 'Todos os temas',
   },
 
   authors: {
@@ -291,7 +291,7 @@ Cada volume é revisto antes da publicação por um conselho editorial de especi
     notFound: 'Autor não encontrado',
     articles: 'Artigos',
     biography: 'Biografia',
-    back: '← Todos os autores',
+    back: 'Todos os autores',
     isThisYou: 'É você? {link}.',
     signInToClaim: 'Inicie sessão para reivindicar este perfil',
     claimProfile: 'Reivindicar este perfil',
@@ -597,7 +597,7 @@ Cada volume é revisto antes da publicação por um conselho editorial de especi
     description: 'Enviamos-lhe uma ligação por e-mail para voltar a entrar.',
     sent: 'Se existir uma conta para {email}, a ligação para repor a palavra-passe está a caminho. Verifique a sua caixa de entrada — a ligação inicia a sua sessão e leva-o diretamente ao sítio onde pode definir uma nova palavra-passe.',
     submit: 'Enviar ligação',
-    back: '← Voltar a iniciar sessão',
+    back: 'Voltar a iniciar sessão',
   },
 
   profile: {
@@ -644,7 +644,7 @@ Cada volume é revisto antes da publicação por um conselho editorial de especi
     newMessage: 'Nova mensagem',
     empty: 'Ainda não há conversas. Use «Nova mensagem» para encontrar outro membro.',
     selectPrompt: 'Selecione uma conversa ou inicie uma nova.',
-    back: '← Voltar',
+    back: 'Voltar',
     typePlaceholder: 'Escreva uma mensagem…',
     send: 'Enviar mensagem',
   },

@@ -37,7 +37,7 @@ const BODY_LINE_HEIGHT = 1.55
 
 // The site's palette (app/globals.css).
 export const pdfColors = {
-  royalBlue: '#003366',
+  royalBlue: '#132552',
   gold: '#b8860b',
   ink: '#12202e',
   body: '#1f2937',

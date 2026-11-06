@@ -270,7 +270,7 @@ Chaque volume est évalué avant publication par un comité de rédaction compos
     empty: 'Aucun article n’a encore été publié dans cette thématique. Parcourez {topicsLink} ou {issuesLink}.',
     allTopicsLink: 'toutes les thématiques',
     allIssuesLink: 'tous les numéros',
-    back: '← Toutes les thématiques',
+    back: 'Toutes les thématiques',
   },
 
   authors: {
@@ -288,7 +288,7 @@ Chaque volume est évalué avant publication par un comité de rédaction compos
     notFound: 'Auteur introuvable',
     articles: 'Articles',
     biography: 'Biographie',
-    back: '← Tous les auteurs',
+    back: 'Tous les auteurs',
     isThisYou: 'C’est vous ? {link}.',
     signInToClaim: 'Connectez-vous pour revendiquer ce profil',
     claimProfile: 'Revendiquer ce profil',
@@ -598,7 +598,7 @@ Chaque volume est évalué avant publication par un comité de rédaction compos
     description: 'Nous vous enverrons un lien par e-mail pour vous reconnecter.',
     sent: 'Si un compte existe pour {email}, un lien de réinitialisation est en route. Consultez votre boîte de réception — le lien vous connecte et vous amène directement là où vous pourrez définir un nouveau mot de passe.',
     submit: 'Envoyer le lien',
-    back: '← Retour à la connexion',
+    back: 'Retour à la connexion',
   },
 
   profile: {
@@ -645,7 +645,7 @@ Chaque volume est évalué avant publication par un comité de rédaction compos
     newMessage: 'Nouveau message',
     empty: 'Aucune conversation pour l’instant. Utilisez « Nouveau message » pour trouver un autre membre.',
     selectPrompt: 'Sélectionnez une conversation, ou commencez-en une nouvelle.',
-    back: '← Retour',
+    back: 'Retour',
     typePlaceholder: 'Écrivez un message…',
     send: 'Envoyer le message',
   },

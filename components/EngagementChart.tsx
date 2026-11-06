@@ -51,11 +51,11 @@ export default function EngagementChart({ data, label }: { data: DailySeriesPoin
       <text x={PAD_LEFT - 8} y={baselineY + 4} textAnchor="end" fontSize="12" fill="#94a3b8">0</text>
 
       {/* series */}
-      <path d={downloadsPath} fill="none" stroke="#003366" strokeWidth="2" />
+      <path d={downloadsPath} fill="none" stroke="#132552" strokeWidth="2" />
       <path d={viewsPath} fill="none" stroke="#DAA520" strokeWidth="2" />
 
       {downloadsPoints.map((p, i) => (
-        <circle key={`d-${i}`} cx={p.x} cy={p.y} r="3" fill="#fff" stroke="#003366" strokeWidth="1.5" />
+        <circle key={`d-${i}`} cx={p.x} cy={p.y} r="3" fill="#fff" stroke="#132552" strokeWidth="1.5" />
       ))}
       {viewsPoints.map((p, i) => (
         <circle key={`v-${i}`} cx={p.x} cy={p.y} r="3" fill="#fff" stroke="#DAA520" strokeWidth="1.5" />
