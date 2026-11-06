@@ -33,7 +33,7 @@ export default async function Issues({ params }: LocaleParams) {
         title={t.issues.title}
         description={rich(t.issues.description, {
           link: (
-            <Link href="/topics" className="text-gold hover:underline">
+            <Link href="/topics" className="text-ocean-blue underline underline-offset-2">
               {t.issues.seeTopics}
             </Link>
           ),

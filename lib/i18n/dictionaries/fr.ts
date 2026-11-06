@@ -72,7 +72,9 @@ Chaque volume est évalué avant publication par un comité de rédaction compos
   },
 
   header: {
+    skipToContent: 'Aller au contenu principal',
     publicationOf: 'Une publication du Gulf of Guinea Maritime Institute',
+    mainMenu: 'Menu principal',
     toggleMenu: 'Afficher ou masquer le menu',
     language: 'Langue',
   },
@@ -100,29 +102,31 @@ Chaque volume est évalué avant publication par un comité de rédaction compos
   subNav: {
     searchPlaceholder: 'Rechercher dans la revue',
     search: 'Rechercher',
-    submitArticle: 'Soumettre votre article →',
+    submitArticle: 'Soumettre votre article',
   },
 
   home: {
+    currentIssue: 'Numéro en cours',
+    forAuthors: 'Pour les auteurs',
     metaDescription: 'Gulf Spectrum Journal est la revue de recherche du Gulf of Guinea Maritime Institute (GoGMI). Elle publie des travaux évalués par un comité de rédaction sur la sécurité maritime, l’économie bleue, la gouvernance et le renforcement des capacités dans le golfe de Guinée.',
     intro: 'Des travaux sur la gouvernance, la sûreté et la sécurité maritimes dans le golfe de Guinée, rédigés par les officiers de marine, chercheurs et praticiens qui travaillent sur ces questions dans la région.',
     readLatest: 'Lire le dernier numéro',
     aboutJournal: 'À propos de la revue',
     issueHeading: 'Numéro {number} : {theme}',
-    viewIssue: 'Voir le numéro →',
+    viewIssue: 'Voir le numéro',
     aboutBody: 'Gulf Spectrum Journal publie des travaux sur la gouvernance, la sûreté et la sécurité maritimes dans le golfe de Guinée. Chaque volume est évalué par un comité de rédaction avant publication.',
-    learnMore: 'En savoir plus →',
+    learnMore: 'En savoir plus',
     submitHeading: 'Soumettez vos recherches',
     submitBody:
       'Gulf Spectrum Journal accueille les soumissions des chercheurs, officiers et praticiens qui travaillent sur les affaires maritimes du golfe de Guinée.',
-    viewGuidelines: 'Voir les consignes de soumission →',
+    viewGuidelines: 'Voir les consignes de soumission',
     boardHeading: 'Comité de rédaction',
     boardBody: 'Découvrez les rédacteurs qui évaluent et publient les travaux de la revue, ou posez votre candidature pour les rejoindre.',
-    applyBoard: 'Rejoindre le comité de rédaction →',
+    applyBoard: 'Rejoindre le comité de rédaction',
     browseByTopic: 'Parcourir par thématique',
-    allTopics: 'Toutes les thématiques →',
+    allTopics: 'Toutes les thématiques',
     browseArticlesIssues: 'Parcourir les articles et numéros',
-    viewAll: 'Tout voir →',
+    viewAll: 'Tout voir',
     emptyHeading: 'Premier numéro à venir',
     emptyBody:
       'Gulf Spectrum Journal prépare son premier numéro. En attendant, découvrez la revue ou soumettez vos recherches.',
@@ -163,8 +167,8 @@ Chaque volume est évalué avant publication par un comité de rédaction compos
     founded: 'Création',
     board: 'Comité de rédaction',
     noBoard: 'Aucun membre du comité de rédaction n’est encore répertorié.',
-    viewFullBoard: 'Voir tout le comité de rédaction →',
-    readCorrectionPolicy: 'Lire la politique de correction →',
+    viewFullBoard: 'Voir tout le comité de rédaction',
+    readCorrectionPolicy: 'Lire la politique de correction',
   },
 
   issues: {
@@ -174,7 +178,7 @@ Chaque volume est évalué avant publication par un comité de rédaction compos
     title: 'Articles et numéros',
     description:
       'Parcourez Gulf Spectrum Journal par volume. Chaque numéro est un recueil thématique d’articles de recherche évalués par un comité de rédaction. Vous préférez parcourir par sujet ? {link}',
-    seeTopics: 'Voir les thématiques →',
+    seeTopics: 'Voir les thématiques',
     empty: 'Aucun numéro n’a encore été publié.',
   },
 
@@ -184,16 +188,18 @@ Chaque volume est évalué avant publication par un comité de rédaction compos
     volume: 'Volume {volume} · {date}',
     inThisIssue: 'Dans ce numéro',
     issueBoard: 'Comité de rédaction du numéro',
-    allIssues: '← Tous les numéros',
+    allIssues: 'Tous les numéros',
     downloadPdf: 'Télécharger le numéro complet (PDF)',
     coverAlt: 'Couverture : numéro {number}, {theme}',
   },
 
   article: {
+    breadcrumbLabel: "Fil d'Ariane",
+    metrics: 'Indicateurs',
     notFound: 'Article introuvable',
     breadcrumb: 'Article',
     abstract: 'Résumé',
-    keywords: 'Mots-clés —',
+    keywords: 'Mots-clés',
     conclusion: 'Conclusion',
     references: 'Références',
     aboutAuthors: 'À propos des auteurs',
@@ -208,12 +214,12 @@ Chaque volume est évalué avant publication par un comité de rédaction compos
     authorsTab: 'Auteurs',
     inThisArticle: 'Dans cet article',
     relatedHeading: 'Dans le même numéro',
-    viewIssue: 'Voir le numéro complet →',
+    viewIssue: 'Voir le numéro complet',
     citeStyle: 'Style de citation',
     citeExport: 'Exporter pour les gestionnaires de références :',
     downloadPdf: 'Télécharger le PDF',
     correction: 'Correction',
-    correctionPolicyLink: 'Lire notre politique de correction →',
+    correctionPolicyLink: 'Lire notre politique de correction',
     disclosure: 'Financement et conflits d’intérêts',
     share: 'Partager',
     shareOnX: 'Partager sur X',
@@ -334,7 +340,7 @@ Chaque volume est évalué avant publication par un comité de rédaction compos
     heading: '{count} sources citées dans {journal}',
     intro:
       'Chaque article publié, entièrement référencé et prêt à être cité — généré à partir de données réelles sur les auteurs, les numéros et la revue, et non estimé.',
-    browseIndex: 'Parcourir l’index des citations →',
+    browseIndex: 'Parcourir l’index des citations',
     insideHeading: 'Au cœur de l’index des citations',
     trackHeading: 'Suivre le corpus',
     trackBody: 'Consultez le nombre total de citations disponibles et la croissance du corpus, numéro après numéro.',
@@ -352,9 +358,9 @@ Chaque volume est évalué avant publication par un comité de rédaction compos
     ctaHeading: 'Soutenez les recherches à l’origine de ces citations',
     ctaBody:
       'Faites un don directement aux auteurs d’un article depuis sa page — l’essentiel de chaque contribution va directement aux chercheurs qui l’ont écrit.',
-    browseArticles: 'Parcourir les articles →',
+    browseArticles: 'Parcourir les articles',
     issueLabel: 'Numéro {number} · {year}',
-    viewArticle: 'Voir l’article →',
+    viewArticle: 'Voir l’article',
     empty: 'Les citations apparaîtront ici dès la publication des premiers articles.',
     searchPlaceholder: 'Rechercher par titre, auteur ou thématique',
     noMatches: 'Aucune citation ne correspond à « {query} ».',
@@ -372,7 +378,7 @@ Chaque volume est évalué avant publication par un comité de rédaction compos
     addressValue: 'Gulf of Guinea Maritime Institute, Accra, Ghana',
     gogmiBody:
       'Gulf Spectrum Journal est publié par le Gulf of Guinea Maritime Institute, un groupe de réflexion maritime à but non lucratif actif dans toute la région.',
-    visit: 'Visiter gogmi.org.gh →',
+    visit: 'Visiter gogmi.org.gh',
     name: 'Nom',
     subject: 'Objet',
     message: 'Message',
@@ -435,7 +441,7 @@ Chaque volume est évalué avant publication par un comité de rédaction compos
     joinHeading: 'Envie de nous rejoindre ?',
     joinBody:
       'Gulf Spectrum Journal accueille régulièrement de nouveaux membres au sein de son comité de rédaction, parmi ses lecteurs inscrits et ses contributeurs.',
-    apply: 'Rejoindre le comité de rédaction →',
+    apply: 'Rejoindre le comité de rédaction',
   },
 
   boardApply: {
@@ -518,13 +524,13 @@ Chaque volume est évalué avant publication par un comité de rédaction compos
     scopeAll: 'Chiffres de tous les articles publiés.',
     scopeMine: 'Chiffres des articles que vous avez publiés dans la revue.',
     noArticles: 'Les statistiques montrent comment vos articles publiés sont lus. Aucun article publié de la revue n’est encore lié à votre compte. Si vous êtes auteur, trouvez votre profil d’auteur et revendiquez-le ; une fois la demande approuvée par la rédaction, les chiffres de vos articles apparaîtront ici.',
-    findProfile: 'Trouver votre profil d’auteur →',
+    findProfile: 'Trouver votre profil d’auteur',
   },
 
   dashboard: {
     metaTitle: 'Tableau de bord',
     metaDescription: 'Votre tableau de bord Gulf Spectrum Journal.',
-    shareCta: 'Partagez vos recherches avec d’autres professionnels maritimes du golfe de Guinée →',
+    shareCta: 'Partagez vos recherches avec d’autres professionnels maritimes du golfe de Guinée',
     recent: 'Articles récents',
     submitNew: 'Soumettre un nouvel article',
     empty: 'Aucun article n’a encore été publié.',
@@ -607,7 +613,7 @@ Chaque volume est évalué avant publication par un comité de rédaction compos
     save: 'Enregistrer',
     accountType: 'Type de compte',
     memberSince: 'Membre depuis',
-    viewAuthor: 'Voir votre profil d’auteur et vos articles publiés →',
+    viewAuthor: 'Voir votre profil d’auteur et vos articles publiés',
     roles: { reader: 'Lecteur', author: 'Auteur', editor: 'Rédacteur', admin: 'Administrateur' },
     pictureHeading: "Photo de profil",
     pictureUpload: "Ajouter une photo",

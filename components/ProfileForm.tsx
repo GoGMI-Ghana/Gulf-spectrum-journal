@@ -150,14 +150,14 @@ export default function ProfileForm() {
               setFullName(e.target.value)
               setSaved(false)
             }}
-            className="w-full border border-slate-300 px-3 py-2 text-sm focus:outline-none focus:border-royal-blue"
+            className="w-full border border-slate-300 px-3 py-2 text-sm focus:outline-2 focus:-outline-offset-1 focus:outline-royal-blue focus:border-royal-blue"
           />
         </div>
 
         <div>
           <label className="block text-sm font-medium text-slate-700 mb-1">{t.common.email}</label>
           <p className="text-sm text-slate-600 border border-slate-200 bg-slate-50 px-3 py-2">{user.email}</p>
-          <p className="text-xs text-slate-400 mt-1">{t.profile.emailNote}</p>
+          <p className="text-xs text-slate-500 mt-1">{t.profile.emailNote}</p>
         </div>
 
         <button

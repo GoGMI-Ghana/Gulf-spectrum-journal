@@ -9,9 +9,9 @@ import { Award } from 'lucide-react'
 export default function BoardBadge({ title, className = '' }: { title: string; className?: string }) {
   return (
     <span
-      className={`inline-flex items-center gap-1 text-[10px] font-semibold uppercase tracking-wide text-royal-blue bg-soft-gold px-1.5 py-0.5 ${className}`}
+      className={`inline-flex items-center gap-1 font-sans text-xs font-semibold text-royal-blue bg-soft-gold px-2 py-0.5 ${className}`}
     >
-      <Award size={10} />
+      <Award size={12} aria-hidden="true" />
       {title}
     </span>
   )

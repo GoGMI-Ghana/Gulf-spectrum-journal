@@ -318,15 +318,15 @@ export default function MessagesApp() {
                   value={searchQuery}
                   onChange={(e) => setSearchQuery(e.target.value)}
                   placeholder={t.messages.searchPlaceholder}
-                  className="flex-1 border border-slate-300 px-2 py-1.5 text-sm focus:outline-none focus:border-royal-blue"
+                  className="flex-1 border border-slate-300 px-2 py-1.5 text-sm focus:outline-2 focus:-outline-offset-1 focus:outline-royal-blue focus:border-royal-blue"
                 />
-                <button onClick={() => setSearchOpen(false)} aria-label={t.messages.closeSearch} className="text-slate-400 hover:text-royal-blue">
+                <button onClick={() => setSearchOpen(false)} aria-label={t.messages.closeSearch} className="text-slate-500 hover:text-royal-blue">
                   <X size={16} />
                 </button>
               </div>
-              {searching && <p className="text-xs text-slate-400 px-1">{t.messages.searching}</p>}
+              {searching && <p className="text-xs text-slate-500 px-1">{t.messages.searching}</p>}
               {!searching && trimmedQuery.length >= 2 && visibleSearchResults.length === 0 && (
-                <p className="text-xs text-slate-400 px-1">{t.messages.noMembers}</p>
+                <p className="text-xs text-slate-500 px-1">{t.messages.noMembers}</p>
               )}
               <ul className="space-y-1 max-h-64 overflow-y-auto">
                 {visibleSearchResults.map((r) => (
@@ -353,7 +353,7 @@ export default function MessagesApp() {
         </div>
 
         <div className="flex-1 overflow-y-auto">
-          {!conversationsLoaded && <p className="text-sm text-slate-400 p-4">{t.common.loading}</p>}
+          {!conversationsLoaded && <p className="text-sm text-slate-500 p-4">{t.common.loading}</p>}
           {conversationsLoaded && conversations.length === 0 && (
             <p className="text-sm text-slate-500 p-4">
               {t.messages.empty}
@@ -380,13 +380,13 @@ export default function MessagesApp() {
       {/* Thread */}
       <div className={`flex flex-col ${selectedId ? 'flex' : 'hidden md:flex'}`}>
         {!selected ? (
-          <div className="flex-1 flex items-center justify-center text-sm text-slate-400 p-6 text-center">
+          <div className="flex-1 flex items-center justify-center text-sm text-slate-500 p-6 text-center">
             {t.messages.selectPrompt}
           </div>
         ) : (
           <>
             <div className="flex items-center gap-3 px-4 py-3 border-b border-slate-200">
-              <button onClick={() => setSelectedId(null)} className="md:hidden text-slate-400 hover:text-royal-blue text-sm">
+              <button onClick={() => setSelectedId(null)} className="md:hidden text-slate-500 hover:text-royal-blue text-sm">
                 {t.messages.back}
               </button>
               <Initials name={displayName(selected.otherUser)} size="sm" />
@@ -404,7 +404,7 @@ export default function MessagesApp() {
                       }`}
                     >
                       <p className="whitespace-pre-line break-words">{m.body}</p>
-                      <p className={`text-[10px] mt-1 ${mine ? 'text-white/60' : 'text-slate-400'}`}>
+                      <p className={`text-[10px] mt-1 ${mine ? 'text-white/60' : 'text-slate-500'}`}>
                         {new Date(m.createdAt).toLocaleTimeString(intlLocales[locale], { hour: 'numeric', minute: '2-digit' })}
                       </p>
                     </div>
@@ -420,7 +420,7 @@ export default function MessagesApp() {
                 value={draft}
                 onChange={(e) => setDraft(e.target.value)}
                 placeholder={t.messages.typePlaceholder}
-                className="flex-1 border border-slate-300 px-3 py-2 text-sm focus:outline-none focus:border-royal-blue"
+                className="flex-1 border border-slate-300 px-3 py-2 text-sm focus:outline-2 focus:-outline-offset-1 focus:outline-royal-blue focus:border-royal-blue"
               />
               <button
                 type="submit"

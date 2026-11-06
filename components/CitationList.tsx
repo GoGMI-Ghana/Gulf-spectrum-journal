@@ -33,14 +33,14 @@ export default function CitationList({ rows }: { rows: Row[] }) {
   return (
     <div>
       <div className="flex items-center border border-slate-300 focus-within:border-royal-blue mb-8">
-        <SearchIcon size={16} className="text-slate-400 ml-4 shrink-0" />
+        <SearchIcon size={16} className="text-slate-500 ml-4 shrink-0" />
         <input
           type="search"
           value={query}
           onChange={(e) => setQuery(e.target.value)}
           placeholder={t.citations.searchPlaceholder}
           aria-label={t.citations.searchPlaceholder}
-          className="w-full px-3 py-3 text-base focus:outline-none"
+          className="w-full px-3 py-3 text-base focus:outline-2 focus:-outline-offset-1 focus:outline-royal-blue"
         />
       </div>
 

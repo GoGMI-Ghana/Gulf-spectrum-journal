@@ -150,7 +150,7 @@ export default function NotificationsList() {
               <Icon size={16} className="text-ocean-blue shrink-0 mt-0.5" />
               <div className="flex-1 min-w-0">
                 <p className={`text-sm ${isUnread ? 'font-semibold text-royal-blue' : 'text-slate-600'}`}>{label}</p>
-                <p className="text-xs text-slate-400 mt-0.5">{timeAgo(locale, n.created_at)}</p>
+                <p className="text-xs text-slate-500 mt-0.5">{timeAgo(locale, n.created_at)}</p>
               </div>
               {isUnread && <span className="w-2 h-2 rounded-full bg-gold shrink-0 mt-1.5" aria-label={t.notifications.unread} />}
             </div>

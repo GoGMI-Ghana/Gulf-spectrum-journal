@@ -72,7 +72,7 @@ export default function EmailOtpForm({ redirectTo = '/' }: { redirectTo?: string
             maxLength={6}
             value={code}
             onChange={(e) => setCode(e.target.value.replace(/\D/g, ''))}
-            className="w-full border border-slate-300 px-3 py-2 text-sm tracking-[0.3em] text-center focus:outline-none focus:border-royal-blue"
+            className="w-full border border-slate-300 px-3 py-2 text-sm tracking-[0.3em] text-center focus:outline-2 focus:-outline-offset-1 focus:outline-royal-blue focus:border-royal-blue"
             placeholder="000000"
           />
         </div>
@@ -112,9 +112,9 @@ export default function EmailOtpForm({ redirectTo = '/' }: { redirectTo?: string
           required
           value={email}
           onChange={(e) => setEmail(e.target.value)}
-          className="w-full border border-slate-300 px-3 py-2 text-sm focus:outline-none focus:border-royal-blue"
+          className="w-full border border-slate-300 px-3 py-2 text-sm focus:outline-2 focus:-outline-offset-1 focus:outline-royal-blue focus:border-royal-blue"
         />
-        <p className="text-xs text-slate-400 mt-1">
+        <p className="text-xs text-slate-500 mt-1">
           {t.otp.hint}
         </p>
       </div>

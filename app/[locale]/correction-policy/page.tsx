@@ -36,7 +36,7 @@ export default async function CorrectionPolicy({ params }: LocaleParams) {
           </div>
         ))}
         <Link href="/contact" className="text-ocean-blue text-sm font-medium hover:underline">
-          {t.footer.contactOffice} →
+          {t.footer.contactOffice}
         </Link>
       </section>
     </div>

@@ -35,7 +35,7 @@ export default function CitationRow({
         {topicLabel && (
           <span className="kicker text-royal-blue bg-soft-gold px-2 py-0.5">{topicLabel}</span>
         )}
-        {issueLabel && <span className="text-xs text-slate-400">{issueLabel}</span>}
+        {issueLabel && <span className="text-xs text-slate-500">{issueLabel}</span>}
       </div>
       <Link href={`/articles/${slug}`} className="font-semibold text-royal-blue hover:text-ocean-blue">
         {title}

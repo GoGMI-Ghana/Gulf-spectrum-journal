@@ -34,11 +34,11 @@ export default async function TopicDetail({ params }: LocaleSlugParams) {
 
   return (
     <div>
-      <section className="bg-royal-blue">
-        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-10 sm:py-14">
-          <p className="kicker text-gold mb-2">{t.topic.kicker}</p>
-          <h1 className="font-display text-white text-3xl sm:text-4xl mb-4">{topic.label}</h1>
-          <p className="text-white/75 max-w-3xl leading-relaxed">{topic.description}</p>
+      <section className="bg-slate-50 border-b border-slate-200">
+        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8 sm:py-10">
+          <p className="text-sm font-semibold text-gold-ink mb-1">{t.topic.kicker}</p>
+          <h1 className="font-display text-royal-blue text-3xl sm:text-4xl leading-tight mb-3">{topic.label}</h1>
+          <p className="text-slate-700 max-w-3xl leading-relaxed">{topic.description}</p>
         </div>
       </section>
 

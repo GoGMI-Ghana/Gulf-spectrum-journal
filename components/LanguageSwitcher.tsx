@@ -19,12 +19,12 @@ export default function LanguageSwitcher({ className = '' }: { className?: strin
 
   return (
     <label className={`inline-flex items-center gap-1.5 ${className}`}>
-      <Globe size={12} aria-hidden="true" />
+      <Globe size={15} aria-hidden="true" />
       <span className="sr-only">{t.header.language}</span>
       <select
         value={locale}
         onChange={(e) => handleChange(e.target.value)}
-        className="bg-transparent text-inherit text-[11px] cursor-pointer focus:outline-none hover:text-gold transition-colors"
+        className="bg-transparent text-inherit text-sm cursor-pointer py-2 hover:text-white transition-colors"
       >
         {locales.map((l) => (
           <option key={l} value={l} lang={l} className="text-ink">

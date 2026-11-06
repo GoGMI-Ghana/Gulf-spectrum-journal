@@ -9,12 +9,12 @@ import { fmt } from '@/lib/i18n/format'
 export default function Footer() {
   const { t } = useI18n()
   return (
-    <footer className="bg-ink text-white/70 mt-24">
+    <footer className="bg-ink text-white/75 mt-20">
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-14 grid grid-cols-1 md:grid-cols-4 gap-10">
         <div className="md:col-span-2">
           <div className="flex items-center gap-3 mb-4">
-            <Image src="/gogmi-logo.png" alt="GoGMI" width={36} height={36} className="h-9 w-9 object-contain" />
-            <span className="font-display text-white text-lg">Gulf Spectrum Journal</span>
+            <Image src="/gogmi-logo.png" alt="" width={36} height={36} className="h-9 w-9 object-contain" />
+            <span className="font-display text-white text-xl">Gulf Spectrum Journal</span>
           </div>
           <p className="text-sm leading-relaxed max-w-md">{fmt(t.footer.blurb, { subtitle: t.journal.subtitle })}</p>
           <a
@@ -43,6 +43,7 @@ export default function Footer() {
           <h3 className="kicker text-white mb-4">{t.footer.moreHeading}</h3>
           <ul className="space-y-2.5 text-sm">
             <li><Link href="/bookmarks" className="hover:text-gold">{t.nav.bookmarks}</Link></li>
+            <li><Link href="/tools" className="hover:text-gold">{t.nav.tools}</Link></li>
             <li>
               <Link href="/contact" className="hover:text-gold">{t.footer.contactOffice}</Link>
             </li>

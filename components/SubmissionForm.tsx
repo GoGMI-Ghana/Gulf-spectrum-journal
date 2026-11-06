@@ -108,13 +108,13 @@ export default function SubmissionForm() {
   }
 
   return (
-    <div className="border-l-4 border-gold p-6 sticky top-32 bg-white">
-      <h3 className="kicker text-royal-blue mb-4">{t.submissions.formHeading}</h3>
+    <div className="border border-slate-300 p-6 sticky top-6 bg-white">
+      <h2 className="font-display text-xl text-royal-blue mb-4">{t.submissions.formHeading}</h2>
       <form className="space-y-4" onSubmit={handleSubmit}>
         {error && <p className="text-sm text-red-700 bg-red-50 border border-red-200 px-3 py-2">{error}</p>}
         <HoneypotField value={website} onChange={setWebsite} />
         <div>
-          <label className="block text-xs font-medium text-slate-600 mb-1" htmlFor="sub-name">
+          <label className="block text-sm font-medium text-slate-700 mb-1" htmlFor="sub-name">
             {t.common.fullName}
           </label>
           <input
@@ -123,11 +123,11 @@ export default function SubmissionForm() {
             type="text"
             value={name}
             onChange={(e) => setName(e.target.value)}
-            className="w-full border border-slate-300 px-3 py-2 text-sm focus:outline-none focus:border-royal-blue"
+            className="w-full border border-slate-300 px-3 py-2 text-sm focus:outline-2 focus:-outline-offset-1 focus:outline-royal-blue focus:border-royal-blue"
           />
         </div>
         <div>
-          <label className="block text-xs font-medium text-slate-600 mb-1" htmlFor="sub-email">
+          <label className="block text-sm font-medium text-slate-700 mb-1" htmlFor="sub-email">
             {t.common.email}
           </label>
           <input
@@ -136,11 +136,11 @@ export default function SubmissionForm() {
             type="email"
             value={email}
             onChange={(e) => setEmail(e.target.value)}
-            className="w-full border border-slate-300 px-3 py-2 text-sm focus:outline-none focus:border-royal-blue"
+            className="w-full border border-slate-300 px-3 py-2 text-sm focus:outline-2 focus:-outline-offset-1 focus:outline-royal-blue focus:border-royal-blue"
           />
         </div>
         <div>
-          <label className="block text-xs font-medium text-slate-600 mb-1" htmlFor="sub-title">
+          <label className="block text-sm font-medium text-slate-700 mb-1" htmlFor="sub-title">
             {t.submissions.titleLabel}
           </label>
           <input
@@ -149,11 +149,11 @@ export default function SubmissionForm() {
             type="text"
             value={title}
             onChange={(e) => setTitle(e.target.value)}
-            className="w-full border border-slate-300 px-3 py-2 text-sm focus:outline-none focus:border-royal-blue"
+            className="w-full border border-slate-300 px-3 py-2 text-sm focus:outline-2 focus:-outline-offset-1 focus:outline-royal-blue focus:border-royal-blue"
           />
         </div>
         <div>
-          <label className="block text-xs font-medium text-slate-600 mb-1" htmlFor="sub-abstract">
+          <label className="block text-sm font-medium text-slate-700 mb-1" htmlFor="sub-abstract">
             {t.submissions.abstractLabel}
           </label>
           <textarea
@@ -161,11 +161,11 @@ export default function SubmissionForm() {
             rows={4}
             value={abstract}
             onChange={(e) => setAbstract(e.target.value)}
-            className="w-full border border-slate-300 px-3 py-2 text-sm focus:outline-none focus:border-royal-blue"
+            className="w-full border border-slate-300 px-3 py-2 text-sm focus:outline-2 focus:-outline-offset-1 focus:outline-royal-blue focus:border-royal-blue"
           />
         </div>
         <div>
-          <label className="block text-xs font-medium text-slate-600 mb-1" htmlFor="sub-manuscript">
+          <label className="block text-sm font-medium text-slate-700 mb-1" htmlFor="sub-manuscript">
             {t.submissions.manuscriptLabel}
           </label>
           <input
@@ -176,7 +176,7 @@ export default function SubmissionForm() {
             onChange={(e) => handleFileChange(e.target.files?.[0] ?? null)}
             className="block w-full text-sm text-slate-600 file:mr-3 file:border file:border-slate-300 file:bg-white file:px-3 file:py-1.5 file:text-sm file:text-slate-700 hover:file:border-royal-blue file:cursor-pointer"
           />
-          <p className="text-xs text-slate-400 mt-1">{fmt(t.submissions.manuscriptHint, { max: MANUSCRIPT_MAX_MB })}</p>
+          <p className="text-xs text-slate-500 mt-1">{fmt(t.submissions.manuscriptHint, { max: MANUSCRIPT_MAX_MB })}</p>
         </div>
         <button
           type="submit"

@@ -49,7 +49,7 @@ export default async function Search({ params, searchParams }: SearchProps) {
             autoFocus={!query}
             placeholder={t.subNav.searchPlaceholder}
             aria-label={t.subNav.searchPlaceholder}
-            className="w-full px-4 py-3 text-base focus:outline-none"
+            className="w-full px-4 py-3 text-base focus:outline-2 focus:-outline-offset-1 focus:outline-royal-blue"
           />
           <button
             type="submit"

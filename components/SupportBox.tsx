@@ -83,7 +83,7 @@ export default function SupportBox({ authorNames, articleSlug }: { authorNames: 
             placeholder={t.support.otherAmount}
             value={customAmount}
             onChange={(e) => setCustomAmount(e.target.value)}
-            className="w-28 px-3 py-2 text-sm bg-white/10 text-white placeholder-white/40 focus:outline-none focus:bg-white/20"
+            className="w-28 px-3 py-2 text-sm bg-white/10 text-white placeholder-white/40 focus:outline-2 focus:-outline-offset-1 focus:outline-royal-blue focus:bg-white/20"
           />
         </div>
 
@@ -93,7 +93,7 @@ export default function SupportBox({ authorNames, articleSlug }: { authorNames: 
             placeholder={t.support.namePlaceholder}
             value={donorName}
             onChange={(e) => setDonorName(e.target.value)}
-            className="px-3 py-2 text-sm bg-white/10 text-white placeholder-white/40 focus:outline-none focus:bg-white/20"
+            className="px-3 py-2 text-sm bg-white/10 text-white placeholder-white/40 focus:outline-2 focus:-outline-offset-1 focus:outline-royal-blue focus:bg-white/20"
           />
           <input
             type="email"
@@ -101,7 +101,7 @@ export default function SupportBox({ authorNames, articleSlug }: { authorNames: 
             placeholder={t.support.emailPlaceholder}
             value={donorEmail}
             onChange={(e) => setDonorEmail(e.target.value)}
-            className="px-3 py-2 text-sm bg-white/10 text-white placeholder-white/40 focus:outline-none focus:bg-white/20"
+            className="px-3 py-2 text-sm bg-white/10 text-white placeholder-white/40 focus:outline-2 focus:-outline-offset-1 focus:outline-royal-blue focus:bg-white/20"
           />
         </div>
 
@@ -112,7 +112,7 @@ export default function SupportBox({ authorNames, articleSlug }: { authorNames: 
         >
           {loading ? t.support.redirecting : fmt(t.support.donate, { amount: effectiveAmount || 0 })}
         </button>
-        <p className="text-xs text-white/50">
+        <p className="text-sm text-white/75">
           {t.support.secure}
         </p>
       </form>

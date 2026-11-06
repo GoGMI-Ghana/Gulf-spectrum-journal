@@ -251,7 +251,7 @@ export default function AccountSettingsForm() {
                 value={passwordCode}
                 onChange={(e) => setPasswordCode(e.target.value.replace(/\D/g, ''))}
                 placeholder="000000"
-                className="w-full border border-slate-300 px-3 py-2 text-sm tracking-[0.3em] text-center focus:outline-none focus:border-royal-blue"
+                className="w-full border border-slate-300 px-3 py-2 text-sm tracking-[0.3em] text-center focus:outline-2 focus:-outline-offset-1 focus:outline-royal-blue focus:border-royal-blue"
               />
             </div>
             <button
@@ -291,7 +291,7 @@ export default function AccountSettingsForm() {
                 minLength={8}
                 value={newPassword}
                 onChange={(e) => setNewPassword(e.target.value)}
-                className="w-full border border-slate-300 px-3 py-2 text-sm focus:outline-none focus:border-royal-blue"
+                className="w-full border border-slate-300 px-3 py-2 text-sm focus:outline-2 focus:-outline-offset-1 focus:outline-royal-blue focus:border-royal-blue"
               />
             </div>
             <div>
@@ -305,7 +305,7 @@ export default function AccountSettingsForm() {
                 minLength={8}
                 value={confirmPassword}
                 onChange={(e) => setConfirmPassword(e.target.value)}
-                className="w-full border border-slate-300 px-3 py-2 text-sm focus:outline-none focus:border-royal-blue"
+                className="w-full border border-slate-300 px-3 py-2 text-sm focus:outline-2 focus:-outline-offset-1 focus:outline-royal-blue focus:border-royal-blue"
               />
             </div>
             <button
@@ -373,7 +373,7 @@ export default function AccountSettingsForm() {
               type="text"
               value={confirmEmail}
               onChange={(e) => setConfirmEmail(e.target.value)}
-              className="w-full border border-slate-300 px-3 py-2 text-sm focus:outline-none focus:border-red-500"
+              className="w-full border border-slate-300 px-3 py-2 text-sm focus:outline-2 focus:-outline-offset-1 focus:outline-royal-blue focus:border-red-500"
             />
           </div>
           <button

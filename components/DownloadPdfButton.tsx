@@ -12,7 +12,7 @@ import { useI18n } from '@/context/I18nContext'
 export default function DownloadPdfButton({
   articleId,
   slug,
-  className = 'inline-flex items-center gap-1.5 text-sm text-slate-400 hover:text-royal-blue transition-colors',
+  className = 'inline-flex items-center gap-1.5 text-sm text-slate-500 hover:text-royal-blue transition-colors',
 }: {
   articleId: string
   slug: string

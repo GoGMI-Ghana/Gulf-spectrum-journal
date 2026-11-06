@@ -1,4 +1,5 @@
 import Link from 'next/link'
+import SideSection from '@/components/SideSection'
 import { notFound } from 'next/navigation'
 import type { Metadata } from 'next'
 import { getAuthors, getAuthorBySlug, getArticlesForAuthor } from '@/lib/content'
@@ -37,23 +38,23 @@ export default async function AuthorDetail({ params }: LocaleSlugParams) {
 
   return (
     <div>
-      <section className="bg-royal-blue">
-        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-10 sm:py-14 flex items-center gap-6">
+      <section className="bg-slate-50 border-b border-slate-200">
+        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8 sm:py-10 flex items-center gap-6">
           <AuthorAvatar name={author.name} photo={author.photo} size="lg" />
           <div>
-            <h1 className="font-display text-white text-2xl sm:text-3xl mb-1 flex items-center gap-2.5">
+            <h1 className="font-display text-royal-blue text-3xl sm:text-4xl leading-tight mb-1 flex flex-wrap items-center gap-x-3 gap-y-1">
               {author.name}
-              {author.boardTitle && <BoardBadge title={author.boardTitle} className="!bg-gold !text-royal-blue" />}
+              {author.boardTitle && <BoardBadge title={author.boardTitle} />}
             </h1>
-            <p className="text-gold text-sm">{author.credentials}</p>
-            <p className="text-white/70 text-sm">{author.affiliation}</p>
+            <p className="text-gold-ink">{author.credentials}</p>
+            <p className="text-slate-700">{author.affiliation}</p>
           </div>
         </div>
       </section>
 
       <section className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-14 grid grid-cols-1 lg:grid-cols-3 gap-10">
         <div className="lg:col-span-2">
-          <h2 className="text-lg font-bold text-royal-blue font-display mb-4 pb-2 border-b-2 border-royal-blue">
+          <h2 className="font-display text-2xl text-royal-blue mb-2">
             {t.author.articles}
           </h2>
           <div>
@@ -63,14 +64,13 @@ export default async function AuthorDetail({ params }: LocaleSlugParams) {
           </div>
         </div>
         <aside>
-          <div className="border-l-4 border-royal-blue p-6">
-            <h3 className="kicker text-royal-blue mb-3">{t.author.biography}</h3>
-            <p className="text-sm text-slate-600 leading-relaxed">{author.bio}</p>
+          <SideSection title={t.author.biography}>
+            <p className="text-slate-700 leading-relaxed">{author.bio}</p>
             <ClaimAuthorLink authorSlug={author.slug} claimed={author.claimed} />
-            <Link href="/authors" className="block mt-5 text-ocean-blue text-sm font-medium hover:underline">
+            <Link href="/authors" className="inline-block mt-4 text-ocean-blue font-medium hover:underline">
               {t.author.back}
             </Link>
-          </div>
+          </SideSection>
         </aside>
       </section>
     </div>

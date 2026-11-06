@@ -1,7 +1,7 @@
 import Link from 'next/link'
 import { notFound } from 'next/navigation'
 import type { Metadata } from 'next'
-import { BookOpen, ChevronRight, FileText, Fingerprint, Link2, List, Quote, Users } from 'lucide-react'
+import { BookOpen, ChartNoAxesColumn, ChevronRight, FileText, Fingerprint, List, Quote, Users } from 'lucide-react'
 import {
   getArticles,
   getArticleBySlug,
@@ -71,9 +71,9 @@ export async function generateMetadata({ params }: LocaleSlugParams): Promise<Me
   }
 }
 
-// Clears the sticky site header when a link jumps to a part of the page.
-const ANCHOR = 'scroll-mt-40'
-const SECTION_HEADING = 'text-xl font-bold text-royal-blue font-display mb-3'
+// A little room above a section when a link jumps to it.
+const ANCHOR = 'scroll-mt-6'
+const SECTION_HEADING = 'text-2xl text-royal-blue font-display mb-4'
 
 export default async function ArticleDetail({ params }: LocaleSlugParams) {
   const { locale, slug } = await params
@@ -112,67 +112,50 @@ export default async function ArticleDetail({ params }: LocaleSlugParams) {
     ...(article.references.length > 0 ? [{ href: '#references', label: t.article.references, icon: BookOpen, current: false }] : []),
     { href: '#cite', label: t.article.citeLink, icon: Quote, current: false },
     { href: '#authors', label: t.article.authorsTab, icon: Users, current: false },
+    { href: '#metrics', label: t.article.metrics, icon: ChartNoAxesColumn, current: false },
   ]
 
   return (
     <div>
       <ArticleViewLogger articleId={article.id} />
 
-      {/* Where this article sits in the journal */}
-      <nav className="bg-royal-blue text-white/90 text-xs">
-        <ol className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-2 flex flex-wrap items-center gap-x-1.5 gap-y-1">
-          <li>
-            <Link href="/" className="hover:text-gold">{t.nav.home}</Link>
-          </li>
-          <ChevronRight size={12} className="text-white/50" />
-          <li>
-            <Link href="/issues" className="hover:text-gold">{t.nav.articlesAndIssues}</Link>
-          </li>
-          {issue && (
-            <>
-              <ChevronRight size={12} className="text-white/50" />
-              <li>
-                <Link href={`/issues/${issue.slug}`} className="hover:text-gold">{issueLabel}</Link>
-              </li>
-            </>
-          )}
-          <ChevronRight size={12} className="text-white/50" />
-          <li className="text-white truncate max-w-[16rem] sm:max-w-md">{article.title}</li>
-        </ol>
-      </nav>
-
       {/* Title block */}
       <header className="bg-slate-50 border-b border-slate-200">
-        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 pt-8 grid grid-cols-1 lg:grid-cols-[11rem_minmax(0,1fr)] gap-x-10 gap-y-6">
-          {/* Real counts from visits to this page (see ArticleViewLogger). */}
-          <dl className="order-2 lg:order-1 flex lg:flex-col gap-x-10 gap-y-4 lg:pt-8">
-            <div className="lg:pb-4 lg:border-b lg:border-slate-200">
-              <dd className="font-display text-2xl text-royal-blue">{formatNumber(toLocale(locale), stats.views)}</dd>
-              <dt className="text-xs text-slate-500">{t.article.views}</dt>
-            </div>
-            <div>
-              <dd className="font-display text-2xl text-royal-blue">{formatNumber(toLocale(locale), stats.downloads)}</dd>
-              <dt className="text-xs text-slate-500">{t.article.downloads}</dt>
-            </div>
-          </dl>
+        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 grid grid-cols-1 lg:grid-cols-[11rem_minmax(0,1fr)] gap-x-10">
+          <div className="lg:col-start-2 min-w-0 pt-5 sm:pt-6">
+            {/* Where this article sits in the journal */}
+            <nav aria-label={t.article.breadcrumbLabel} className="text-sm text-slate-600 mb-6">
+              <ol className="flex flex-wrap items-center gap-x-1.5 gap-y-1">
+                <li>
+                  <Link href="/issues" className="hover:text-ocean-blue hover:underline">{t.nav.articlesAndIssues}</Link>
+                </li>
+                {issue && (
+                  <>
+                    <ChevronRight size={14} className="text-slate-500" aria-hidden="true" />
+                    <li>
+                      <Link href={`/issues/${issue.slug}`} className="hover:text-ocean-blue hover:underline">{issueLabel}</Link>
+                    </li>
+                  </>
+                )}
+              </ol>
+            </nav>
 
-          <div className="order-1 lg:order-2 min-w-0">
-            <div className="flex flex-wrap items-center gap-x-2 gap-y-1 mb-2">
-              <p className="text-sm text-slate-500">{t.common.researchArticle}</p>
+            <p className="text-sm text-slate-600 mb-2">
+              {t.common.researchArticle}
               {topic && (
-                <Link
-                  href={`/topics/${topic.slug}`}
-                  className="kicker text-royal-blue bg-soft-gold px-2 py-0.5 hover:bg-gold hover:text-ink transition-colors"
-                >
-                  {topic.label}
-                </Link>
+                <>
+                  {' · '}
+                  <Link href={`/topics/${topic.slug}`} className="text-gold-ink hover:underline">
+                    {topic.label}
+                  </Link>
+                </>
               )}
-            </div>
-            <h1 className="font-display text-royal-blue text-2xl sm:text-3xl lg:text-4xl leading-tight mb-4">
+            </p>
+            <h1 className="font-display text-royal-blue text-[1.75rem] sm:text-4xl lg:text-[2.75rem] leading-[1.15] mb-5">
               {article.title}
             </h1>
 
-            <p className="text-base leading-relaxed mb-2">
+            <p className="text-lg leading-relaxed mb-2">
               {authors.map((author, i) => (
                 <span key={author.slug}>
                   <Link href={`/authors/${author.slug}`} className="text-ocean-blue hover:underline">
@@ -182,60 +165,50 @@ export default async function ArticleDetail({ params }: LocaleSlugParams) {
                 </span>
               ))}
             </p>
-            <p className="text-xs text-slate-500 mb-4">
+            <p className="text-sm text-slate-600 mb-1">
               {[
-                issueLabel,
+                issue ? `${journal.name}, ${issueLabel}` : journal.name,
                 issue?.publishedDate ? fmt(t.article.publishedOnline, { date: issue.publishedDate }) : '',
-                journal.issn ? `ISSN ${journal.issn}` : '',
               ]
                 .filter(Boolean)
-                .join('  |  ')}
+                .join(' · ')}
             </p>
-
-            <div className="flex flex-wrap items-center gap-x-6 gap-y-2 text-sm mb-6">
-              <a href="#cite" className="inline-flex items-center gap-1.5 text-ocean-blue hover:underline">
-                <Quote size={15} />
-                {t.article.citeLink}
-              </a>
+            <p className="text-sm mb-6">
               {article.doi ? (
                 // Shown as the full link, as Crossref requires of its members.
                 <a href={doiUrl(article.doi)} className="inline-flex items-center gap-1.5 text-ocean-blue hover:underline break-all">
-                  <Fingerprint size={15} />
+                  <Fingerprint size={15} aria-hidden="true" />
                   {doiUrl(article.doi)}
                 </a>
               ) : (
                 // No DOI registered yet: plain text, not a link, and absent
                 // from the citations and the Google Scholar tags — a made-up
                 // DOI there would be copied into other people's reference lists.
-                <span className="inline-flex items-center gap-1.5 text-slate-500">
-                  <Fingerprint size={15} />
+                <span className="inline-flex items-center gap-1.5 text-slate-600">
+                  <Fingerprint size={15} aria-hidden="true" />
                   {t.article.doiPending}
                 </span>
               )}
-              <a href={url} className="inline-flex items-center gap-1.5 text-ocean-blue hover:underline break-all">
-                <Link2 size={15} />
-                {url}
-              </a>
-            </div>
+            </p>
 
             {/* Jumps to the parts of this page */}
-            <div className="flex flex-wrap items-end justify-between gap-x-6 gap-y-3">
-              <ul className="flex flex-wrap gap-x-1 text-sm font-medium">
+            <div className="flex flex-wrap items-end justify-between gap-x-6 gap-y-2">
+              <ul className="flex flex-wrap gap-x-1 -mx-4 sm:mx-0 text-sm font-medium">
                 {tabs.map((tab) => (
                   <li key={tab.href}>
                     <a
                       href={tab.href}
-                      className={`inline-flex items-center gap-1.5 px-4 py-3 transition-colors ${
-                        tab.current ? 'bg-royal-blue text-white' : 'text-royal-blue hover:bg-slate-200'
+                      className={`inline-flex items-center gap-1.5 px-4 py-3 border-b-2 transition-colors ${
+                        tab.current ? 'border-royal-blue text-royal-blue' : 'border-transparent text-slate-700 hover:text-royal-blue hover:border-slate-300'
                       }`}
                     >
-                      <tab.icon size={15} />
+                      <tab.icon size={15} aria-hidden="true" />
                       {tab.label}
                     </a>
                   </li>
                 ))}
               </ul>
-              <div className="pb-3">
+              <div className="pb-2">
                 <BookmarkButton slug={article.slug} showLabel />
               </div>
             </div>
@@ -246,7 +219,7 @@ export default async function ArticleDetail({ params }: LocaleSlugParams) {
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8 grid grid-cols-1 lg:grid-cols-[11rem_minmax(0,1fr)] xl:grid-cols-[11rem_minmax(0,1fr)_19rem] gap-x-10 gap-y-10">
         {/* In this article */}
         <aside className="hidden lg:block">
-          <nav className="sticky top-36 max-h-[calc(100vh-10rem)] overflow-y-auto">
+          <nav className="sticky top-6 max-h-[calc(100vh-3rem)] overflow-y-auto">
             <h2 className="flex items-center gap-2 font-semibold text-slate-800 pb-3 border-b border-slate-200">
               <List size={16} />
               {t.article.inThisArticle}
@@ -269,7 +242,7 @@ export default async function ArticleDetail({ params }: LocaleSlugParams) {
             <DownloadPdfButton
               articleId={article.id}
               slug={article.slug}
-              className="inline-flex items-center gap-2 bg-gold hover:bg-soft-gold hover:text-royal-blue text-ink font-semibold text-sm px-4 py-2 transition-colors"
+              className="inline-flex items-center gap-2 bg-royal-blue hover:bg-ocean-blue text-white font-semibold px-5 py-3 transition-colors"
             />
           </div>
 
@@ -286,17 +259,17 @@ export default async function ArticleDetail({ params }: LocaleSlugParams) {
           )}
 
           <section id="abstract" className={`${ANCHOR} mb-6`}>
-            <h2 className="font-display text-royal-blue text-xl font-bold uppercase tracking-wide mb-4">{t.article.abstract}</h2>
-            <p className="text-slate-700 text-[1.05rem] leading-relaxed">{article.abstract}</p>
+            <h2 className={SECTION_HEADING}>{t.article.abstract}</h2>
+            <p className="font-display text-slate-800 text-[1.0625rem] leading-[1.7]">{article.abstract}</p>
           </section>
 
           {article.keywords.length > 0 && (
             <div className="flex flex-wrap items-baseline gap-x-2 gap-y-2 mb-8 text-sm">
-              <span className="kicker text-slate-500 mr-1">{t.article.keywords}</span>
+              <span className="font-semibold text-slate-800 mr-1">{t.article.keywords}:</span>
               {article.keywords.map((k, i) => (
                 <span key={k} className="text-royal-blue">
                   {k}
-                  {i < article.keywords.length - 1 && <span className="text-slate-300">;</span>}
+                  {i < article.keywords.length - 1 && <span className="text-slate-500">;</span>}
                 </span>
               ))}
             </div>
@@ -331,9 +304,9 @@ export default async function ArticleDetail({ params }: LocaleSlugParams) {
           </div>
 
           {article.references.length > 0 && (
-            <section id="references" className={`${ANCHOR} border-t-2 border-royal-blue pt-6 mt-4`}>
-              <h2 className="kicker text-royal-blue mb-4">{t.article.references}</h2>
-              <ol className="space-y-2 text-sm text-slate-600 list-decimal list-inside">
+            <section id="references" className={`${ANCHOR} border-t border-slate-300 pt-8 mt-6`}>
+              <h2 className={SECTION_HEADING}>{t.article.references}</h2>
+              <ol className="space-y-2.5 text-[0.9375rem] text-slate-700 list-decimal pl-6 marker:text-slate-500">
                 {article.references.map((ref, i) => (
                   <li key={i} className="leading-relaxed break-words">
                     {referenceParts(ref).map((part, j) =>
@@ -360,7 +333,7 @@ export default async function ArticleDetail({ params }: LocaleSlugParams) {
 
           {/* Author bios */}
           <section id="authors" className={`${ANCHOR} border-t border-slate-200 pt-8 mt-10`}>
-            <h2 className="kicker text-royal-blue mb-6">{t.article.aboutAuthors}</h2>
+            <h2 className={SECTION_HEADING}>{t.article.aboutAuthors}</h2>
             <div className="grid sm:grid-cols-2 gap-6">
               {authors.map((author) => (
                 <div key={author.slug} className="flex gap-4">
@@ -369,19 +342,34 @@ export default async function ArticleDetail({ params }: LocaleSlugParams) {
                     <Link href={`/authors/${author.slug}`} className="font-semibold text-royal-blue hover:underline">
                       {author.name}
                     </Link>
-                    <p className="text-xs text-slate-500 mb-1.5">{author.affiliation}</p>
-                    <p className="text-sm text-slate-600 leading-relaxed">{author.bio}</p>
+                    <p className="text-sm text-slate-600 mb-1.5">{author.affiliation}</p>
+                    <p className="text-sm text-slate-700 leading-relaxed">{author.bio}</p>
                   </div>
                 </div>
               ))}
             </div>
+          </section>
+
+          {/* Real counts from visits to this page (see ArticleViewLogger). */}
+          <section id="metrics" className={`${ANCHOR} border-t border-slate-200 pt-8 mt-10`}>
+            <h2 className={SECTION_HEADING}>{t.article.metrics}</h2>
+            <dl className="flex gap-x-12">
+              <div className="flex flex-col-reverse">
+                <dt className="text-sm text-slate-600">{t.article.views}</dt>
+                <dd className="font-display text-3xl text-royal-blue">{formatNumber(toLocale(locale), stats.views)}</dd>
+              </div>
+              <div className="flex flex-col-reverse">
+                <dt className="text-sm text-slate-600">{t.article.downloads}</dt>
+                <dd className="font-display text-3xl text-royal-blue">{formatNumber(toLocale(locale), stats.downloads)}</dd>
+              </div>
+            </dl>
           </section>
         </article>
 
         {/* Other articles in the same issue */}
         {related.length > 0 && issue && (
           <aside className="lg:col-start-2 xl:col-start-3">
-            <div className="xl:sticky xl:top-36">
+            <div className="xl:sticky xl:top-6">
               <h2 className="font-display text-xl text-slate-800 mb-3">{t.article.relatedHeading}</h2>
               <ul className="border-t-4 border-royal-blue">
                 {related.map((other, i) => (
@@ -394,7 +382,7 @@ export default async function ArticleDetail({ params }: LocaleSlugParams) {
                         ? `${relatedAuthors[i][0].name} et al.`
                         : relatedAuthors[i].map((a) => a.name).join(t.common.and)}
                     </p>
-                    <p className="text-xs text-slate-400 mt-0.5">{issueLabel}</p>
+                    <p className="text-xs text-slate-500 mt-0.5">{issueLabel}</p>
                   </li>
                 ))}
               </ul>

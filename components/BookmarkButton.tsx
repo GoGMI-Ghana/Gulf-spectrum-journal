@@ -28,10 +28,10 @@ export default function BookmarkButton({
     return (
       <Link
         href={`/sign-in?redirect=${encodeURIComponent(pathname)}`}
-        className={`inline-flex items-center gap-1.5 text-sm text-slate-400 hover:text-royal-blue transition-colors ${className}`}
+        className={`inline-flex items-center justify-center gap-1.5 min-h-11 min-w-11 px-2 text-sm text-slate-600 hover:text-royal-blue transition-colors ${className}`}
         aria-label={t.bookmarkButton.signInAria}
       >
-        <Bookmark size={16} />
+        <Bookmark size={18} aria-hidden="true" />
         {showLabel && <span>{t.bookmarkButton.signInLabel}</span>}
       </Link>
     )
@@ -47,11 +47,11 @@ export default function BookmarkButton({
       }}
       aria-pressed={active}
       aria-label={active ? t.bookmarkButton.remove : t.bookmarkButton.add}
-      className={`inline-flex items-center gap-1.5 text-sm transition-colors ${
-        active ? 'text-gold' : 'text-slate-400 hover:text-royal-blue'
+      className={`inline-flex items-center justify-center gap-1.5 min-h-11 min-w-11 px-2 text-sm transition-colors ${
+        active ? 'text-gold-ink' : 'text-slate-600 hover:text-royal-blue'
       } ${className}`}
     >
-      <Bookmark size={16} fill={active ? 'currentColor' : 'none'} />
+      <Bookmark size={18} aria-hidden="true" fill={active ? 'currentColor' : 'none'} />
       {showLabel && <span>{active ? t.bookmarkButton.bookmarked : t.bookmarkButton.bookmark}</span>}
     </button>
   )

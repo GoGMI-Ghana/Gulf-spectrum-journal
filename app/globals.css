@@ -1,15 +1,19 @@
 @import "tailwindcss";
 
-/* Font families are loaded via next/font/google in app/layout.tsx, which
-   sets --font-family-poppins / --font-family-inter on <html> as self-hosted,
-   non-render-blocking fonts — no external Google Fonts request at runtime. */
+/* Font families are loaded via next/font/google in app/[locale]/layout.tsx,
+   which sets --font-family-serif / --font-family-inter on <html> as
+   self-hosted, non-render-blocking fonts — no external Google Fonts
+   request at runtime. */
 
 /* Shared with the main GoGMI site palette, so the journal reads as
    connected to GoGMI while keeping its own masthead identity. */
 @theme {
   --color-royal-blue: #003366;
   --color-ocean-blue: #0066cc;
+  /* Bright gold is for dark backgrounds only (2.2:1 on white). Text on
+     white or light backgrounds uses gold-ink, which passes WCAG AA. */
   --color-gold: #daa520;
+  --color-gold-ink: #7a5a10;
   --color-soft-gold: #f5e6d3;
   --color-ink: #12202e;
 }
@@ -23,11 +27,19 @@ body {
 }
 
 h1, h2, h3, h4, h5, h6 {
-  font-family: var(--font-family-poppins);
+  font-family: var(--font-family-serif);
+  font-weight: 600;
+  letter-spacing: -0.01em;
 }
 
 html {
   scroll-behavior: smooth;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  html {
+    scroll-behavior: auto;
+  }
 }
 
 ::selection {
@@ -35,18 +47,24 @@ html {
   color: #12202e;
 }
 
-.font-display {
-  font-family: var(--font-family-poppins);
+/* Keyboard focus: one clear ring everywhere, on light and dark backgrounds. */
+:focus-visible {
+  outline: 2px solid var(--color-ocean-blue);
+  outline-offset: 2px;
 }
 
-/* Editorial primitives — rules and small caps instead of icon badges,
-   so the site reads as a print journal rather than a generic app UI. */
+.font-display {
+  font-family: var(--font-family-serif);
+}
+
+/* A small section label. Sentence case at a readable size: spaced-out
+   capitals on every label are what made the site read as a template. */
 .kicker {
   font-family: var(--font-family-inter);
-  font-size: 0.7rem;
+  font-size: 0.8125rem;
   font-weight: 600;
-  letter-spacing: 0.18em;
-  text-transform: uppercase;
+  letter-spacing: 0;
+  text-transform: none;
 }
 
 .numeral {
@@ -84,8 +102,10 @@ html {
    Plain CSS rather than utility classes because the markup inside is
    stored HTML, not JSX we can put class names on. */
 .article-body {
-  color: #334155;
-  line-height: 1.75;
+  font-family: var(--font-family-serif);
+  font-size: 1.0625rem;
+  color: #1e293b;
+  line-height: 1.7;
 }
 
 .article-body > * + * {
@@ -93,7 +113,7 @@ html {
 }
 
 .article-body h3 {
-  font-family: var(--font-family-poppins);
+  font-family: var(--font-family-serif);
   font-size: 1.125rem;
   font-weight: 600;
   line-height: 1.4;

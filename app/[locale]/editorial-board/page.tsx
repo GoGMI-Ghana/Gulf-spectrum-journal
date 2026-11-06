@@ -1,5 +1,6 @@
 import type { Metadata } from 'next'
 import Link from 'next/link'
+import SideSection from '@/components/SideSection'
 import { getEditorialBoard } from '@/lib/content'
 import { getDictionary } from '@/lib/i18n'
 import type { LocaleParams } from '@/lib/i18n/page'
@@ -40,7 +41,7 @@ export default async function EditorialBoardPage({ params }: LocaleParams) {
                   )}
                   <div className="min-w-0">
                     <p className="font-semibold text-royal-blue">{member.name}</p>
-                    <p className="text-sm text-gold font-medium mb-1.5">{member.title}</p>
+                    <p className="text-sm text-gold-ink font-medium mb-1.5">{member.title}</p>
                     {member.bio && <p className="text-sm text-slate-600 leading-relaxed line-clamp-3">{member.bio}</p>}
                   </div>
                 </div>
@@ -56,15 +57,12 @@ export default async function EditorialBoardPage({ params }: LocaleParams) {
           </div>
         )}
 
-        <div className="border-l-4 border-royal-blue p-6 bg-slate-50">
-          <h3 className="kicker text-royal-blue mb-3">{t.board.joinHeading}</h3>
-          <p className="text-slate-600 text-sm leading-relaxed mb-4">
-            {t.board.joinBody}
-          </p>
-          <Link href="/editorial-board/apply" className="text-ocean-blue text-sm font-medium hover:underline">
+        <SideSection title={t.board.joinHeading} className="max-w-2xl">
+          <p className="text-slate-700 leading-relaxed mb-3">{t.board.joinBody}</p>
+          <Link href="/editorial-board/apply" className="text-ocean-blue font-medium hover:underline">
             {t.board.apply}
           </Link>
-        </div>
+        </SideSection>
       </section>
     </div>
   )

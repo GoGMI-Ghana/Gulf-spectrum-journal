@@ -75,7 +75,9 @@ Cada volume é revisto antes da publicação por um conselho editorial de especi
   },
 
   header: {
+    skipToContent: 'Saltar para o conteúdo principal',
     publicationOf: 'Uma publicação do Gulf of Guinea Maritime Institute',
+    mainMenu: 'Menu principal',
     toggleMenu: 'Mostrar ou ocultar o menu',
     language: 'Idioma',
   },
@@ -103,29 +105,31 @@ Cada volume é revisto antes da publicação por um conselho editorial de especi
   subNav: {
     searchPlaceholder: 'Pesquisar na revista',
     search: 'Pesquisar',
-    submitArticle: 'Submeta o seu artigo →',
+    submitArticle: 'Submeta o seu artigo',
   },
 
   home: {
+    currentIssue: 'Número atual',
+    forAuthors: 'Para autores',
     metaDescription: 'O Gulf Spectrum Journal é a revista de investigação do Gulf of Guinea Maritime Institute (GoGMI). Publica investigação com revisão editorial sobre segurança marítima, economia azul, governação e reforço de capacidades no golfo da Guiné.',
     intro: 'Investigação sobre a governação, a segurança e a proteção marítimas no golfo da Guiné, escrita pelos oficiais da marinha, investigadores e profissionais que trabalham nestas questões na região.',
     readLatest: 'Ler o último número',
     aboutJournal: 'Sobre a revista',
     issueHeading: 'Número {number}: {theme}',
-    viewIssue: 'Ver número →',
+    viewIssue: 'Ver número',
     aboutBody: 'O Gulf Spectrum Journal publica investigação sobre a governação, a segurança e a proteção marítimas no golfo da Guiné. Cada volume é revisto por um conselho editorial antes da publicação.',
-    learnMore: 'Saber mais →',
+    learnMore: 'Saber mais',
     submitHeading: 'Submeta a sua investigação',
     submitBody:
       'O Gulf Spectrum Journal aceita submissões de investigadores, oficiais e profissionais que trabalham em assuntos marítimos do golfo da Guiné.',
-    viewGuidelines: 'Ver as normas de submissão →',
+    viewGuidelines: 'Ver as normas de submissão',
     boardHeading: 'Conselho editorial',
     boardBody: 'Conheça os editores que reveem e publicam a investigação da revista, ou candidate-se a juntar-se a eles.',
-    applyBoard: 'Candidatar-se ao conselho editorial →',
+    applyBoard: 'Candidatar-se ao conselho editorial',
     browseByTopic: 'Explorar por tema',
-    allTopics: 'Todos os temas →',
+    allTopics: 'Todos os temas',
     browseArticlesIssues: 'Explorar artigos e números',
-    viewAll: 'Ver tudo →',
+    viewAll: 'Ver tudo',
     emptyHeading: 'Primeiro número em breve',
     emptyBody:
       'O Gulf Spectrum Journal está a preparar o seu primeiro número. Entretanto, conheça a revista ou submeta a sua investigação.',
@@ -166,8 +170,8 @@ Cada volume é revisto antes da publicação por um conselho editorial de especi
     founded: 'Fundação',
     board: 'Conselho editorial',
     noBoard: 'Ainda não há membros do conselho editorial listados.',
-    viewFullBoard: 'Ver o conselho editorial completo →',
-    readCorrectionPolicy: 'Ler a política de correções →',
+    viewFullBoard: 'Ver o conselho editorial completo',
+    readCorrectionPolicy: 'Ler a política de correções',
   },
 
   issues: {
@@ -177,7 +181,7 @@ Cada volume é revisto antes da publicação por um conselho editorial de especi
     title: 'Artigos e números',
     description:
       'Explore o Gulf Spectrum Journal por volume. Cada número é uma coleção temática de artigos de investigação revistos por um conselho editorial. Prefere explorar por assunto? {link}',
-    seeTopics: 'Ver temas →',
+    seeTopics: 'Ver temas',
     empty: 'Ainda não foi publicado nenhum número.',
   },
 
@@ -187,16 +191,18 @@ Cada volume é revisto antes da publicação por um conselho editorial de especi
     volume: 'Volume {volume} · {date}',
     inThisIssue: 'Neste número',
     issueBoard: 'Conselho editorial do número',
-    allIssues: '← Todos os números',
+    allIssues: 'Todos os números',
     downloadPdf: 'Descarregar o número completo (PDF)',
     coverAlt: 'Capa: número {number}, {theme}',
   },
 
   article: {
+    breadcrumbLabel: 'Trilha de navegação',
+    metrics: 'Métricas',
     notFound: 'Artigo não encontrado',
     breadcrumb: 'Artigo',
     abstract: 'Resumo',
-    keywords: 'Palavras-chave —',
+    keywords: 'Palavras-chave',
     conclusion: 'Conclusão',
     references: 'Referências',
     aboutAuthors: 'Sobre os autores',
@@ -211,12 +217,12 @@ Cada volume é revisto antes da publicação por um conselho editorial de especi
     authorsTab: 'Autores',
     inThisArticle: 'Neste artigo',
     relatedHeading: 'Mais deste número',
-    viewIssue: 'Ver o número completo →',
+    viewIssue: 'Ver o número completo',
     citeStyle: 'Estilo de citação',
     citeExport: 'Exportar para gestores de referências:',
     downloadPdf: 'Descarregar PDF',
     correction: 'Correção',
-    correctionPolicyLink: 'Leia a nossa política de correções →',
+    correctionPolicyLink: 'Leia a nossa política de correções',
     disclosure: 'Financiamento e conflitos de interesses',
     share: 'Partilhar',
     shareOnX: 'Partilhar no X',
@@ -337,7 +343,7 @@ Cada volume é revisto antes da publicação por um conselho editorial de especi
     heading: '{count} fontes citadas no {journal}',
     intro:
       'Cada artigo publicado, totalmente referenciado e pronto a citar — gerado a partir de dados reais de autores, números e revista, e não estimado.',
-    browseIndex: 'Explorar o índice de citações →',
+    browseIndex: 'Explorar o índice de citações',
     insideHeading: 'Por dentro do índice de citações',
     trackHeading: 'Acompanhe o corpus',
     trackBody: 'Veja o total de citações disponíveis e como o corpus cresce número a número.',
@@ -355,9 +361,9 @@ Cada volume é revisto antes da publicação por um conselho editorial de especi
     ctaHeading: 'Apoie a investigação por detrás destas citações',
     ctaBody:
       'Faça um donativo diretamente aos autores de um artigo a partir da respetiva página — a maior parte de cada contribuição vai diretamente para os investigadores que o escreveram.',
-    browseArticles: 'Explorar artigos →',
+    browseArticles: 'Explorar artigos',
     issueLabel: 'Número {number} · {year}',
-    viewArticle: 'Ver artigo →',
+    viewArticle: 'Ver artigo',
     empty: 'As citações aparecerão aqui assim que os primeiros artigos forem publicados.',
     searchPlaceholder: 'Pesquisar por título, autor ou tema',
     noMatches: 'Nenhuma citação corresponde a «{query}».',
@@ -375,7 +381,7 @@ Cada volume é revisto antes da publicação por um conselho editorial de especi
     addressValue: 'Gulf of Guinea Maritime Institute, Acra, Gana',
     gogmiBody:
       'O Gulf Spectrum Journal é publicado pelo Gulf of Guinea Maritime Institute, um centro de estudos marítimos sem fins lucrativos que atua em toda a região.',
-    visit: 'Visitar gogmi.org.gh →',
+    visit: 'Visitar gogmi.org.gh',
     name: 'Nome',
     subject: 'Assunto',
     message: 'Mensagem',
@@ -438,7 +444,7 @@ Cada volume é revisto antes da publicação por um conselho editorial de especi
     joinHeading: 'Tem interesse em juntar-se?',
     joinBody:
       'O Gulf Spectrum Journal integra periodicamente novos membros no conselho editorial, escolhidos entre os seus leitores registados e colaboradores.',
-    apply: 'Candidatar-se ao conselho editorial →',
+    apply: 'Candidatar-se ao conselho editorial',
   },
 
   boardApply: {
@@ -521,13 +527,13 @@ Cada volume é revisto antes da publicação por um conselho editorial de especi
     scopeAll: 'Números de todos os artigos publicados.',
     scopeMine: 'Números dos artigos que publicou na revista.',
     noArticles: 'As estatísticas mostram como os seus artigos publicados estão a ser lidos. Ainda não há nenhum artigo publicado da revista associado à sua conta. Se é autor, encontre o seu perfil de autor e reivindique-o; depois de a redação aprovar o pedido, os números dos seus artigos aparecem aqui.',
-    findProfile: 'Encontrar o seu perfil de autor →',
+    findProfile: 'Encontrar o seu perfil de autor',
   },
 
   dashboard: {
     metaTitle: 'Painel',
     metaDescription: 'O seu painel do Gulf Spectrum Journal.',
-    shareCta: 'Partilhe a sua investigação com outros profissionais marítimos do golfo da Guiné →',
+    shareCta: 'Partilhe a sua investigação com outros profissionais marítimos do golfo da Guiné',
     recent: 'Artigos recentes',
     submitNew: 'Submeter novo artigo',
     empty: 'Ainda não foi publicado nenhum artigo.',
@@ -606,7 +612,7 @@ Cada volume é revisto antes da publicação por um conselho editorial de especi
     save: 'Guardar alterações',
     accountType: 'Tipo de conta',
     memberSince: 'Membro desde',
-    viewAuthor: 'Ver o seu perfil de autor e artigos publicados →',
+    viewAuthor: 'Ver o seu perfil de autor e artigos publicados',
     roles: { reader: 'Leitor', author: 'Autor', editor: 'Editor', admin: 'Administrador' },
     pictureHeading: "Fotografia de perfil",
     pictureUpload: "Carregar uma fotografia",

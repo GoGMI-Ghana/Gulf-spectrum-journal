@@ -1,6 +1,6 @@
 import type { Metadata } from 'next'
 import { notFound } from 'next/navigation'
-import { Poppins, Inter } from 'next/font/google'
+import { Source_Serif_4, Inter } from 'next/font/google'
 import { Analytics } from '@vercel/analytics/next'
 import '../globals.css'
 import Header from '@/components/Header'
@@ -11,16 +11,20 @@ import { getDictionary } from '@/lib/i18n'
 import { isLocale, locales } from '@/lib/i18n/config'
 import { siteUrl, socialMetadata } from '@/lib/seo'
 
-const poppins = Poppins({
-  subsets: ['latin'],
-  weight: ['300', '400', '500', '600', '700', '800'],
-  variable: '--font-family-poppins',
+// A serif for titles and article text, as printed journals use; Inter for
+// the interface around them (menus, buttons, labels). Both are variable
+// fonts, so every weight comes from one file. latin-ext covers authors'
+// names such as Bøås and Vreÿ.
+const serif = Source_Serif_4({
+  subsets: ['latin', 'latin-ext'],
+  style: ['normal', 'italic'],
+  axes: ['opsz'],
+  variable: '--font-family-serif',
   display: 'swap',
 })
 
 const inter = Inter({
-  subsets: ['latin'],
-  weight: ['300', '400', '500', '600', '700'],
+  subsets: ['latin', 'latin-ext'],
   variable: '--font-family-inter',
   display: 'swap',
 })
@@ -80,12 +84,21 @@ export default async function RootLayout({
   if (!isLocale(locale)) notFound()
 
   return (
-    <html lang={locale} className={`${poppins.variable} ${inter.variable}`}>
+    <html lang={locale} className={`${serif.variable} ${inter.variable}`}>
       <body className="min-h-screen flex flex-col bg-white">
         <I18nProvider locale={locale} dictionary={getDictionary(locale)}>
           <AccountProvider>
+            {/* First thing a keyboard user reaches: skips the header's links. */}
+            <a
+              href="#main"
+              className="sr-only focus:not-sr-only focus:fixed focus:top-3 focus:left-3 focus:z-[100] focus:bg-white focus:text-royal-blue focus:px-4 focus:py-3 focus:font-semibold focus:outline-2 focus:outline-royal-blue"
+            >
+              {getDictionary(locale).header.skipToContent}
+            </a>
             <Header />
-            <main className="flex-1">{children}</main>
+            <main id="main" tabIndex={-1} className="flex-1 focus:outline-none">
+              {children}
+            </main>
             <Footer />
           </AccountProvider>
         </I18nProvider>

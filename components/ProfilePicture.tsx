@@ -104,7 +104,7 @@ export default function ProfilePicture({ linkedToAuthor }: { linkedToAuthor: boo
           className="hidden"
           onChange={(e) => handleFile(e.target.files?.[0])}
         />
-        <p className="text-xs text-slate-400 mt-1.5">
+        <p className="text-xs text-slate-500 mt-1.5">
           {t.profile.pictureHint}
           {linkedToAuthor ? ` ${t.profile.pictureAuthorNote}` : ''}
         </p>

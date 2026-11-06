@@ -67,7 +67,7 @@ export default function CiteBox({ citations, slug }: { citations: ArticleCitatio
         <button
           type="button"
           onClick={handleCopy}
-          className="inline-flex items-center gap-1.5 text-sm font-medium text-ocean-blue hover:underline"
+          className="inline-flex items-center gap-1.5 min-h-11 text-sm font-medium text-ocean-blue hover:underline"
         >
           {copied ? <Check size={15} /> : <Copy size={15} />}
           {copied ? t.common.copied : t.common.copyCitation}
@@ -78,14 +78,14 @@ export default function CiteBox({ citations, slug }: { citations: ArticleCitatio
           <button
             type="button"
             onClick={() => download(citations.ris, 'ris', 'application/x-research-info-systems')}
-            className="font-medium text-ocean-blue hover:underline"
+            className="inline-flex items-center min-h-11 px-1 font-medium text-ocean-blue hover:underline"
           >
             RIS
           </button>
           <button
             type="button"
             onClick={() => download(citations.bibtex, 'bib', 'application/x-bibtex')}
-            className="font-medium text-ocean-blue hover:underline"
+            className="inline-flex items-center min-h-11 px-1 font-medium text-ocean-blue hover:underline"
           >
             BibTeX
           </button>

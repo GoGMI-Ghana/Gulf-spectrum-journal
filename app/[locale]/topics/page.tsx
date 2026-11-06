@@ -31,7 +31,7 @@ export default async function Topics({ params }: LocaleParams) {
             >
               <div className="flex items-center justify-between mb-2">
                 <h3 className="font-semibold text-royal-blue font-display">{topic.label}</h3>
-                <span className="numeral text-xs text-slate-400 shrink-0 ml-3">
+                <span className="numeral text-xs text-slate-500 shrink-0 ml-3">
                   {plural(locale, t.common.articleCount, counts[i].length)}
                 </span>
               </div>

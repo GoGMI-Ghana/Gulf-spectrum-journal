@@ -45,7 +45,7 @@ export default function SignUpForm() {
 
       <div className="flex items-center gap-3">
         <div className="flex-1 h-px bg-slate-200" />
-        <span className="text-xs text-slate-400 uppercase tracking-wide">{t.common.or}</span>
+        <span className="text-xs text-slate-500 uppercase tracking-wide">{t.common.or}</span>
         <div className="flex-1 h-px bg-slate-200" />
       </div>
 
@@ -65,7 +65,7 @@ export default function SignUpForm() {
             required
             value={fullName}
             onChange={(e) => setFullName(e.target.value)}
-            className="w-full border border-slate-300 px-3 py-2 text-sm focus:outline-none focus:border-royal-blue"
+            className="w-full border border-slate-300 px-3 py-2 text-sm focus:outline-2 focus:-outline-offset-1 focus:outline-royal-blue focus:border-royal-blue"
           />
         </div>
 
@@ -80,7 +80,7 @@ export default function SignUpForm() {
             required
             value={email}
             onChange={(e) => setEmail(e.target.value)}
-            className="w-full border border-slate-300 px-3 py-2 text-sm focus:outline-none focus:border-royal-blue"
+            className="w-full border border-slate-300 px-3 py-2 text-sm focus:outline-2 focus:-outline-offset-1 focus:outline-royal-blue focus:border-royal-blue"
           />
         </div>
 
@@ -96,9 +96,9 @@ export default function SignUpForm() {
             minLength={8}
             value={password}
             onChange={(e) => setPassword(e.target.value)}
-            className="w-full border border-slate-300 px-3 py-2 text-sm focus:outline-none focus:border-royal-blue"
+            className="w-full border border-slate-300 px-3 py-2 text-sm focus:outline-2 focus:-outline-offset-1 focus:outline-royal-blue focus:border-royal-blue"
           />
-          <p className="text-xs text-slate-400 mt-1">{t.signUp.minLength}</p>
+          <p className="text-xs text-slate-500 mt-1">{t.signUp.minLength}</p>
         </div>
 
         <button

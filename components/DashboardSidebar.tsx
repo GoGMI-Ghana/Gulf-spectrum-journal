@@ -25,7 +25,7 @@ function SidebarLink({
     <Link href={href} className="flex items-center gap-3 px-3 py-2.5 text-sm text-slate-700 hover:bg-soft-gold/40">
       <Icon size={17} className="text-ocean-blue shrink-0" />
       <span className="flex-1">{label}</span>
-      {trailing != null && <span className="text-xs text-slate-400">{trailing}</span>}
+      {trailing != null && <span className="text-xs text-slate-500">{trailing}</span>}
     </Link>
   )
 }

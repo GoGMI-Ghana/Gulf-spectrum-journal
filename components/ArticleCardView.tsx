@@ -25,30 +25,27 @@ export function ArticleCardView({
   const authorNames = authors.map((a) => a.name).join(', ')
 
   return (
-    <article className="py-6 border-b border-slate-200 group">
+    <article className="py-5 border-b border-slate-200">
       <div className="flex items-start justify-between gap-3">
-        <p className="kicker text-ocean-blue mb-2 flex flex-wrap items-center gap-x-2">
-          <span>
-            <ArticleKicker issueNumber={issue?.number} />
-          </span>
+        <div className="min-w-0">
           {topic && (
-            <Link
-              href={`/topics/${topic.slug}`}
-              className="text-royal-blue bg-soft-gold px-2 py-0.5 font-normal normal-case tracking-normal hover:bg-gold hover:text-ink transition-colors"
-            >
+            <Link href={`/topics/${topic.slug}`} className="text-sm text-gold-ink hover:underline">
               {topic.label}
             </Link>
           )}
-        </p>
-        <BookmarkButton slug={article.slug} className="shrink-0" />
+          <h3 className="font-display text-xl text-royal-blue leading-snug mt-1">
+            <Link href={`/articles/${article.slug}`} className="hover:text-ocean-blue hover:underline underline-offset-2">
+              {article.title}
+            </Link>
+          </h3>
+        </div>
+        <BookmarkButton slug={article.slug} className="shrink-0 -mr-2" />
       </div>
-      <h3 className="text-lg font-semibold text-royal-blue leading-snug mb-1.5 font-display">
-        <Link href={`/articles/${article.slug}`} className="group-hover:text-ocean-blue">
-          {article.title}
-        </Link>
-      </h3>
-      <p className="text-sm text-slate-600 mb-2 italic">{authorNames}</p>
-      <p className="text-sm text-slate-500 line-clamp-2">{article.abstract}</p>
+      <p className="text-slate-700 mt-1.5">
+        {authorNames}
+        {issue && <span className="text-slate-600"> · <ArticleKicker issueNumber={issue.number} /></span>}
+      </p>
+      <p className="text-[0.9375rem] text-slate-600 leading-relaxed mt-2 line-clamp-2">{article.abstract}</p>
     </article>
   )
 }

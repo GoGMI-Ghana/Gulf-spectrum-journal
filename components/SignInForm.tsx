@@ -42,7 +42,7 @@ export default function SignInForm({ redirectTo }: { redirectTo: string }) {
 
       <div className="flex items-center gap-3">
         <div className="flex-1 h-px bg-slate-200" />
-        <span className="text-xs text-slate-400 uppercase tracking-wide">{t.common.or}</span>
+        <span className="text-xs text-slate-500 uppercase tracking-wide">{t.common.or}</span>
         <div className="flex-1 h-px bg-slate-200" />
       </div>
 
@@ -86,7 +86,7 @@ export default function SignInForm({ redirectTo }: { redirectTo: string }) {
               required
               value={email}
               onChange={(e) => setEmail(e.target.value)}
-              className="w-full border border-slate-300 px-3 py-2 text-sm focus:outline-none focus:border-royal-blue"
+              className="w-full border border-slate-300 px-3 py-2 text-sm focus:outline-2 focus:-outline-offset-1 focus:outline-royal-blue focus:border-royal-blue"
             />
           </div>
 
@@ -106,7 +106,7 @@ export default function SignInForm({ redirectTo }: { redirectTo: string }) {
               required
               value={password}
               onChange={(e) => setPassword(e.target.value)}
-              className="w-full border border-slate-300 px-3 py-2 text-sm focus:outline-none focus:border-royal-blue"
+              className="w-full border border-slate-300 px-3 py-2 text-sm focus:outline-2 focus:-outline-offset-1 focus:outline-royal-blue focus:border-royal-blue"
             />
           </div>
 

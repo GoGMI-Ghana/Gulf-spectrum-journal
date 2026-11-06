@@ -34,7 +34,7 @@ function WhatsAppGlyph(props: React.SVGProps<SVGSVGElement>) {
   )
 }
 
-const linkClass = 'text-slate-500 hover:text-royal-blue transition-colors'
+const linkClass = 'inline-flex items-center justify-center min-h-11 min-w-11 text-slate-600 hover:text-royal-blue transition-colors'
 
 // `url` is the article's canonical public address, passed in by the page
 // rather than read from window.location: the share links are rendered
@@ -53,8 +53,8 @@ export default function ShareBar({ title, url }: { title: string; url: string })
   }
 
   return (
-    <div className="flex items-center gap-4 py-3 border-y border-slate-200">
-      <span className="kicker text-slate-500">{t.article.share}</span>
+    <div className="flex flex-wrap items-center gap-x-1 py-1 border-y border-slate-200">
+      <span className="text-sm font-semibold text-slate-700 mr-2">{t.article.share}</span>
       <a
         href={`https://twitter.com/intent/tweet?text=${shareText}&url=${shareUrl}`}
         target="_blank"
@@ -95,7 +95,7 @@ export default function ShareBar({ title, url }: { title: string; url: string })
         type="button"
         onClick={handleCopy}
         aria-label={t.article.copyLink}
-        className={`inline-flex items-center gap-1.5 text-xs ${linkClass}`}
+        className={`gap-1.5 px-2 text-sm ${linkClass}`}
       >
         {copied ? <Check size={15} /> : <Link2 size={15} />}
         {copied ? t.article.linkCopied : t.article.copyLink}

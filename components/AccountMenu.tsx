@@ -31,7 +31,7 @@ import AuthorAvatar from './AuthorAvatar'
 import BoardBadge from './BoardBadge'
 
 function SectionLabel({ children }: { children: string }) {
-  return <p className="kicker text-slate-400 px-4 pt-4 pb-1.5">{children}</p>
+  return <p className="kicker text-slate-500 px-4 pt-4 pb-1.5">{children}</p>
 }
 
 function MenuLink({
@@ -120,13 +120,13 @@ export default function AccountMenu() {
         onClick={() => setOpen((v) => !v)}
         aria-label={t.accountMenu.ariaLabel}
         aria-expanded={open}
-        className="flex items-center gap-1.5 text-white/85 hover:text-gold transition-colors text-sm"
+        className="inline-flex items-center justify-center h-11 w-11 text-white/85 hover:text-white transition-colors"
       >
         {avatarUrl ? (
           // eslint-disable-next-line @next/next/no-img-element
           <img src={avatarUrl} alt="" className="w-7 h-7 rounded-full object-cover ring-1 ring-white/40" />
         ) : (
-          <CircleUserRound size={18} />
+          <CircleUserRound size={22} aria-hidden="true" />
         )}
       </button>
 
@@ -140,7 +140,7 @@ export default function AccountMenu() {
                 {displayName}
                 {boardTitle && <BoardBadge title={boardTitle} />}
               </p>
-              <p className="text-xs text-slate-400">{user ? user.email : t.accountMenu.notSignedIn}</p>
+              <p className="text-xs text-slate-500">{user ? user.email : t.accountMenu.notSignedIn}</p>
             </div>
           </div>
 

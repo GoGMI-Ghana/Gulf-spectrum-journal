@@ -51,7 +51,7 @@ export default function ContactForm() {
         <HoneypotField value={website} onChange={setWebsite} />
         <div className="grid sm:grid-cols-2 gap-5">
           <div>
-            <label className="block text-xs font-medium text-slate-600 mb-1" htmlFor="c-name">
+            <label className="block text-sm font-medium text-slate-700 mb-1" htmlFor="c-name">
               {t.contact.name}
             </label>
             <input
@@ -60,11 +60,11 @@ export default function ContactForm() {
               type="text"
               value={name}
               onChange={(e) => setName(e.target.value)}
-              className="w-full border border-slate-300 px-3 py-2 text-sm focus:outline-none focus:border-royal-blue"
+              className="w-full border border-slate-300 px-3 py-2 text-sm focus:outline-2 focus:-outline-offset-1 focus:outline-royal-blue focus:border-royal-blue"
             />
           </div>
           <div>
-            <label className="block text-xs font-medium text-slate-600 mb-1" htmlFor="c-email">
+            <label className="block text-sm font-medium text-slate-700 mb-1" htmlFor="c-email">
               {t.common.email}
             </label>
             <input
@@ -73,12 +73,12 @@ export default function ContactForm() {
               type="email"
               value={email}
               onChange={(e) => setEmail(e.target.value)}
-              className="w-full border border-slate-300 px-3 py-2 text-sm focus:outline-none focus:border-royal-blue"
+              className="w-full border border-slate-300 px-3 py-2 text-sm focus:outline-2 focus:-outline-offset-1 focus:outline-royal-blue focus:border-royal-blue"
             />
           </div>
         </div>
         <div>
-          <label className="block text-xs font-medium text-slate-600 mb-1" htmlFor="c-subject">
+          <label className="block text-sm font-medium text-slate-700 mb-1" htmlFor="c-subject">
             {t.contact.subject}
           </label>
           <input
@@ -87,11 +87,11 @@ export default function ContactForm() {
             type="text"
             value={subject}
             onChange={(e) => setSubject(e.target.value)}
-            className="w-full border border-slate-300 px-3 py-2 text-sm focus:outline-none focus:border-royal-blue"
+            className="w-full border border-slate-300 px-3 py-2 text-sm focus:outline-2 focus:-outline-offset-1 focus:outline-royal-blue focus:border-royal-blue"
           />
         </div>
         <div>
-          <label className="block text-xs font-medium text-slate-600 mb-1" htmlFor="c-message">
+          <label className="block text-sm font-medium text-slate-700 mb-1" htmlFor="c-message">
             {t.contact.message}
           </label>
           <textarea
@@ -100,7 +100,7 @@ export default function ContactForm() {
             rows={6}
             value={message}
             onChange={(e) => setMessage(e.target.value)}
-            className="w-full border border-slate-300 px-3 py-2 text-sm focus:outline-none focus:border-royal-blue"
+            className="w-full border border-slate-300 px-3 py-2 text-sm focus:outline-2 focus:-outline-offset-1 focus:outline-royal-blue focus:border-royal-blue"
           />
         </div>
         <button

@@ -43,7 +43,7 @@ export default function ClaimAuthorLink({ authorSlug, claimed }: { authorSlug: s
 
   if (!user) {
     return (
-      <p className="text-xs text-slate-400 mt-3">
+      <p className="text-xs text-slate-500 mt-3">
         {rich(t.author.isThisYou, {
           link: (
             <Link href={`/sign-in?redirect=/authors/${authorSlug}/claim`} className="text-ocean-blue hover:underline">
@@ -59,7 +59,7 @@ export default function ClaimAuthorLink({ authorSlug, claimed }: { authorSlug: s
   if (!eligible) return null
 
   return (
-    <p className="text-xs text-slate-400 mt-3">
+    <p className="text-xs text-slate-500 mt-3">
       {rich(t.author.isThisYou, {
         link: (
           <Link href={`/authors/${authorSlug}/claim`} className="text-ocean-blue hover:underline">
