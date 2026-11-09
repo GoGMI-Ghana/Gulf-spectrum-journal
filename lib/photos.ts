@@ -9,7 +9,12 @@ export const photos = {
   // Home page, under "About the journal"
   homeAbout: { src: null, alt: '', width: 1200, height: 800 },
   // About page, between the journal description and "Scope"
-  aboutInstitute: { src: null, alt: '', width: 1600, height: 900 },
+  aboutInstitute: {
+    src: '/journal-about.png',
+    alt: 'Researchers discussing papers around a meeting table, with a port and cargo ships visible through the window',
+    width: 1672,
+    height: 941,
+  },
   // Contact page, above the office address
   contactOffice: { src: null, alt: '', width: 1200, height: 800 },
 } satisfies Record<string, PhotoSlot>
