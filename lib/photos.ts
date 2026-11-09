@@ -7,7 +7,12 @@ export type PhotoSlot = { src: string | null; alt: string; width: number; height
 
 export const photos = {
   // Home page, under "About the journal"
-  homeAbout: { src: null, alt: '', width: 1200, height: 800 },
+  homeAbout: {
+    src: '/journal-about.png',
+    alt: 'Researchers discussing papers around a meeting table, with a port and cargo ships visible through the window',
+    width: 1672,
+    height: 941,
+  },
   // About page, between the journal description and "Scope"
   aboutInstitute: {
     src: '/journal-about.png',
