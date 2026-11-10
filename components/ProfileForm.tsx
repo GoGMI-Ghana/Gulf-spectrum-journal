@@ -7,6 +7,7 @@ import { useAccount } from '@/context/AccountContext'
 import { useI18n } from '@/context/I18nContext'
 import { formatDate, rich } from '@/lib/i18n/format'
 import ProfilePicture from './ProfilePicture'
+import AuthorDetailsForm from './AuthorDetailsForm'
 
 interface ProfileRow {
   full_name: string | null
@@ -190,6 +191,8 @@ export default function ProfileForm() {
           </div>
         )}
       </div>
+
+      {linkedToAuthor && <AuthorDetailsForm userId={user.id} />}
     </div>
   )
 }

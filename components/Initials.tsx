@@ -12,6 +12,7 @@ export const avatarSizes = {
   sm: 'w-10 h-10 text-xs',
   md: 'w-14 h-14 text-base',
   lg: 'w-20 h-20 text-2xl',
+  xl: 'w-24 h-24 sm:w-32 sm:h-32 text-3xl sm:text-4xl',
 } as const
 
 export default function Initials({

@@ -91,7 +91,6 @@ export default async function ArticleDetail({ params }: LocaleSlugParams) {
   // Once an article has a DOI, that is the address to cite: it keeps
   // working even if the site's own addresses change.
   const citations = formatCitations(article, authors, issue, article.doi ? doiUrl(article.doi) : url)
-  const authorNames = authors.map((a) => a.name).join(t.common.and)
   const stats = statsById[article.id] ?? { views: 0, downloads: 0 }
   const issueLabel = issue ? fmt(t.article.volumeIssue, { volume: issue.volume, number: issue.number }) : ''
 
@@ -104,14 +103,16 @@ export default async function ArticleDetail({ params }: LocaleSlugParams) {
     ...article.sections.flatMap((section, i) => (section.heading ? [{ id: `section-${i + 1}`, label: section.heading }] : [])),
     ...(article.conclusion ? [{ id: 'conclusion', label: t.article.conclusion }] : []),
     ...(article.disclosure ? [{ id: 'disclosure', label: t.article.disclosure }] : []),
+    { id: 'authors', label: t.article.aboutAuthors },
     ...(article.references.length > 0 ? [{ id: 'references', label: t.article.references }] : []),
   ]
 
+  // Same order as the sections on the page.
   const tabs = [
     { href: '#abstract', label: t.article.fullArticle, icon: FileText, current: true },
+    { href: '#authors', label: t.article.authorsTab, icon: Users, current: false },
     ...(article.references.length > 0 ? [{ href: '#references', label: t.article.references, icon: BookOpen, current: false }] : []),
     { href: '#cite', label: t.article.citeLink, icon: Quote, current: false },
-    { href: '#authors', label: t.article.authorsTab, icon: Users, current: false },
     { href: '#metrics', label: t.article.metrics, icon: ChartNoAxesColumn, current: false },
   ]
 
@@ -303,6 +304,27 @@ export default async function ArticleDetail({ params }: LocaleSlugParams) {
             )}
           </div>
 
+          {/* About the authors: after the text and before the references,
+              where journals put author information. A bio line only when
+              the author has written one. */}
+          <section id="authors" className={`${ANCHOR} border-t border-slate-300 pt-8 mt-6`}>
+            <h2 className={SECTION_HEADING}>{t.article.aboutAuthors}</h2>
+            <ul className="grid sm:grid-cols-2 gap-x-8 gap-y-6">
+              {authors.map((author) => (
+                <li key={author.slug} className="flex gap-4">
+                  <AuthorAvatar name={author.name} photo={author.photo} size="md" className="rounded-full" />
+                  <div className="min-w-0">
+                    <Link href={`/authors/${author.slug}`} className="font-semibold text-royal-blue hover:underline">
+                      {author.name}
+                    </Link>
+                    {author.affiliation && <p className="text-sm text-slate-600 mt-0.5">{author.affiliation}</p>}
+                    {author.bio && <p className="text-sm text-slate-700 leading-relaxed mt-2 line-clamp-4">{author.bio}</p>}
+                  </div>
+                </li>
+              ))}
+            </ul>
+          </section>
+
           {article.references.length > 0 && (
             <section id="references" className={`${ANCHOR} border-t border-slate-300 pt-8 mt-6`}>
               <h2 className={SECTION_HEADING}>{t.article.references}</h2>
@@ -328,28 +350,6 @@ export default async function ArticleDetail({ params }: LocaleSlugParams) {
             <CiteBox citations={citations} slug={article.slug} />
           </section>
 
-          <DonationThanksBanner />
-          <SupportBox authorNames={authorNames} articleSlug={article.slug} />
-
-          {/* Author bios */}
-          <section id="authors" className={`${ANCHOR} border-t border-slate-200 pt-8 mt-10`}>
-            <h2 className={SECTION_HEADING}>{t.article.aboutAuthors}</h2>
-            <div className="grid sm:grid-cols-2 gap-6">
-              {authors.map((author) => (
-                <div key={author.slug} className="flex gap-4">
-                  <AuthorAvatar name={author.name} photo={author.photo} size="md" />
-                  <div>
-                    <Link href={`/authors/${author.slug}`} className="font-semibold text-royal-blue hover:underline">
-                      {author.name}
-                    </Link>
-                    <p className="text-sm text-slate-600 mb-1.5">{author.affiliation}</p>
-                    <p className="text-sm text-slate-700 leading-relaxed">{author.bio}</p>
-                  </div>
-                </div>
-              ))}
-            </div>
-          </section>
-
           {/* Real counts from visits to this page (see ArticleViewLogger). */}
           <section id="metrics" className={`${ANCHOR} border-t border-slate-200 pt-8 mt-10`}>
             <h2 className={SECTION_HEADING}>{t.article.metrics}</h2>
@@ -364,6 +364,11 @@ export default async function ArticleDetail({ params }: LocaleSlugParams) {
               </div>
             </dl>
           </section>
+
+          {/* Last, once the reader has finished: the way news and open-access
+              sites ask for support, rather than interrupting the article. */}
+          <DonationThanksBanner />
+          <SupportBox authors={authors} articleSlug={article.slug} />
         </article>
 
         {/* Other articles in the same issue */}

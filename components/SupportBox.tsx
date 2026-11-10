@@ -1,25 +1,37 @@
 'use client'
 
 import { useState } from 'react'
+import { Lock } from 'lucide-react'
 import { donationSplit } from '@/lib/staticContent'
+import type { Author } from '@/lib/types'
 import { useI18n } from '@/context/I18nContext'
 import { fmt } from '@/lib/i18n/format'
+import AuthorAvatar from './AuthorAvatar'
 
 // GHS, matching the donations table's default currency and what actually
 // gets charged — showing dollar amounts while billing GHS would be
 // misleading about what the donor is agreeing to pay.
 const DONATION_AMOUNTS = [20, 50, 100]
 
-export default function SupportBox({ authorNames, articleSlug }: { authorNames: string; articleSlug: string }) {
+const FIELD =
+  'w-full border border-slate-300 bg-white px-3 py-2.5 text-[0.9375rem] focus:outline-2 focus:-outline-offset-1 focus:outline-royal-blue focus:border-royal-blue'
+
+// The amount choices are real radio buttons (one tab stop, arrow keys
+// move between them, read out as "1 of 4"), styled as a row of buttons.
+const CHOICE =
+  'relative flex flex-1 items-center justify-center min-h-11 min-w-16 px-4 whitespace-nowrap border border-slate-300 bg-white text-slate-800 font-semibold cursor-pointer transition-colors hover:border-royal-blue has-[:checked]:bg-royal-blue has-[:checked]:border-royal-blue has-[:checked]:text-white has-[:focus-visible]:outline-2 has-[:focus-visible]:outline-offset-2 has-[:focus-visible]:outline-royal-blue'
+
+export default function SupportBox({ authors, articleSlug }: { authors: Author[]; articleSlug: string }) {
   const { t } = useI18n()
-  const [amount, setAmount] = useState(50)
+  const [choice, setChoice] = useState<number | 'other'>(50)
   const [customAmount, setCustomAmount] = useState('')
   const [donorName, setDonorName] = useState('')
   const [donorEmail, setDonorEmail] = useState('')
   const [loading, setLoading] = useState(false)
   const [error, setError] = useState<string | null>(null)
 
-  const effectiveAmount = customAmount ? Number(customAmount) : amount
+  const effectiveAmount = choice === 'other' ? Number(customAmount) || 0 : choice
+  const authorNames = authors.map((a) => a.name).join(t.common.and)
 
   async function handleSubmit(e: React.FormEvent) {
     e.preventDefault()
@@ -48,74 +60,138 @@ export default function SupportBox({ authorNames, articleSlug }: { authorNames: 
   }
 
   return (
-    <div className="border-l-4 border-gold bg-royal-blue text-white p-6 my-8">
-      <h2 className="kicker text-gold mb-2">{t.support.heading}</h2>
-      <p className="text-white/75 text-sm leading-relaxed mb-4">
-        {fmt(t.support.body, {
-          authors: authorNames || t.support.fallbackAuthors,
-          authorPercent: donationSplit.authorPercent,
-          platformPercent: donationSplit.platformPercent,
-        })}
-      </p>
-
-      <form onSubmit={handleSubmit} className="space-y-3">
-        {error && <p className="text-sm text-gold bg-white/10 p-3">{error}</p>}
-
-        <div className="flex flex-wrap gap-2">
-          {DONATION_AMOUNTS.map((a) => (
-            <button
-              key={a}
-              type="button"
-              onClick={() => {
-                setAmount(a)
-                setCustomAmount('')
-              }}
-              className={`px-4 py-2 text-sm font-semibold transition-colors ${
-                amount === a && !customAmount ? 'bg-gold text-ink' : 'bg-white/10 text-white hover:bg-white/20'
-              }`}
-            >
-              GHS {a}
-            </button>
-          ))}
-          <input
-            type="number"
-            min="1"
-            placeholder={t.support.otherAmount}
-            value={customAmount}
-            onChange={(e) => setCustomAmount(e.target.value)}
-            className="w-28 px-3 py-2 text-sm bg-white/10 text-white placeholder-white/40 focus:outline-2 focus:-outline-offset-1 focus:outline-royal-blue focus:bg-white/20"
-          />
-        </div>
-
-        <div className="grid sm:grid-cols-2 gap-3">
-          <input
-            type="text"
-            placeholder={t.support.namePlaceholder}
-            value={donorName}
-            onChange={(e) => setDonorName(e.target.value)}
-            className="px-3 py-2 text-sm bg-white/10 text-white placeholder-white/40 focus:outline-2 focus:-outline-offset-1 focus:outline-royal-blue focus:bg-white/20"
-          />
-          <input
-            type="email"
-            required
-            placeholder={t.support.emailPlaceholder}
-            value={donorEmail}
-            onChange={(e) => setDonorEmail(e.target.value)}
-            className="px-3 py-2 text-sm bg-white/10 text-white placeholder-white/40 focus:outline-2 focus:-outline-offset-1 focus:outline-royal-blue focus:bg-white/20"
-          />
-        </div>
-
-        <button
-          type="submit"
-          disabled={!effectiveAmount || loading}
-          className="bg-gold hover:bg-soft-gold hover:text-royal-blue text-ink font-semibold text-sm px-6 py-2.5 transition-colors tracking-wide disabled:opacity-50"
-        >
-          {loading ? t.support.redirecting : fmt(t.support.donate, { amount: effectiveAmount || 0 })}
-        </button>
-        <p className="text-sm text-white/75">
-          {t.support.secure}
+    <section
+      id="support"
+      aria-labelledby="support-heading"
+      className="scroll-mt-6 mt-12 border-t-2 border-royal-blue bg-slate-50 px-5 py-7 sm:px-8 sm:py-8 space-y-7"
+    >
+      <div>
+        <h2 id="support-heading" className="font-display text-2xl text-royal-blue">
+          {t.support.heading}
+        </h2>
+        <p className="text-slate-700 leading-relaxed mt-3 max-w-2xl">
+          {fmt(t.support.body, {
+            authors: authorNames || t.support.fallbackAuthors,
+            authorPercent: donationSplit.authorPercent,
+            platformPercent: donationSplit.platformPercent,
+          })}
         </p>
+
+        {authors.length > 0 && (
+          <div className="mt-5">
+            <p className="text-sm text-slate-600 mb-2">{t.support.recipients}</p>
+            <ul className="flex flex-wrap gap-x-6 gap-y-2">
+              {authors.map((a) => (
+                <li key={a.slug} className="flex items-center gap-3">
+                  <AuthorAvatar name={a.name} photo={a.photo} size="sm" className="rounded-full" />
+                  <span className="font-medium text-slate-900">{a.name}</span>
+                </li>
+              ))}
+            </ul>
+          </div>
+        )}
+      </div>
+
+      <form onSubmit={handleSubmit} className="space-y-5 max-w-xl border-t border-slate-200 pt-6" noValidate>
+        <fieldset>
+          <legend className="text-sm font-medium text-slate-700 mb-2">{t.support.amountLegend}</legend>
+          <div className="flex flex-wrap gap-2">
+            {DONATION_AMOUNTS.map((a) => (
+              <label key={a} className={CHOICE}>
+                <input
+                  type="radio"
+                  name="amount"
+                  value={a}
+                  checked={choice === a}
+                  onChange={() => setChoice(a)}
+                  className="sr-only"
+                />
+                {a}
+              </label>
+            ))}
+            <label className={CHOICE}>
+              <input
+                type="radio"
+                name="amount"
+                value="other"
+                checked={choice === 'other'}
+                onChange={() => setChoice('other')}
+                className="sr-only"
+              />
+              {t.support.otherAmountLabel}
+            </label>
+          </div>
+        </fieldset>
+
+        {choice === 'other' && (
+          <div>
+            <label htmlFor="support-other" className="block text-sm font-medium text-slate-700 mb-1">
+              {t.support.otherAmountLabel} (GHS)
+            </label>
+            <input
+              id="support-other"
+              type="number"
+              inputMode="decimal"
+              min="1"
+              value={customAmount}
+              onChange={(e) => setCustomAmount(e.target.value)}
+              className={`${FIELD} max-w-40`}
+              autoFocus
+            />
+          </div>
+        )}
+
+        <div className="grid sm:grid-cols-2 gap-4">
+          <div>
+            <label htmlFor="support-name" className="block text-sm font-medium text-slate-700 mb-1">
+              {t.support.nameLabel}
+            </label>
+            <input
+              id="support-name"
+              type="text"
+              autoComplete="name"
+              value={donorName}
+              onChange={(e) => setDonorName(e.target.value)}
+              className={FIELD}
+            />
+          </div>
+          <div>
+            <label htmlFor="support-email" className="block text-sm font-medium text-slate-700 mb-1">
+              {t.support.emailLabel}
+            </label>
+            <input
+              id="support-email"
+              type="email"
+              autoComplete="email"
+              required
+              value={donorEmail}
+              onChange={(e) => setDonorEmail(e.target.value)}
+              aria-invalid={error === t.support.invalidEmail || undefined}
+              className={FIELD}
+            />
+          </div>
+        </div>
+
+        {error && (
+          <p role="alert" className="text-sm text-red-800 bg-red-50 border border-red-200 px-3 py-2">
+            {error}
+          </p>
+        )}
+
+        <div>
+          <button
+            type="submit"
+            disabled={!effectiveAmount || loading}
+            className="w-full sm:w-auto bg-royal-blue hover:bg-ocean-blue text-white font-semibold px-6 py-3 transition-colors disabled:opacity-60"
+          >
+            {loading ? t.support.redirecting : fmt(t.support.donate, { amount: effectiveAmount || 0 })}
+          </button>
+          <p className="flex items-start gap-2 text-sm text-slate-600 mt-3">
+            <Lock size={15} className="shrink-0 mt-0.5" aria-hidden="true" />
+            {t.support.secure}
+          </p>
+        </div>
       </form>
-    </div>
+    </section>
   )
 }

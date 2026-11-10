@@ -7,6 +7,7 @@ import { useAccount } from '@/context/AccountContext'
 import { useI18n } from '@/context/I18nContext'
 import { AVATAR_ACCEPT, deleteAvatarFile, uploadAvatar } from '@/lib/avatars'
 import AuthorAvatar from './AuthorAvatar'
+import { refreshAuthorPages } from './AuthorDetailsForm'
 
 // The picture section of the Profile page. Saves the picture to the
 // member's profile and, when their account is linked to an author profile,
@@ -32,6 +33,7 @@ export default function ProfilePicture({ linkedToAuthor }: { linkedToAuthor: boo
     if (linkedToAuthor) {
       const { error: authorError } = await supabase.from('authors').update({ photo_url: url }).eq('user_id', userId)
       if (authorError) console.error('Could not update the author photo', authorError)
+      else await refreshAuthorPages()
     }
     return true
   }
