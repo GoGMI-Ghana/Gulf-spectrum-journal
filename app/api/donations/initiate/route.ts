@@ -83,8 +83,16 @@ export async function POST(request: Request) {
       email: donorEmail,
       amount: amountMinorUnits,
       currency: 'GHS',
-      callback_url: `${origin}/articles/${articleSlug}?donation=thanks`,
-      metadata: { type: 'donation', record_id: donationId },
+      // Paystack sends the donor here after paying; the route confirms the
+      // payment with Paystack before thanking them (see lib/donations.ts).
+      callback_url: `${origin}/api/donations/verify`,
+      metadata: {
+        type: 'donation',
+        record_id: donationId,
+        article_slug: articleSlug,
+        // Where the "Cancel payment" link on Paystack's page goes.
+        cancel_action: `${origin}/articles/${articleSlug}?donation=incomplete#support`,
+      },
     }),
   })
 

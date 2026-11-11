@@ -4,12 +4,11 @@
 // is async, which is why call sites under app/ never needed to change
 // shape when this file moved off static arrays — only this file did.
 //
-// journal and donationSplit live in lib/staticContent.ts,
-// not here — this file imports lib/supabase/server.ts (server-only, via
-// next/headers), which makes it and everything it exports unusable from a
-// Client Component. Header and SupportBox are 'use client' and read
-// journal/donationSplit, so those need to come from a module with no
-// server-only imports at all.
+// journal lives in lib/staticContent.ts, not here — this file imports
+// lib/supabase/server.ts (server-only, via next/headers), which makes it
+// and everything it exports unusable from a Client Component. Footer is
+// 'use client' and reads journal, so it needs to come from a module with
+// no server-only imports at all.
 //
 // The four "get whole collection" fetchers (getIssues, getArticles,
 // getAuthors, getTopics) are wrapped in React's cache() so that multiple

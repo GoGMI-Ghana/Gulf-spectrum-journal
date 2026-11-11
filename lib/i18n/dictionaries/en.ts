@@ -248,24 +248,19 @@ Each volume is reviewed by an editorial board of subject-matter experts before p
   },
 
   support: {
-    heading: 'Support the authors',
-    body: 'If this article was useful to you, you can send a contribution to {authors}. {authorPercent}% goes to the authors, and {platformPercent}% helps Gulf Spectrum Journal keep publishing free-to-read research.',
-    fallbackAuthors: 'the author(s)',
+    heading: 'Support Gulf Spectrum Journal',
+    body: 'Gulf Spectrum Journal is free to read and free to publish in. Donations help pay for editing, peer review and keeping the journal online, so research on the Gulf of Guinea stays open to everyone.',
     invalidEmail: 'Enter a valid email — Paystack sends your receipt there.',
     startFailed: 'Something went wrong starting the payment.',
-    otherAmount: 'Other (GHS)',
     amountLegend: 'Amount (GHS)',
     otherAmountLabel: 'Other amount',
     nameLabel: 'Your name (optional)',
     emailLabel: 'Email, for your receipt',
-    recipients: 'Your contribution goes to',
-    namePlaceholder: 'Your name (optional)',
-    emailPlaceholder: 'Your email',
     redirecting: 'Redirecting to Paystack…',
     donate: 'Donate GHS {amount}',
     secure: "You'll complete payment on Paystack's secure page — we never see or store your card details.",
-    thanks:
-      "Thank you for your donation — we're confirming the payment now. It's usually instant; your receipt will come from Paystack directly.",
+    thanks: 'Thank you for supporting Gulf Spectrum Journal. Your payment went through, and Paystack is emailing your receipt.',
+    incomplete: "Your donation wasn't completed, and you haven't been charged. You can try again below.",
   },
 
   topics: {
@@ -378,7 +373,7 @@ Each volume is reviewed by an editorial board of subject-matter experts before p
     exploreHeading: 'Explore Citations',
     ctaHeading: 'Support the research behind these citations',
     ctaBody:
-      "Donate directly to an article's authors from its page — most of every contribution goes straight to the researchers who wrote it.",
+      'You can support the journal with a donation at the end of any article. It helps keep Gulf Spectrum Journal free to read and free to publish in.',
     browseArticles: 'Browse Articles',
     issueLabel: 'Issue {number} · {year}',
     viewArticle: 'View article',

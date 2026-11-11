@@ -240,25 +240,20 @@ Cada volumen es revisado antes de su publicación por un comité editorial de ex
   },
 
   support: {
-    heading: 'Apoye a los autores',
-    body: '¿Le ha resultado útil este artículo? Envíe una contribución directa a {authors}. El {authorPercent} % va a los autores; Gulf Spectrum Journal (GoGMI) retiene el {platformPercent} % para sostener la plataforma.',
-    fallbackAuthors: 'los autores',
+    heading: 'Apoye a Gulf Spectrum Journal',
+    body: 'Gulf Spectrum Journal es de lectura y publicación gratuitas. Las donaciones ayudan a pagar la edición, la revisión por pares y el mantenimiento de la revista en línea, para que la investigación sobre el golfo de Guinea siga abierta a todos.',
     invalidEmail: 'Introduzca un correo válido — Paystack enviará allí su recibo.',
     startFailed: 'Se produjo un error al iniciar el pago.',
-    otherAmount: 'Otro (GHS)',
     amountLegend: 'Importe (GHS)',
     otherAmountLabel: 'Otro importe',
     nameLabel: 'Su nombre (opcional)',
     emailLabel: 'Correo electrónico, para su recibo',
-    recipients: 'Su contribución va a',
-    namePlaceholder: 'Su nombre (opcional)',
-    emailPlaceholder: 'Su correo electrónico',
     redirecting: 'Redirigiendo a Paystack…',
     donate: 'Donar {amount} GHS',
     secure:
       'Completará el pago en la página segura de Paystack — nunca vemos ni almacenamos los datos de su tarjeta.',
-    thanks:
-      'Gracias por su donación — estamos confirmando el pago. Suele ser inmediato; recibirá el recibo directamente de Paystack.',
+    thanks: 'Gracias por apoyar a Gulf Spectrum Journal. Su pago se ha realizado y Paystack le enviará el recibo por correo.',
+    incomplete: 'Su donación no se completó y no se le ha cobrado nada. Puede intentarlo de nuevo más abajo.',
   },
 
   topics: {
@@ -371,7 +366,7 @@ Cada volumen es revisado antes de su publicación por un comité editorial de ex
     exploreHeading: 'Explorar citas',
     ctaHeading: 'Apoye la investigación detrás de estas citas',
     ctaBody:
-      'Done directamente a los autores de un artículo desde su página — la mayor parte de cada contribución va directamente a los investigadores que lo escribieron.',
+      'Puede apoyar la revista con una donación al final de cualquier artículo. Ayuda a que Gulf Spectrum Journal siga siendo de lectura y publicación gratuitas.',
     browseArticles: 'Explorar artículos',
     issueLabel: 'Número {number} · {year}',
     viewArticle: 'Ver artículo',

@@ -12,16 +12,15 @@
 // signed.
 import { createHmac, timingSafeEqual } from 'node:crypto'
 import { NextResponse } from 'next/server'
-import { createAdminClient } from '@/lib/supabase/admin'
+import { markDonationCompleted, parseMetadata } from '@/lib/donations'
 
 interface PaystackEvent {
   event: string
   data: {
     reference: string
-    metadata?: {
-      type?: 'donation'
-      record_id?: string
-    }
+    amount?: number
+    currency?: string
+    metadata?: unknown
   }
 }
 
@@ -54,22 +53,16 @@ export async function POST(request: Request) {
     return NextResponse.json({ ok: true })
   }
 
-  const { reference, metadata } = event.data
-  if (!metadata?.record_id) {
-    console.error('charge.success webhook missing metadata.record_id', reference)
+  const { reference, amount, currency } = event.data
+  const metadata = parseMetadata(event.data.metadata)
+  // The Paystack account is shared with another GoGMI site, so payments
+  // that aren't journal donations are expected here; acknowledge and skip.
+  if (metadata.type !== 'donation' || !metadata.record_id) {
     return NextResponse.json({ ok: true })
   }
 
-  const admin = createAdminClient()
-  const { error } = await admin
-    .from('donations')
-    .update({ status: 'completed', payment_reference: reference })
-    .eq('id', metadata.record_id)
-
-  if (error) {
-    console.error(`Failed to mark donation ${metadata.record_id} as completed`, error)
-    return NextResponse.json({ error: 'Database update failed' }, { status: 500 })
-  }
+  const ok = await markDonationCompleted(metadata.record_id, reference, amount, currency)
+  if (!ok) return NextResponse.json({ error: 'Database update failed' }, { status: 500 })
 
   return NextResponse.json({ ok: true })
 }

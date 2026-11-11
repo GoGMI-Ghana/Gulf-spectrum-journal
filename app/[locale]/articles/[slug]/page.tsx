@@ -368,7 +368,7 @@ export default async function ArticleDetail({ params }: LocaleSlugParams) {
           {/* Last, once the reader has finished: the way news and open-access
               sites ask for support, rather than interrupting the article. */}
           <DonationThanksBanner />
-          <SupportBox authors={authors} articleSlug={article.slug} />
+          <SupportBox articleSlug={article.slug} />
         </article>
 
         {/* Other articles in the same issue */}

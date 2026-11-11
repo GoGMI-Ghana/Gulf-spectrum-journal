@@ -2,11 +2,8 @@
 
 import { useState } from 'react'
 import { Lock } from 'lucide-react'
-import { donationSplit } from '@/lib/staticContent'
-import type { Author } from '@/lib/types'
 import { useI18n } from '@/context/I18nContext'
 import { fmt } from '@/lib/i18n/format'
-import AuthorAvatar from './AuthorAvatar'
 
 // GHS, matching the donations table's default currency and what actually
 // gets charged — showing dollar amounts while billing GHS would be
@@ -21,7 +18,10 @@ const FIELD =
 const CHOICE =
   'relative flex flex-1 items-center justify-center min-h-11 min-w-16 px-4 whitespace-nowrap border border-slate-300 bg-white text-slate-800 font-semibold cursor-pointer transition-colors hover:border-royal-blue has-[:checked]:bg-royal-blue has-[:checked]:border-royal-blue has-[:checked]:text-white has-[:focus-visible]:outline-2 has-[:focus-visible]:outline-offset-2 has-[:focus-visible]:outline-royal-blue'
 
-export default function SupportBox({ authors, articleSlug }: { authors: Author[]; articleSlug: string }) {
+// Donations go to the journal (GoGMI) as a whole, not to individual
+// authors. The article is still recorded with each donation, so the
+// admin panel can see which articles prompt people to give.
+export default function SupportBox({ articleSlug }: { articleSlug: string }) {
   const { t } = useI18n()
   const [choice, setChoice] = useState<number | 'other'>(50)
   const [customAmount, setCustomAmount] = useState('')
@@ -31,7 +31,6 @@ export default function SupportBox({ authors, articleSlug }: { authors: Author[]
   const [error, setError] = useState<string | null>(null)
 
   const effectiveAmount = choice === 'other' ? Number(customAmount) || 0 : choice
-  const authorNames = authors.map((a) => a.name).join(t.common.and)
 
   async function handleSubmit(e: React.FormEvent) {
     e.preventDefault()
@@ -69,27 +68,7 @@ export default function SupportBox({ authors, articleSlug }: { authors: Author[]
         <h2 id="support-heading" className="font-display text-2xl text-royal-blue">
           {t.support.heading}
         </h2>
-        <p className="text-slate-700 leading-relaxed mt-3 max-w-2xl">
-          {fmt(t.support.body, {
-            authors: authorNames || t.support.fallbackAuthors,
-            authorPercent: donationSplit.authorPercent,
-            platformPercent: donationSplit.platformPercent,
-          })}
-        </p>
-
-        {authors.length > 0 && (
-          <div className="mt-5">
-            <p className="text-sm text-slate-600 mb-2">{t.support.recipients}</p>
-            <ul className="flex flex-wrap gap-x-6 gap-y-2">
-              {authors.map((a) => (
-                <li key={a.slug} className="flex items-center gap-3">
-                  <AuthorAvatar name={a.name} photo={a.photo} size="sm" className="rounded-full" />
-                  <span className="font-medium text-slate-900">{a.name}</span>
-                </li>
-              ))}
-            </ul>
-          </div>
-        )}
+        <p className="text-slate-700 leading-relaxed mt-3 max-w-2xl">{t.support.body}</p>
       </div>
 
       <form onSubmit={handleSubmit} className="space-y-5 max-w-xl border-t border-slate-200 pt-6" noValidate>

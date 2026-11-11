@@ -17,25 +17,34 @@ function subscribe() {
   return () => {}
 }
 
+// 'thanks' only arrives after /api/donations/verify has confirmed the
+// payment with Paystack; 'incomplete' covers a failed check or a donor who
+// cancelled on Paystack's page.
 function getSnapshot() {
-  return new URLSearchParams(window.location.search).get('donation') === 'thanks'
+  return new URLSearchParams(window.location.search).get('donation')
 }
 
 function getServerSnapshot() {
-  return false
+  return null
 }
 
 export default function DonationThanksBanner() {
-  const show = useSyncExternalStore(subscribe, getSnapshot, getServerSnapshot)
+  const state = useSyncExternalStore(subscribe, getSnapshot, getServerSnapshot)
   const { t } = useI18n()
 
-  if (!show) return null
-
-  return (
-    <div className="border-l-4 border-gold bg-soft-gold/60 text-royal-blue p-4 my-6">
-      <p className="text-sm leading-relaxed">
-        {t.support.thanks}
-      </p>
-    </div>
-  )
+  if (state === 'thanks') {
+    return (
+      <div role="status" className="mt-12 border border-emerald-200 bg-emerald-50 text-emerald-900 px-5 py-4">
+        <p className="leading-relaxed">{t.support.thanks}</p>
+      </div>
+    )
+  }
+  if (state === 'incomplete') {
+    return (
+      <div role="status" className="mt-12 border border-amber-200 bg-amber-50 text-amber-900 px-5 py-4">
+        <p className="leading-relaxed">{t.support.incomplete}</p>
+      </div>
+    )
+  }
+  return null
 }
