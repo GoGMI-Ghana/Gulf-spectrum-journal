@@ -106,6 +106,8 @@ Cada volumen es revisado antes de su publicación por un comité editorial de ex
   },
 
   home: {
+    onlineFirst: 'Publicación anticipada',
+    onlineFirstBody: 'Nuevas investigaciones publicadas en línea antes de su número.',
     currentIssue: 'Número actual',
     forAuthors: 'Para autores',
     metaDescription: 'Gulf Spectrum Journal es la revista de investigación del Gulf of Guinea Maritime Institute (GoGMI). Publica investigación con revisión editorial sobre seguridad marítima, economía azul, gobernanza y fortalecimiento de capacidades en el golfo de Guinea.',
@@ -172,6 +174,8 @@ Cada volumen es revisado antes de su publicación por un comité editorial de ex
   },
 
   issues: {
+    onlineFirst: 'Publicación anticipada',
+    onlineFirstBody: 'Artículos publicados en línea de forma independiente, antes de incluirse en un número.',
     metaTitle: 'Artículos y números',
     metaDescription: 'Explore todos los artículos y números de Gulf Spectrum Journal por volumen, tema y materia.',
     eyebrow: 'Archivo',
@@ -194,6 +198,7 @@ Cada volumen es revisado antes de su publicación por un comité editorial de ex
   },
 
   article: {
+    onlineFirst: 'Publicación anticipada',
     breadcrumbLabel: 'Ruta de navegación',
     metrics: 'Métricas',
     notFound: 'Artículo no encontrado',

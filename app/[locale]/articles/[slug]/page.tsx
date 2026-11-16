@@ -15,7 +15,7 @@ import { formatCitations } from '@/lib/citation'
 import { doiUrl } from '@/lib/doi'
 import { referenceParts } from '@/lib/references'
 import { getDictionary, toLocale } from '@/lib/i18n'
-import { fmt, formatNumber } from '@/lib/i18n/format'
+import { fmt, formatDate, formatNumber } from '@/lib/i18n/format'
 import type { LocaleSlugParams } from '@/lib/i18n/page'
 import { siteUrl, socialMetadata } from '@/lib/seo'
 import { journal } from '@/lib/staticContent'
@@ -58,6 +58,8 @@ export async function generateMetadata({ params }: LocaleSlugParams): Promise<Me
         citation_volume: issue.volume,
         citation_issue: issue.number,
       }),
+      // Online first: no volume or issue yet, only the date it went online.
+      ...(!issue && article.publishedOn && { citation_publication_date: article.publishedOn.replace(/-/g, '/') }),
       citation_abstract_html_url: `${siteUrl}/articles/${article.slug}`,
       citation_pdf_url: `${siteUrl}/api/articles/${article.slug}/pdf`,
     },
@@ -93,6 +95,11 @@ export default async function ArticleDetail({ params }: LocaleSlugParams) {
   const citations = formatCitations(article, authors, issue, article.doi ? doiUrl(article.doi) : url)
   const stats = statsById[article.id] ?? { views: 0, downloads: 0 }
   const issueLabel = issue ? fmt(t.article.volumeIssue, { volume: issue.volume, number: issue.number }) : ''
+  // The article's own online date when recorded (always, for online-first
+  // articles); otherwise the issue's.
+  const publishedDate = article.publishedOn
+    ? formatDate(toLocale(locale), article.publishedOn, { day: 'numeric', month: 'long', year: 'numeric', timeZone: 'UTC' })
+    : (issue?.publishedDate ?? '')
 
   const related = issue ? (await getArticlesForIssue(issue.slug)).filter((a) => a.slug !== article.slug).slice(0, 4) : []
   const relatedAuthors = await Promise.all(related.map((a) => getAuthorsForArticle(a)))
@@ -130,14 +137,14 @@ export default async function ArticleDetail({ params }: LocaleSlugParams) {
                 <li>
                   <Link href="/issues" className="hover:text-ocean-blue hover:underline">{t.nav.articlesAndIssues}</Link>
                 </li>
-                {issue && (
-                  <>
-                    <ChevronRight size={14} className="text-slate-500" aria-hidden="true" />
-                    <li>
-                      <Link href={`/issues/${issue.slug}`} className="hover:text-ocean-blue hover:underline">{issueLabel}</Link>
-                    </li>
-                  </>
-                )}
+                <ChevronRight size={14} className="text-slate-500" aria-hidden="true" />
+                <li>
+                  {issue ? (
+                    <Link href={`/issues/${issue.slug}`} className="hover:text-ocean-blue hover:underline">{issueLabel}</Link>
+                  ) : (
+                    <Link href="/issues#online-first" className="hover:text-ocean-blue hover:underline">{t.article.onlineFirst}</Link>
+                  )}
+                </li>
               </ol>
             </nav>
 
@@ -168,8 +175,8 @@ export default async function ArticleDetail({ params }: LocaleSlugParams) {
             </p>
             <p className="text-sm text-slate-600 mb-1">
               {[
-                issue ? `${journal.name}, ${issueLabel}` : journal.name,
-                issue?.publishedDate ? fmt(t.article.publishedOnline, { date: issue.publishedDate }) : '',
+                `${journal.name}, ${issue ? issueLabel : t.article.onlineFirst}`,
+                publishedDate ? fmt(t.article.publishedOnline, { date: publishedDate }) : '',
               ]
                 .filter(Boolean)
                 .join(' · ')}

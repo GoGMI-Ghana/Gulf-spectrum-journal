@@ -1,13 +1,24 @@
 import Link from 'next/link'
 import { getAuthorsForArticle, getTopicForArticle } from '@/lib/content'
 import { doiUrl } from '@/lib/doi'
+import { fmt, formatDate } from '@/lib/i18n/format'
+import type { Locale } from '@/lib/i18n'
 import type { Article } from '@/lib/types'
 
 // An issue's table of contents, set the way a printed journal's is: topic,
 // title, authors and DOI for each article, no abstracts. Used on the home
 // page (current issue) and on each issue's page. Server Component: it reads
 // each article's authors and topic.
-export default async function IssueContents({ articles }: { articles: Article[] }) {
+//
+// For online-first lists, pass dated: each article's online date is shown
+// using the template (e.g. "Published online: {date}").
+export default async function IssueContents({
+  articles,
+  dated,
+}: {
+  articles: Article[]
+  dated?: { locale: Locale; template: string }
+}) {
   const rows = await Promise.all(
     articles.map(async (article) => ({
       article,
@@ -31,6 +42,13 @@ export default async function IssueContents({ articles }: { articles: Article[] 
             </Link>
           </h3>
           <p className="text-slate-700 mt-1.5">{authors.map((a) => a.name).join(', ')}</p>
+          {dated && article.publishedOn && (
+            <p className="text-sm text-slate-600 mt-1">
+              {fmt(dated.template, {
+                date: formatDate(dated.locale, article.publishedOn, { day: 'numeric', month: 'long', year: 'numeric', timeZone: 'UTC' }),
+              })}
+            </p>
+          )}
           {article.doi && (
             <p className="text-sm mt-1">
               <a href={doiUrl(article.doi)} className="text-slate-600 hover:text-ocean-blue hover:underline break-all">

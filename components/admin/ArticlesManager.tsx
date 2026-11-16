@@ -133,7 +133,7 @@ export default function ArticlesManager() {
                     </span>
                   </p>
                   <p className="text-xs text-slate-400">
-                    {issue?.theme ?? 'No issue'}
+                    {issue?.theme ?? 'Online first'}
                     {topic ? ` · ${topic.label}` : ''}
                   </p>
                   {a.status === 'published' && (

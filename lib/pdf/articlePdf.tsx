@@ -156,7 +156,9 @@ export function ArticleContent({
 export async function renderArticlePdf({ article, authors, issue, topic, citation, url }: ArticlePdfInput): Promise<Buffer> {
   const images = await prepareImages(articleHtmlBodies(article))
 
-  const issueLine = issue ? `Vol. ${issue.volume}, No. ${issue.number} (${issue.year})` : ''
+  const issueLine = issue
+    ? `Vol. ${issue.volume}, No. ${issue.number} (${issue.year})`
+    : `Online first${article.publishedOn ? ` (${article.publishedOn.slice(0, 4)})` : ''}`
 
   return renderToBuffer(
     <Document

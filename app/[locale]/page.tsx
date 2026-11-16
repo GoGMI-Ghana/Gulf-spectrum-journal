@@ -1,10 +1,10 @@
 import Link from 'next/link'
 import type { Metadata } from 'next'
 import { Download } from 'lucide-react'
-import { getDictionary } from '@/lib/i18n'
+import { getDictionary, toLocale } from '@/lib/i18n'
 import { fmt } from '@/lib/i18n/format'
 import type { LocaleParams } from '@/lib/i18n/page'
-import { getIssues, getTopics, getArticlesForIssue } from '@/lib/content'
+import { getIssues, getTopics, getArticlesForIssue, getOnlineFirstArticles } from '@/lib/content'
 import { journal } from '@/lib/staticContent'
 import IssueContents from '@/components/IssueContents'
 import IssueCover from '@/components/IssueCover'
@@ -20,7 +20,8 @@ export async function generateMetadata({ params }: LocaleParams): Promise<Metada
 // table of contents. The masthead above already names the journal and
 // GoGMI, so this page doesn't repeat them.
 export default async function Home({ params }: LocaleParams) {
-  const t = getDictionary((await params).locale)
+  const locale = toLocale((await params).locale)
+  const t = getDictionary(locale)
   const issues = await getIssues()
   const topics = await getTopics()
   // Undefined until the first issue is published — every section below
@@ -28,6 +29,9 @@ export default async function Home({ params }: LocaleParams) {
   const latestIssue = issues.at(0)
   const latestArticles = latestIssue ? await getArticlesForIssue(latestIssue.slug) : []
   const pastIssues = issues.slice(1)
+  // Articles published on their own, ahead of an issue: newest research,
+  // so listed first.
+  const onlineFirst = await getOnlineFirstArticles()
 
   return (
     <div>
@@ -113,6 +117,14 @@ export default async function Home({ params }: LocaleParams) {
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-12 grid grid-cols-1 lg:grid-cols-[minmax(0,1fr)_18rem] gap-x-14 gap-y-12">
         {/* Table of contents */}
         <section>
+          {onlineFirst.length > 0 && (
+            <div className="mb-14">
+              <h2 className="font-display text-2xl text-royal-blue">{t.home.onlineFirst}</h2>
+              <p className="text-slate-600 mt-1 mb-4">{t.home.onlineFirstBody}</p>
+              <IssueContents articles={onlineFirst} dated={{ locale, template: t.article.publishedOnline }} />
+            </div>
+          )}
+
           {latestIssue && latestArticles.length > 0 && (
             <>
               <h2 className="font-display text-2xl text-royal-blue mb-4">{t.issue.inThisIssue}</h2>

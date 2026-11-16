@@ -64,6 +64,7 @@ type ArticleRow = {
   disclosure: string | null
   correction_note: string | null
   doi: string | null
+  published_on: string | null
   issue: { slug: string } | null
   topic: { slug: string } | null
   article_authors: { position: number; author: { slug: string } | null }[] | null
@@ -152,6 +153,7 @@ function mapArticleRow(row: ArticleRow): Article {
     disclosure: row.disclosure ?? '',
     correctionNote: row.correction_note ?? '',
     doi: row.doi ?? '',
+    publishedOn: row.published_on ?? '',
   }
 }
 
@@ -174,6 +176,7 @@ const ARTICLE_SELECT = `
   disclosure,
   correction_note,
   doi,
+  published_on,
   issue:issues(slug),
   topic:topics(slug),
   article_authors(position, author:authors(slug))
@@ -262,6 +265,13 @@ export const getAuthorBySlug = cache(async (slug: string): Promise<Author | unde
 export async function getArticlesForIssue(issueSlug: string): Promise<Article[]> {
   const articles = await getArticles()
   return articles.filter((a) => a.issueSlug === issueSlug)
+}
+
+// Published articles not (yet) in a public issue: the "Online first"
+// list, newest first.
+export async function getOnlineFirstArticles(): Promise<Article[]> {
+  const articles = await getArticles()
+  return articles.filter((a) => !a.issueSlug).sort((a, b) => b.publishedOn.localeCompare(a.publishedOn))
 }
 
 export async function getAuthorsForArticle(article: Article): Promise<Author[]> {

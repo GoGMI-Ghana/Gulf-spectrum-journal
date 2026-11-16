@@ -34,6 +34,7 @@ interface ArticleFormState {
   disclosure: string
   correction_note: string
   doi: string
+  published_on: string // "YYYY-MM-DD" or ''
   authorIds: string[] // in display order
 }
 
@@ -51,7 +52,13 @@ const EMPTY: ArticleFormState = {
   disclosure: '',
   correction_note: '',
   doi: '',
+  published_on: '',
   authorIds: [],
+}
+
+// Today's date in Ghana (UTC), "YYYY-MM-DD".
+function todayIso(): string {
+  return new Date().toISOString().slice(0, 10)
 }
 
 function move<T>(arr: T[], index: number, dir: -1 | 1): T[] {
@@ -180,7 +187,7 @@ export default function ArticleForm({ articleId }: { articleId?: string }) {
         ? supabase
             .from('articles')
             .select(
-              'slug, title, issue_id, topic_id, status, abstract, keywords, sections, conclusion, "references", disclosure, correction_note, doi, article_authors(position, author_id)'
+              'slug, title, issue_id, topic_id, status, abstract, keywords, sections, conclusion, "references", disclosure, correction_note, doi, published_on, article_authors(position, author_id)'
             )
             .eq('id', articleId)
             .single()
@@ -198,7 +205,7 @@ export default function ArticleForm({ articleId }: { articleId?: string }) {
           const row = articleRes.data as {
             slug: string
             title: string
-            issue_id: string
+            issue_id: string | null
             topic_id: string | null
             status: 'draft' | 'in_review' | 'published'
             abstract: string
@@ -209,12 +216,13 @@ export default function ArticleForm({ articleId }: { articleId?: string }) {
             disclosure: string | null
             correction_note: string | null
             doi: string | null
+            published_on: string | null
             article_authors: { position: number; author_id: string }[] | null
           }
           setForm({
             slug: row.slug,
             title: row.title,
-            issue_id: row.issue_id,
+            issue_id: row.issue_id ?? '',
             topic_id: row.topic_id ?? '',
             status: row.status,
             abstract: row.abstract,
@@ -227,6 +235,7 @@ export default function ArticleForm({ articleId }: { articleId?: string }) {
             disclosure: row.disclosure ?? '',
             correction_note: row.correction_note ?? '',
             doi: row.doi ?? '',
+            published_on: row.published_on ?? '',
             authorIds: (row.article_authors ?? [])
               .slice()
               .sort((a, b) => a.position - b.position)
@@ -251,7 +260,8 @@ export default function ArticleForm({ articleId }: { articleId?: string }) {
     const payload = {
       slug: form.slug.trim(),
       title: form.title.trim(),
-      issue_id: form.issue_id,
+      // No issue = published online first, on its own.
+      issue_id: form.issue_id || null,
       topic_id: form.topic_id || null,
       status: form.status,
       abstract: form.abstract.trim(),
@@ -262,17 +272,14 @@ export default function ArticleForm({ articleId }: { articleId?: string }) {
       disclosure: form.disclosure.trim() || null,
       correction_note: form.correction_note.trim() || null,
       doi: normalizeDoi(form.doi) || null,
+      // A stand-alone article has no issue date to fall back on, so one
+      // being published gets today's date if none was entered.
+      published_on: form.published_on || (form.status === 'published' && !form.issue_id ? todayIso() : null),
     }
 
     if (form.doi.trim() && !payload.doi) {
       setSaving(false)
       setError('That DOI is not in the expected form. It should look like 10.12345/gsj.2023.1.1 (a doi.org link also works).')
-      return
-    }
-
-    if (!payload.issue_id) {
-      setSaving(false)
-      setError('Choose an issue for this article.')
       return
     }
 
@@ -349,9 +356,9 @@ export default function ArticleForm({ articleId }: { articleId?: string }) {
         </div>
 
         <div className="grid sm:grid-cols-2 gap-4">
-          <Field label="Issue">
-            <select required className={inputClass} value={form.issue_id} onChange={(e) => setForm({ ...form, issue_id: e.target.value })}>
-              <option value="">Select an issue…</option>
+          <Field label="Issue" hint="Leave as Online first to publish it on its own; you can place it in an issue later.">
+            <select className={inputClass} value={form.issue_id} onChange={(e) => setForm({ ...form, issue_id: e.target.value })}>
+              <option value="">None (Online first)</option>
               {issues.map((i) => (
                 <option key={i.id} value={i.id}>
                   {i.label}
@@ -370,6 +377,10 @@ export default function ArticleForm({ articleId }: { articleId?: string }) {
             </select>
           </Field>
         </div>
+
+        <Field label="Published online" hint="The date it went online. Left empty, an Online first article gets the day it is published.">
+          <input type="date" className={`${inputClass} sm:max-w-xs`} value={form.published_on} onChange={(e) => setForm({ ...form, published_on: e.target.value })} />
+        </Field>
 
         <Field label="Authors">
           <AuthorsEditor authorIds={form.authorIds} onChange={(v) => setForm({ ...form, authorIds: v })} allAuthors={authors} />

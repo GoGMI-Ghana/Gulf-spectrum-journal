@@ -17,7 +17,7 @@ export async function GET(_request: Request, { params }: { params: Promise<{ slu
 
   const [authors, issue] = await Promise.all([getAuthorsForArticle(article), getIssueForArticle(article)])
   return renderOgCard({
-    kicker: issue ? `Research Article · Issue ${issue.number}` : 'Research Article',
+    kicker: issue ? `Research Article · Issue ${issue.number}` : 'Research Article · Online first',
     title: article.title,
     subtitle: authors.map((a) => a.name).join(', ') || undefined,
   })

@@ -44,12 +44,20 @@ function joinWith(items: string[], last: string): string {
   return `${items.slice(0, -1).join(', ')}${last}${items[items.length - 1]}`
 }
 
+// The year to cite: the issue's, or for a stand-alone ("online first")
+// article, the year it went online.
+function citeYear(article: Article, issue: Issue | undefined): number | undefined {
+  if (issue) return issue.year
+  const year = Number(article.publishedOn.slice(0, 4))
+  return year || undefined
+}
+
 export function formatApaCitation(article: Article, authors: Author[], issue: Issue | undefined, url?: string): string {
   const authorStr = joinWith(authors.map((a) => surnameInitials(parseName(a.name))), ', & ')
-  const year = issue?.year ?? ''
-  const vol = issue?.volume ?? ''
-  const num = issue?.number ?? ''
-  return `${authorStr} (${year}). ${article.title}. ${journal.name}, ${vol}(${num}).${url ? ` ${url}` : ''}`
+  const year = citeYear(article, issue) ?? 'n.d.'
+  // An article not yet in an issue is cited without volume and number.
+  const where = issue ? `, ${issue.volume}(${issue.number})` : ''
+  return `${authorStr} (${year}). ${article.title}. ${journal.name}${where}.${url ? ` ${url}` : ''}`
 }
 
 function formatMla(article: Article, names: CitedName[], issue: Issue | undefined, url: string): string {
@@ -61,7 +69,8 @@ function formatMla(article: Article, names: CitedName[], issue: Issue | undefine
       : names.length === 2
         ? `${surnameFirst(names[0])}, and ${givenFirst(names[1])}`
         : surnameFirst(names[0] ?? { given: '', surname: '' })
-  const where = issue ? `, vol. ${issue.volume}, no. ${issue.number}, ${issue.year}` : ''
+  const year = citeYear(article, issue)
+  const where = issue ? `, vol. ${issue.volume}, no. ${issue.number}, ${issue.year}` : year ? `, ${year}` : ''
   return `${authorStr}${authorStr.endsWith('.') ? '' : '.'} “${article.title}.” ${journal.name}${where}, ${url}.`
 }
 
@@ -72,14 +81,15 @@ function formatChicago(article: Article, names: CitedName[], issue: Issue | unde
     // the first name is inverted.
     ', and '
   )
-  const where = issue ? ` ${issue.volume}, no. ${issue.number} (${issue.year})` : ''
+  const year = citeYear(article, issue)
+  const where = issue ? ` ${issue.volume}, no. ${issue.number} (${issue.year})` : year ? ` (${year})` : ''
   return `${authorStr}${authorStr.endsWith('.') ? '' : '.'} “${article.title}.” ${journal.name}${where}. ${url}.`
 }
 
 function formatHarvard(article: Article, names: CitedName[], issue: Issue | undefined, url: string): string {
   const authorStr = joinWith(names.map(surnameInitials), ' and ')
   const where = issue ? `, ${issue.volume}(${issue.number})` : ''
-  return `${authorStr} (${issue?.year ?? 'n.d.'}) ‘${article.title}’, ${journal.name}${where}. Available at: ${url}.`
+  return `${authorStr} (${citeYear(article, issue) ?? 'n.d.'}) ‘${article.title}’, ${journal.name}${where}. Available at: ${url}.`
 }
 
 // BibTeX reads { } as grouping and \ as a command, so neither can appear
@@ -90,12 +100,12 @@ function bibValue(value: string): string {
 
 function formatBibtex(article: Article, names: CitedName[], issue: Issue | undefined, url: string): string {
   const key =
-    `${names[0]?.surname ?? 'article'}${issue?.year ?? ''}`.normalize('NFD').replace(/[^A-Za-z0-9]/g, '') || 'article'
+    `${names[0]?.surname ?? 'article'}${citeYear(article, issue) ?? ''}`.normalize('NFD').replace(/[^A-Za-z0-9]/g, '') || 'article'
   const fields: [string, string | number | undefined][] = [
     ['author', names.map(surnameFirst).join(' and ')],
     ['title', article.title],
     ['journal', journal.name],
-    ['year', issue?.year],
+    ['year', citeYear(article, issue)],
     ['volume', issue?.volume],
     ['number', issue?.number],
     ['issn', journal.issn ?? undefined],
@@ -118,7 +128,8 @@ function formatRis(article: Article, names: CitedName[], issue: Issue | undefine
     `TI  - ${oneLine(article.title)}`,
     `JO  - ${journal.name}`,
     ...(journal.issn ? [`SN  - ${journal.issn}`] : []),
-    ...(issue ? [`PY  - ${issue.year}`, `VL  - ${issue.volume}`, `IS  - ${issue.number}`] : []),
+    ...(citeYear(article, issue) ? [`PY  - ${citeYear(article, issue)}`] : []),
+    ...(issue ? [`VL  - ${issue.volume}`, `IS  - ${issue.number}`] : []),
     ...(article.abstract ? [`AB  - ${oneLine(article.abstract)}`] : []),
     ...article.keywords.map((k) => `KW  - ${oneLine(k)}`),
     ...(article.doi ? [`DO  - ${article.doi}`] : []),

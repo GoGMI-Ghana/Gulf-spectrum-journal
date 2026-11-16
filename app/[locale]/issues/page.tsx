@@ -1,12 +1,13 @@
 import Link from 'next/link'
 import type { Metadata } from 'next'
-import { getIssues, getArticlesForIssue } from '@/lib/content'
+import { getIssues, getArticlesForIssue, getOnlineFirstArticles } from '@/lib/content'
 import type { Issue } from '@/lib/types'
 import { getDictionary, toLocale } from '@/lib/i18n'
 import { fmt, plural, rich } from '@/lib/i18n/format'
 import type { LocaleParams } from '@/lib/i18n/page'
 import PageBanner from '@/components/PageBanner'
 import IssueCover from '@/components/IssueCover'
+import IssueContents from '@/components/IssueContents'
 
 export async function generateMetadata({ params }: LocaleParams): Promise<Metadata> {
   const t = getDictionary((await params).locale)
@@ -26,6 +27,7 @@ export default async function Issues({ params }: LocaleParams) {
 
   const articleCounts = await Promise.all(issues.map((i) => getArticlesForIssue(i.slug)))
   const countBySlug = Object.fromEntries(issues.map((i, idx) => [i.slug, articleCounts[idx].length]))
+  const onlineFirst = await getOnlineFirstArticles()
 
   return (
     <div>
@@ -41,7 +43,16 @@ export default async function Issues({ params }: LocaleParams) {
       />
 
       <section className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-14">
-        {years.length === 0 && <p className="text-slate-600">{t.issues.empty}</p>}
+        {/* Published on their own, not yet placed in an issue. Linked to
+            as /issues#online-first from those articles' pages. */}
+        {onlineFirst.length > 0 && (
+          <div id="online-first" className="mb-12 scroll-mt-6">
+            <h2 className="text-lg font-bold text-royal-blue font-display border-b-2 border-royal-blue pb-2">{t.issues.onlineFirst}</h2>
+            <p className="text-slate-600 mt-3 mb-2">{t.issues.onlineFirstBody}</p>
+            <IssueContents articles={onlineFirst} dated={{ locale, template: t.article.publishedOnline }} />
+          </div>
+        )}
+        {years.length === 0 && onlineFirst.length === 0 && <p className="text-slate-600">{t.issues.empty}</p>}
         {years.map((year) => (
           <div key={year} className="mb-12">
             <h2 className="text-lg font-bold text-royal-blue font-display border-b-2 border-royal-blue pb-2 mb-6">{year}</h2>

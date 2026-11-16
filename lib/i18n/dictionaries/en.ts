@@ -115,6 +115,8 @@ Each volume is reviewed by an editorial board of subject-matter experts before p
   },
 
   home: {
+    onlineFirst: 'Online first',
+    onlineFirstBody: 'New research published online ahead of its issue.',
     currentIssue: 'Current issue',
     forAuthors: 'For authors',
     metaDescription: 'Gulf Spectrum Journal is the research journal of the Gulf of Guinea Maritime Institute (GoGMI). It publishes editorially reviewed research on maritime security, the blue economy, governance and capacity building in the Gulf of Guinea.',
@@ -180,6 +182,8 @@ Each volume is reviewed by an editorial board of subject-matter experts before p
   },
 
   issues: {
+    onlineFirst: 'Online first',
+    onlineFirstBody: 'Articles published online on their own, before being placed in an issue.',
     metaTitle: 'Articles and Issues',
     metaDescription: 'Browse all articles and issues of Gulf Spectrum Journal by volume, theme, and topic.',
     eyebrow: 'Archive',
@@ -202,6 +206,7 @@ Each volume is reviewed by an editorial board of subject-matter experts before p
   },
 
   article: {
+    onlineFirst: 'Online first',
     breadcrumbLabel: 'Breadcrumb',
     metrics: 'Metrics',
     notFound: 'Article not found',

@@ -76,6 +76,10 @@ export interface Article {
   correctionNote: string
   // Bare DOI ("10.12345/gsj.2023.1.1"), or '' until one is registered.
   doi: string
+  // The date it went online, "YYYY-MM-DD", or '' when not recorded.
+  // Stand-alone ("online first") articles have no issue (issueSlug '')
+  // and rely on this for their date and citation year.
+  publishedOn: string
 }
 
 // The signed-in reader account (Supabase Auth), not an Author (a
