@@ -2,7 +2,7 @@
 
 import { useEffect, useState, useSyncExternalStore } from 'react'
 import Link from 'next/link'
-import { Pencil, Trash2 } from 'lucide-react'
+import { FileDown, Fingerprint, Pencil, Trash2 } from 'lucide-react'
 import { createClient } from '@/lib/supabase/client'
 import { refreshPublicSite } from '@/lib/refreshPublicSite'
 import { AdminHeading, primaryButtonClass } from './AdminUI'
@@ -15,6 +15,8 @@ interface ArticleRow {
   title: string
   status: Status
   updated_at: string
+  issue_id: string | null
+  doi: string | null
   issue: { theme: string } | { theme: string }[] | null
   topic: { label: string } | { label: string }[] | null
 }
@@ -64,7 +66,7 @@ export default function ArticlesManager() {
     const supabase = createClient()
     let query = supabase
       .from('articles')
-      .select('id, slug, title, status, updated_at, issue:issues(theme), topic:topics(label)')
+      .select('id, slug, title, status, updated_at, issue_id, doi, issue:issues(theme), topic:topics(label)')
       .order('updated_at', { ascending: false })
     if (tab !== 'all') query = query.eq('status', tab)
     query.then(({ data, error }) => {
@@ -75,6 +77,30 @@ export default function ArticlesManager() {
   }
 
   useEffect(load, [tab])
+
+  // DOI registration for an online-first article, step 2: after Crossref
+  // has accepted the uploaded file (see app/api/admin/articles/[id]/crossref),
+  // put the DOI on the article so the site links it. Articles in an issue
+  // are registered from the Issues page instead.
+  async function saveDoi(a: ArticleRow) {
+    const plan = await fetch(`/api/admin/articles/${a.id}/crossref`).then((r) => r.json()).catch(() => null)
+    if (!plan || plan.error) {
+      alert(plan?.error ?? 'Could not load the DOI for this article.')
+      return
+    }
+    if (plan.saved) {
+      alert('This article already has its DOI saved.')
+      return
+    }
+    const ok = confirm(
+      `Only do this after Crossref has confirmed the upload was successful.\n\nThis DOI will be saved and shown on the article:\n\n${plan.doi}`
+    )
+    if (!ok) return
+    const res = await fetch(`/api/admin/articles/${a.id}/crossref`, { method: 'POST' })
+    const body = await res.json().catch(() => null)
+    alert(res.ok ? (body?.saved ? 'DOI saved.' : 'Nothing to save.') : body?.error ?? 'The DOI could not be saved.')
+    load()
+  }
 
   async function handleDelete(a: ArticleRow) {
     if (!confirm(`Delete "${a.title}"? This can't be undone.`)) return
@@ -140,6 +166,23 @@ export default function ArticlesManager() {
                     <Link href={`/articles/${a.slug}`} className="text-xs text-ocean-blue hover:underline">
                       View live →
                     </Link>
+                  )}
+                  {a.status === 'published' && !a.issue_id && (
+                    <div className="flex flex-wrap items-center gap-x-4 gap-y-1 mt-1">
+                      {/* DOI registration, step 1: the file to upload at Crossref. */}
+                      <a href={`/api/admin/articles/${a.id}/crossref?format=xml`} className="flex items-center gap-1 text-xs text-ocean-blue hover:underline">
+                        <FileDown size={12} /> Crossref file
+                      </a>
+                      {a.doi ? (
+                        <span className="flex items-center gap-1 text-xs text-slate-500">
+                          <Fingerprint size={12} /> DOI {a.doi}
+                        </span>
+                      ) : (
+                        <button onClick={() => saveDoi(a)} className="flex items-center gap-1 text-xs text-ocean-blue hover:underline">
+                          <Fingerprint size={12} /> Save DOI (after Crossref accepts)
+                        </button>
+                      )}
+                    </div>
                   )}
                 </div>
                 <div className="flex items-center gap-3 shrink-0">

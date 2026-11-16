@@ -1,6 +1,9 @@
-// Crossref DOI registration. GoGMI registers DOIs by uploading one XML file
-// per issue in Crossref's admin tool; this builds that file (deposit schema
-// 5.3.1) from the journal's own data, and works out the DOIs to use.
+// Crossref DOI registration. GoGMI registers DOIs by uploading an XML file
+// in Crossref's admin tool: one per issue, or one per online-first article
+// (no issue yet). This builds that file (deposit schema 5.3.1) from the
+// journal's own data, and works out the DOIs to use. When an online-first
+// article is later placed in an issue, the issue's file sends it again
+// with its volume and issue, under the same DOI.
 //
 // DOI pattern: 10.68864/gsj for the journal, 10.68864/gsj.<year>.<NNN> for
 // articles, numbered in order within each year. A registered DOI can never
@@ -58,6 +61,13 @@ export function publicationDate(issue: Issue): { year: number; month?: number; d
   return { year: issue.year }
 }
 
+// An online-first article's date: the day it went online.
+export function articleOnlineDate(article: Article): { year: number; month?: number; day?: number } {
+  const iso = /^(\d{4})-(\d{2})-(\d{2})/.exec(article.publishedOn)
+  if (iso) return { year: Number(iso[1]), month: Number(iso[2]), day: Number(iso[3]) }
+  return { year: new Date().getUTCFullYear() }
+}
+
 const esc = (s: string) => s.replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;').replace(/"/g, '&quot;')
 const two = (n: number) => String(n).padStart(2, '0')
 
@@ -78,15 +88,18 @@ export interface DepositEntry {
   url: string
 }
 
-export function buildDepositXml({ issue, entries, siteUrl }: { issue: Issue; entries: DepositEntry[]; siteUrl: string }): string {
-  const date = publicationDate(issue)
+// Without an issue, the file registers online-first articles on their own:
+// no <journal_issue>, and each dated from when it went online.
+export function buildDepositXml({ issue, entries, siteUrl }: { issue?: Issue; entries: DepositEntry[]; siteUrl: string }): string {
+  const issueDate = issue ? publicationDate(issue) : null
   const now = new Date()
   // Crossref keeps the deposit with the highest timestamp for each DOI, so
   // a later upload of a corrected file always wins.
   const timestamp = now.toISOString().replace(/\D/g, '').slice(0, 14)
-  const batchId = `gsj-${issue.slug}-${timestamp}`
+  const batchId = `gsj-${issue?.slug ?? entries[0]?.article.slug ?? 'deposit'}-${timestamp}`
 
   const articlesXml = entries.map(({ article, authors, doi, url }) => {
+    const date = issueDate ?? articleOnlineDate(article)
     const contributors = authors.map((author, i) => {
       const { given, surname } = splitName(author.name)
       return [
@@ -157,14 +170,18 @@ ${journal.issn ? `      <issn media_type="electronic">${esc(journal.issn)}</issn
         <resource>${esc(siteUrl)}/</resource>
       </doi_data>
     </journal_metadata>
-    <journal_issue>
-${dateXml(date, '      ')}
+${
+  issue && issueDate
+    ? `    <journal_issue>
+${dateXml(issueDate, '      ')}
       <journal_volume>
         <volume>${issue.volume}</volume>
       </journal_volume>
       <issue>${issue.number}</issue>
     </journal_issue>
-${articlesXml.join('\n')}
+`
+    : ''
+}${articlesXml.join('\n')}
     </journal>
   </body>
 </doi_batch>
