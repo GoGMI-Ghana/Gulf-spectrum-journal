@@ -1,6 +1,6 @@
 'use client'
 
-import { useEffect, useState, type FormEvent } from 'react'
+import { useEffect, useRef, useState, type FormEvent } from 'react'
 import { Pencil, Trash2, Check, X } from 'lucide-react'
 import { createClient } from '@/lib/supabase/client'
 import { refreshPublicSite } from '@/lib/refreshPublicSite'
@@ -40,6 +40,17 @@ export default function AuthorsManager() {
   const [form, setForm] = useState(EMPTY)
   const [saving, setSaving] = useState(false)
   const [error, setError] = useState<string | null>(null)
+  // The form opens at the top of the page, above the list; clicking the
+  // pencil on an author further down the list scrolls up to it, so the
+  // click doesn't look like it did nothing.
+  const formRef = useRef<HTMLFormElement>(null)
+  const nameRef = useRef<HTMLInputElement>(null)
+  const [focusTick, setFocusTick] = useState(0)
+  useEffect(() => {
+    if (!focusTick) return
+    formRef.current?.scrollIntoView({ behavior: 'smooth', block: 'start' })
+    nameRef.current?.focus({ preventScroll: true })
+  }, [focusTick])
 
   const [claims, setClaims] = useState<ClaimRow[]>([])
   const [claimsLoaded, setClaimsLoaded] = useState(false)
@@ -99,6 +110,7 @@ export default function AuthorsManager() {
     setForm(EMPTY)
     setError(null)
     setShowForm(true)
+    setFocusTick((n) => n + 1)
   }
 
   function startEdit(a: AuthorRow) {
@@ -114,6 +126,7 @@ export default function AuthorsManager() {
     })
     setError(null)
     setShowForm(true)
+    setFocusTick((n) => n + 1)
   }
 
   async function handleSubmit(e: FormEvent) {
@@ -213,11 +226,11 @@ export default function AuthorsManager() {
       )}
 
       {showForm && (
-        <form onSubmit={handleSubmit} className="border border-slate-200 p-5 mb-6 space-y-4 max-w-xl">
+        <form ref={formRef} onSubmit={handleSubmit} className="border border-slate-200 p-5 mb-6 space-y-4 max-w-xl">
           <ErrorBanner message={error} />
           <div className="grid sm:grid-cols-2 gap-4">
             <Field label="Name">
-              <input required className={inputClass} value={form.name} onChange={(e) => setForm({ ...form, name: e.target.value })} />
+              <input ref={nameRef} required className={inputClass} value={form.name} onChange={(e) => setForm({ ...form, name: e.target.value })} />
             </Field>
             <Field label="Slug" hint="/authors/this-slug">
               <input required className={inputClass} value={form.slug} onChange={(e) => setForm({ ...form, slug: e.target.value })} />
